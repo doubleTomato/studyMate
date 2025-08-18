@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: study-mate-app
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html:cached
+    networks:
+      - study-mate-network
+    depends_on:
+      db:
+        condition: service_healthy # db 서비스가 healthy 상태 체크
+
+  web:
+    image: nginx:alpine
+    container_name: study-mate-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html:cached
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - study-mate-network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: study-mate-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: studymate
+      MYSQL_USER: studymate
+      MYSQL_PASSWORD: studymatepass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - study-mate-network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  study-mate-network:
+    driver: bridge
+
+volumes:
+  db_data:
