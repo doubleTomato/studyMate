@@ -23,6 +23,6 @@ class Fields extends Model
 
     protected $casts = [
     ];
-
+    
 
 }
