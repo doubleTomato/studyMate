@@ -9,6 +9,8 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html:cached
+      # - /var/www/html/vendor
+      - /var/www/html/node_modules
     networks:
       - study-mate-network
     depends_on:
