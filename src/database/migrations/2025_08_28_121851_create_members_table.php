@@ -15,14 +15,14 @@ return new class extends Migration
             $table->unsignedBigInteger('id');
             $table->string('name', 50);
             $table->string('password', 255);
-            $table->string('nickname', 50);
+            $table->string('nickname', 50)->default('');
             $table->string('email', 255);
-            $table->string('location', 100);
+            $table->string('location', 100)->default('');
             $table->string('profile_url', 2048)->nullable();
             $table->string('remember_token', 100);
-            $table->string('provider', 100)->nullable();
-            $table->string('provider_id', 255)->nullable();
-            $table->dateTime('email_verified_datetime');
+            $table->string('provider', 100)->nullable()->default('');
+            $table->string('provider_id', 255)->nullable()->default('');
+            $table->dateTime('email_verified_datetime')->nullable();
             $table->timestamps();
         });
     }

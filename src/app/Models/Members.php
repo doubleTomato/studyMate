@@ -26,6 +26,13 @@ class Members extends Model
         'provider_id'
     ];
 
+    protected $attributes = [
+        'nickname' => '',
+        'location' => '',
+        'provider' => '',
+        'provider_id' => ''
+    ];
+
     protected $casts = [
         'email_verified_datetime' => 'datetime'
     ];
