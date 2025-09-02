@@ -1,11 +1,196 @@
 @forward 'include/reset.scss';
 
+// 공통
+*{font-family: 'Noto Sans KR', sans-serif; color: #444;}
+body, html{ 
+    letter-spacing: 0.25px;
+}
+button{ 
+    border-radius: 5px;
+    transition: all linear 0.16s;
+    &:hover{cursor: pointer;}
+}
+
 // 회원가입
 .signup-sec{
+    padding-top: 100px;
     width: 1200px;
     margin: 0 auto;
-    background: yellowgreen;
-    color:blue;
-    padding: 12px;
-    box-sizing: border-box;
+    background-color: #fff;
+    // step
+    nav{
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        margin: 15px 0;
+        ul{ 
+            height: 50px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            li{
+                width: 100px;
+                height: 100%;
+                position: relative;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 55px;
+                    right: 5px;
+                    height: 2px;
+                    background-color: #555;
+                }
+                &:last-child
+                {
+                    width: 50px;
+                    &::after{
+                        display: none;
+                    }
+                }
+                p{
+                    width: 50px;
+                    height: 100%;
+                    border-radius: 50px;
+                    background-color: #ddd;
+                    color: #fff;
+                    line-height: 48px;
+                    text-align: center;
+                }
+                span{
+                    margin-top: 10px;
+                    display: block;
+                    width: 50px;
+                    word-break: keep-all;
+                    line-height: 1.25;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+                &.active{
+                    p{
+                        background-color: #a3dfbb;
+                    }
+                }
+            } //li end
+        }
+    } //step end
+    // 공통 적용
+    .step{
+        display: none;
+        h1{
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+    }
+    .step.active{display: block;}
+    // step 1 기본정보
+    .step1-sec{
+        width: 60%;
+        margin: 0 auto;
+        dl{
+            dt label{ font-size: 18px; font-weight: 500;}
+            dd input{ margin-top: 15px; width: 100%}
+            margin-bottom: 30px;
+        }
+        button{
+            margin-top: 30px;
+            background-color: #ddd;
+            width: 100%;
+            padding: 15px 0px;
+            font-size: 16px;
+            font-weight: 400;
+            &:hover{
+                background-color: #a3dfbb;
+                color: #fff;
+            }
+        }
+    }//step1 기본정보 end
+    // 닉네임 중복 체크
+    .step2-sec{
+        display: none;
+        &.active{ display: flex; }
+        justify-items: center;
+        flex-direction: column;
+        gap: 30px;
+        .icon{
+            width: 120px; height: 120px;
+            background-color: antiquewhite;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+        dl{
+            dt h1{ margin-bottom: 30px;}
+            dd {
+                input{ width: 70%;}
+                button{ 
+                    width: 20%;
+                    background-color: #ddd;
+                    padding: 10px 0;
+                    font-size: 13px;
+                    font-weight: 400;
+                    &:hover, &.active{
+                        background-color: #a3dfbb;
+                        color: #fff;
+                    }
+                } 
+            }
+        } // input창
+        // 추천 닉네임
+        .suggested-nickname{
+            width: 100%;
+            text-align: left;
+            margin-top: 60px;
+            h2{ font-size: 18px; font-weight: 600; margin-bottom: 20px;}
+            .lists{
+                width: 100%;
+                display: flex;
+                gap: 10px;
+                li{ 
+                    background-color: #ddd; padding: 10px 15px; border-radius: 15px;
+                    &:hover{
+                        background-color: #a3dfbb;
+                        color: #fff;
+                        cursor: pointer;
+                    }
+                }
+            }
+        } // 추천 닉네임 end
+    }// 닉네임 end
+    .step3-sec{
+            width: 100%;
+            ul{
+                display: flex;
+                flex-wrap: wrap;
+                border: 2px solid #ddd;
+                border-radius: 4px;
+                overflow: hidden;
+                li{
+                    width: 20%;
+                    height: 100px;
+                    line-height: 98px;
+                    text-align: center;
+                    outline: 1px solid #ddd;
+                    &:hover, &.active{
+                        cursor: pointer;
+                        outline: 1px solid #a3dfbb;
+                        color: #a3dfbb;
+                        font-weight: 600;
+                    }
+                }
+            }
+            button{
+                margin-top: 30px;
+                background-color: #ddd;
+                width: 100%;
+                padding: 15px 0px;
+                font-size: 16px;
+                font-weight: 400;
+                &:hover{
+                    background-color: #a3dfbb;
+                    color: #fff;
+                }
+            }
+        }
 }

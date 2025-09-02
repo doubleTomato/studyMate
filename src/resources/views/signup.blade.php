@@ -1,4 +1,11 @@
 {{-- 회원가입 --}}
+@php
+$location_names = [
+'서울', '부산', '대구', '인천', '광주',
+'대전', '울산', '세종', '경기', '강원',
+'충북', '충남', '전북', '전남', '경북',
+'경남', '제주'];
+@endphp
 @include('common.header')
 <section class="signup-sec">
     <nav>
@@ -11,13 +18,14 @@
                 <p>2</p>
                 <span>닉네임 입력</span>
             </li>
-            <li>
+            <li class="active">
                 <p>3</p>
                 <span>지역 입력</span>
             </li>
         </ul>
     </nav>
-    <div class="step1-sec">
+    {{-- 기본정보 --}}
+    <div class="step step1-sec">
         <div class="logo"></div>
         <h1>회원가입</h1>
         <dl>
@@ -26,6 +34,7 @@
             </dt>
             <dd>
                 <input type="text" value="" placeholder="이메일을 입력해주세요." name="email"/>
+                <span></span>
             </dd>
         </dl>
         <dl>
@@ -34,6 +43,7 @@
             </dt>
             <dd>
                 <input type="text" value="" placeholder="이름을 입력해주세요." name="username"/>
+                <span></span>
             </dd>
         </dl>
         <dl>
@@ -53,29 +63,43 @@
                 <input type="password" value="" placeholder="비밀번호를 다시 입력해주세요."  name="confirm_pw"/>
             </dd>
         </dl>
+        <button type="button">다음으로</button>
     </div>
-    <div class="step2-sec">
-        <div class="step2-sec-nickname">
-            <div class="step2-icon"></div>
-            <dl>
-                <dt>
-                    <label>당신이 사용할 닉네임을 입력 해주세요!</label>
-                </dt>
-                <dd>
-                    <input type="password" value="" placeholder="비밀번호를 다시 입력해주세요."  name="confirm_pw"/>
-                    <button type="button">-></button>
-                </dd>
-            </dl>
-        </div>
-        <div class="step2-sec-location">
-            <h2>지역 선택</h2>
-            <ul>
-                <li></li>
+    {{-- 닉네임 --}}
+    <div class="step step2-sec">
+        <div class="icon"></div>
+        <dl>
+            <dt>
+                <h1>당신이 사용할 닉네임을 입력 해주세요!</h1>
+            </dt>
+            <dd>
+                <input type="text" value="" placeholder="닉네임을 입력해주세요."  name="confirm_pw"/>
+                <button type="button">중복확인</button>
+                <span></span>
+            </dd>
+        </dl>
+        <div class="suggested-nickname">
+            <h2>추천 닉네임(넣을지말지 고민중)</h2>
+            <ul class="lists">
+                <li>test12</li>
+                <li>test34</li>
+                <li>test56</li>
+                <li>test78910</li>
+                <li>테스트당신이사용할78910</li>
+                <li>test78910</li>
             </ul>
         </div>
-        <ul class="step2-nav">
-            <li class="active"></li>
-            <li></li>
-        </ul>
+    </div>
+    {{-- 지역 --}}
+    <div class="step step3-sec active">
+        <div class="step3-sec-location">
+            <h1>지역 선택(중복선택 가능)</h2>
+            <ul>
+                @foreach($location_names as $key => $val)
+                    <li>{{ $val }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <button type="button">회원가입 완료</button>
     </div>
 </section>
