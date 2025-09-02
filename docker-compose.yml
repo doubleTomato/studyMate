@@ -9,13 +9,20 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html:cached
-      # - /var/www/html/vendor
-      - /var/www/html/node_modules
     networks:
       - study-mate-network
     depends_on:
       db:
         condition: service_healthy # db 서비스가 healthy 상태 체크
+  node:
+    image: node:22
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html:cached
+      - node_modules:/var/www/html/node_modules
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
 
   web:
     image: nginx:alpine
@@ -59,3 +66,4 @@ networks:
 
 volumes:
   db_data:
+  node_modules:

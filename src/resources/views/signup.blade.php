@@ -1,6 +1,6 @@
 {{-- 회원가입 --}}
 @include('common.header')
-<section>
+<section class="signup-sec">
     <nav>
         <ul>
             <li>

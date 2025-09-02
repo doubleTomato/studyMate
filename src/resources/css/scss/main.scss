@@ -1,3 +1,11 @@
-@import 'include/reset.scss';
-@import 'include/variable.scss';
-@import 'include/mixin.scss';
+@forward 'include/reset.scss';
+
+// 회원가입
+.signup-sec{
+    width: 1200px;
+    margin: 0 auto;
+    background: yellowgreen;
+    color:blue;
+    padding: 12px;
+    box-sizing: border-box;
+}
