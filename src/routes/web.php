@@ -13,3 +13,7 @@ Route::get('/mypage', function () { return view('mypage'); }); // 마이페이�
 Route::get('/settings', function () { return view('settings'); }); // 설정
 Route::get('/search', function () { return view('search'); }); // 검색
 
+
+
+
+Route::get('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verify.email');

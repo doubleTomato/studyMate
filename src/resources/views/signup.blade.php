@@ -37,7 +37,10 @@ $location_names = [
                             <label>E-mail</label>
                         </dt>
                         <dd>
-                            <input class="req" type="text" value="" placeholder="이메일을 입력해주세요." name="email"/>
+                            <div>
+                                <input class="req" type="text" value="" placeholder="이메일을 입력해주세요." name="email"/>
+                                {{-- <a href="" style="display:inline-block; padding:10px 20px; background:#4CAF50; color:white; text-decoration:none;">인증하기</a> --}}
+                            </div>
                             <span></span>
                         </dd>
                     </dl>
