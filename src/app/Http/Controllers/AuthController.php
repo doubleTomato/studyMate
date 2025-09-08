@@ -21,8 +21,8 @@ class AuthController extends Controller
     {
         $token = $request->query('token');
 
-        $verificationUrl = url('/verify-email?token=' . $user->verification_token);
-        Mail::to($user->email)->send(new VerificationMail($user, $verificationUrl));
+        $verificationUrl = url('/verify-email?token=' . $member->verification_token);
+        Mail::to($member->email)->send(new VerificationMail($member, $verificationUrl));
 
         return true
     }
@@ -31,19 +31,22 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|string|max:50',
+            'nickname' => 'required|string|max:50',
+            'email' => 'required|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = User::create([
+        $member = Members::create([
             'name' => $request->name,
+            'nickname' => $request->nickname,
             'email' => $request->email,
+            'location' => $request -> location
             'password' => bcrypt($request->password),
-            'verification_token' => Str::random(32),
+            'remember_token' => Str::random(32),
         ]);
 
-        return redirect()->route('login') ->with('status');
+        return redirect()->route('login') ->with('status','회원가입이 완료 되었습니다! 로그인을 진행 해주세요.');
     }
 
 }

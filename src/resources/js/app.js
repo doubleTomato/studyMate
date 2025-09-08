@@ -1,5 +1,5 @@
 import './bootstrap';
-import { mainJs } from './main';
+import { inputFunc } from './main';
 
 import Alpine from 'alpinejs';
 

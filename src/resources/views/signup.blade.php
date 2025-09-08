@@ -10,7 +10,7 @@ $location_names = [
 <html>
     @include('common.header')
     <body>
-        <form action="POST">
+        <form action="/posts" method="POST">
             <section class="signup-sec">
                 <nav>
                     <ul>

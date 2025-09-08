@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
+//페이지
 Route::get('/', function () { return view('home'); }); //home
 Route::get('/login', function () { return view('login'); }); //로그인
 Route::get('/signup', function () { return view('signup'); }); //회원가입
@@ -17,3 +19,6 @@ Route::get('/search', function () { return view('search'); }); // 검색
 
 
 Route::get('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verify.email');
+
+// controller연결
+Route::post('/posts', [AuthController::class, 'register']);
