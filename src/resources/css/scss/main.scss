@@ -12,19 +12,75 @@ button{
 }
 
 .header{
-    width: 100%; height: 80px; padding: 15px 40px; box-sizing: border-box;
-    display: flex; justify-content: space-between;
+    width: 100%; height: 60px; padding: 15px 40px; box-sizing: border-box;
+    display: flex; justify-content: space-between; 
+    background-color: #444;
+    color: #fff;
     ul{
         display: flex;
         gap: 10px;
     }
 }
+
+footer{
+    width: 100%; height: 200px; padding: 15px 40px; box-sizing: border-box;
+    display: flex; justify-content: space-between; margin-top: 40px;
+    background-color: #444;
+    color: #fff;
+}
+
 [class*='-sec']{
     padding-top: 100px;
     width: 1200px;
     margin: 0 auto;
-    background-color: #a3dfbb;
+    // background-color: #a3dfbb;
+    table{
+        margin-bottom: 20px;
+        width: 100%;
+        th{
+            width: 200px;
+            text-align: left;
+            padding: 10px 20px;
+            padding-left: 30px;
+            line-height: 59px;
+        }
+        td{margin-right: 20px; padding-bottom: 20px;}
+        select{ width: 100%; }
+    }
+    input{width: 100%;}
+    [class*='-content']{
+        margin-bottom: 60px;
+    }
+    h1{
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    .button-con{
+        display: flex;
+        justify-content: right;
+        button{
+                float: right;
+                margin-top: 30px;
+                background-color: #ddd;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: 400;
+                &:hover{
+                    background-color: #a3dfbb;
+                    color: #fff;
+                }
+        }
+    }
+    .datetime-wrap{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
 }
+
+// crud layout
+
 
 
 // 회원가입

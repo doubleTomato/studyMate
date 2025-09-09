@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LookupGetInfo;
 use Illuminate\Support\Facades\Route;
 
 //페이지
@@ -22,3 +23,5 @@ Route::get('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verify
 
 // controller연결
 Route::post('/posts', [AuthController::class, 'register']);
+Route::get('/category/default', [LookupGetInfo::class, 'getDefaultCategory']);
+Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
