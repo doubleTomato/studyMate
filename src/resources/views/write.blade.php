@@ -3,12 +3,20 @@
 @section('content')
 <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 <section class="write-sec">
-    <form method="POST" action="/create">
+    <form method="POST" action="/study/write">
         @csrf
         <div class="content-tit">
             <div class="write-content information">
                 <h1>1. 기본 정보</h1>
                 <table>
+                    <colgroup>
+                        <col width="20%" style="width: 15%"/>
+                        <col width="80%" style="width: 35%"/>
+                        <col width="20%" style="width: 15%"/>
+                        <col width="80%" style="width: 35%"/>
+                    </colgroup>
+                    <thead></thead>
+                    <tbody>
                     <tr>
                         <th>카테고리</th>
                         <td>
@@ -22,31 +30,40 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>모집 마감일</th>
+                        <th>모집 마감일<i class="xi-calendar"/></th>
                         <td>
                             <input type="datetime" class="datepicker"  id="deadLine" name="deadline-date">
                         </td>
-                        <th>모집 기간</th>
+                        <th>모집 기간<i class="xi-calendar"/></th>
                         <td>
                             <div class="datetime-wrap">
                                 <input type="datetime" class="datepicker" id="start-date" name="start-date">
                                 <span>~</span>
                                 <input type="datetime" class="datepicker"  id="end-date" name="end-date">
                             </div>
+                            <div class="datetime-duration-disable">
+                                <input id="durationdisable" type="checkbox" name="durationdisable"/>
+                                <label for="durationdisable">기간 제한 없음</label>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="isOnline">온라인 가능 여부</label></th>
-                        <td>
-                            <input id="isOnline" type="checkbox" name="isOnline"/>
-                        </td>
                         <th>지역</th>
                         <td>
-                            <select id="region-sel" name="location">
-                                <option>1</option>
-                            </select>
+                            <div class="region-wrap">
+                                <div>
+                                    <input id="isOnline" type="checkbox" name="isOnline"/>
+                                    <label for="isOnline">온라인 진행</label>
+                                </div>
+                                <select id="region-sel" name="region">
+                                    <option>1</option>
+                                </select>
+                            </div>
                         </td>
+                        <th>상세 주소<span class="helper-text">(선택)</span></th>
+                        <td><input type="text" name="location"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="write-content detail">
@@ -63,7 +80,9 @@
             </div>
         </div>
         <div class="button-con">
-            <button type="button">등록하기</button>
+            <button type="button">취소</button>
+            <button type="button" onclick="sendData(this.form)">등록하기</button>
+            {{-- <button type="submit">등록하기</button> --}}
         </div>
     </form>
 </section>
@@ -87,6 +106,32 @@
             showAnim: 'slideDown'
         });
 
+    }
+    const sendData= (f) => {
+        console.log(f);
+        const formData = new FormData(f);
+        console.log(formData);
+        // 폼 객체 key 와 value 값을 순회.
+        let entries = formData.entries();
+        for (const pair of entries) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+
+        $.ajax({
+            url: '/study/write',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                alert(res.msg);
+            },
+            error: function(err) {
+                console.error('AJAX 요청 실패', err);
+            }
+        });
+
+        
     }
 </script>
 @endsection

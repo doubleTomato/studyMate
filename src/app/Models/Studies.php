@@ -19,17 +19,19 @@ class Studies extends Model
         'owner_id',
         'title',
         'description',
-        'category',
+        'category_id',
         'is_offline',
+        'region_id',
         'location',
-        'end_dateitme',
+        'start_date',
+        'end_date',
         'views',
-        'max_members'
+        'max_members',
+        'deadline'
     ];
 
     protected $casts = [
         'max_members' => 'integer',
-        'views' => 'integer',
         'end_dateitme' => 'datetime',
     ];
 

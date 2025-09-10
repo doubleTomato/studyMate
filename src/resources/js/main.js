@@ -46,5 +46,16 @@ export const inputFunc = {
                 console.error('AJAX 요청 실패', err);
             }
         });
+    },
+    foldToggle(thisO){
+        const foldObj = $(thisO).parent().parent().find(".fold-wrap");
+        if($(foldObj).hasClass("fold")){
+            $(foldObj).removeClass("fold");
+            $(thisO).children("i").attr("class", "xi-caret-up");
+        }else{
+            $(foldObj).addClass("fold");
+            $(thisO).children("i").attr("class", "xi-caret-down");
+        }
     }
+
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Study_members extends Model
 {
-    use HasFactory;
 
     protected $table = 'study_members';
 
@@ -31,6 +30,4 @@ class Study_members extends Model
 
     public $timestamaps = false;
 
-
-    public function study(): BelogsTo
 }
