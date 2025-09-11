@@ -10,16 +10,39 @@ hr{ opacity: 0.6;}
 button{ 
     border-radius: 5px;
     transition: all linear 0.16s;
-    background-color: #ddd;
+    position: relative;
+    background-color: #aaa;
+    overflow: hidden;
     &:hover{
         cursor: pointer;
-        background-color: #a3dfbb;
         color: #fff;
         span,i{ color: inherit; font-weight: inherit;}
+        &::after{
+            content:"";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
     }
     &.icon-button{
         i{ margin-right: 5px;}
     }
+    &.cta-button{
+        background-color: #a3dfbb;
+    }
+}
+
+.cm-label{
+    border-radius: 5px;
+    padding: 2.5px 10px;
+    height: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 10px;
+    line-height: 24px;
+    &.deadline{ background-color: #555; color: #fff}
+    &.in-progress{ background-color: #a3dfbb; }
 }
 .helper-text{
     font-size: 12px; color: #555;
@@ -81,9 +104,9 @@ footer{
         gap: 10px;
         button{
                 float: right;
-                background-color: #ddd;
-                padding: 10px 20px;
-                font-size: 16px;
+                background-color: #aaa;
+                padding: 5px 10px;
+                font-size: 14px;
                 font-weight: 400;
         }
     }
@@ -107,9 +130,14 @@ footer{
         input[type='checkbox']{vertical-align: middle;}
         label{ font-size: 12px; vertical-align: middle; }
     }
+
+    .title-wrap{
+        margin-bottom: 20px;
+    }
 }
 
 .detail-sec{
+    h1{font-weight: 700;}
     hr{margin: 20px 0;}
     h2{margin-bottom: 20px; font-size: 18px; font-weight: 500;}
     table{
@@ -120,7 +148,7 @@ footer{
                 border: 1px solid #eee;
                 padding: 5px;
             }
-            th{background-color: #b8dbc6;}
+            th{background-color: #ddd;}
         }
     }
     pre{
@@ -152,6 +180,7 @@ footer{
             overflow: hidden;
             text-align: center;
             .progress{ position: absolute; height: 100%; background-color: #a3dfbb; left: 0;}
+            .progress + div{ position: relative; z-index: 1;}
         }
     }
     .participants-list{
@@ -160,8 +189,13 @@ footer{
             .list-title{ width: max-content; gap: 10px}
             button{  padding: 5px 10px; }
         }
-        h3{ font-size: 14px; font-weight: bold; }
+        h3{ font-size: 14px;}
         li {height: 25px; line-height: 24px; margin-top: 1px solid #eee;}
+    }
+    .cta-button{
+        padding: 10px 20px;
+        background-color: #a3dfbb;
+        font-size: 16px;
     }
 }
 
@@ -255,10 +289,6 @@ footer{
             padding: 15px 0px;
             font-size: 16px;
             font-weight: 400;
-            &:hover{
-                background-color: #a3dfbb;
-                color: #fff;
-            }
         }
     }//step1 기본정보 end
     // 닉네임 중복 체크
@@ -284,7 +314,7 @@ footer{
                     padding: 10px 0;
                     font-size: 13px;
                     font-weight: 400;
-                    &:hover, &.active{
+                    &.active{
                         background-color: #a3dfbb;
                         color: #fff;
                     }
@@ -341,10 +371,6 @@ footer{
                 padding: 15px 0px;
                 font-size: 16px;
                 font-weight: 400;
-                &:hover{
-                    background-color: #a3dfbb;
-                    color: #fff;
-                }
             }
         }
 }

@@ -1,20 +1,32 @@
 @php
     use Carbon\Carbon;
+    $today = new DateTime();
+    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline']);
+    $isClosed = $today < $deadlineDate || count($data['participants']) === $data['study']['max_members'];
 @endphp
 {{-- 스터디 모집 글 생성 --}}
 @extends('layouts.app')
 @section('content')
 {{-- dd($data['study']) --}}
 <section class="detail-sec">
-    <h1> <span class="label "> 모집중:마감</span> {{ $data['study']['title'] }}</h1>
+    <div class="flex-wrap title-wrap">
+        <h1><span class="cm-label {{ $isClosed ? 'deadline':'in-progress'  }}"> {{ 'deadline' ? "마감":"모집중" }}</span> {{ $data['study']['title'] }}</h1>
+        @if(!$isClosed)
+        <button type="button" class="icon-button plus-user cta-button">
+            <i class="xi-user-plus"></i>
+            <span>참여하기</span>
+        </button>
+        @endif
+    </div>
     <div class="flex-wrap">
         <div class="header-con">
             <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
         </div>
         <div class="button-con">
             <button type="button">목록으로</button>
-            <button type="button" onclick="sendData(this.form)">수정하기</button>
-            {{-- <button type="submit">등록하기</button> --}}
+            @if(!$isClosed) 
+                <button type="button" onclick="sendData(this.form)">수정하기</button>
+            @endif
         </div>
     </div>
     <hr>
@@ -40,11 +52,13 @@
                         <div class="participants-count">
                             <div class="progress-bar">
                                 <div class="progress" style="width: {{ (100 / $data['study']['max_members']) * count($data['participants']) }}%"></div>
-                                <span>{{ count($data['participants']) }}</span>
-                                <span>/</span>
-                                <span>
-                                    {{ $data['study']['max_members'] }}
-                                </span>
+                                <div>
+                                    <span>{{ count($data['participants']) }}</span>
+                                    <span>/</span>
+                                    <span>
+                                        {{ $data['study']['max_members'] }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="participants-list">
@@ -52,10 +66,7 @@
                                 <div class="flex-wrap list-title">
                                     <h3>현재 참여자 목록</h3>
                                     {{-- ###로그인 한 사용자가 현재 스터디에 참여하지 않았다면 출력 --}}
-                                    <button type="button" class="icon-button plus-user">
-                                        <i class="xi-user-plus"></i>
-                                        <span>참여하기</span>
-                                    </button>
+                                    
                                 </div>
                                 <button type="button" title="상세보기" onclick="APP_FUNC.inputFunc.foldToggle(this)" type="button"><i class="xi-caret-down"></i></button>
                             </div>
@@ -76,7 +87,7 @@
                     <td>
                         {{ $data['study']['deadline'] }}
                     </td>
-                    <th>모집 기간<i class="xi-calendar"/></th>
+                    <th>스터디 기간<i class="xi-calendar"/></th>
                     <td>
                         <div class="datetime-wrap">
                             @if(!empty($data['study']['end_date']))
