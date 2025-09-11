@@ -7,6 +7,11 @@ body, html{
 }
 
 hr{ opacity: 0.6;}
+input{
+    &:disabled{
+        &:hover{cursor: no-drop;}
+    }
+}
 button{ 
     border-radius: 5px;
     transition: all linear 0.16s;

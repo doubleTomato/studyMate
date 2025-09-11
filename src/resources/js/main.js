@@ -56,6 +56,21 @@ export const inputFunc = {
             $(foldObj).addClass("fold");
             $(thisO).children("i").attr("class", "xi-caret-down");
         }
-    }
+    },
 
+    //  체크 시 비활성화
+    //c: checkbox, o: 비활성화 할 아이디 array
+    checkDisabled(c,o){
+        console.log($("#"+o).attr('disabled'));
+        console.log($(c).is(":checked"));
+        if(!$(c).is(":checked")){
+            o.forEach((v) => {
+                $("#"+v).attr("disabled",false);
+            });
+        }else{
+            o.forEach((v) => {
+                $("#"+v).attr("disabled",true);
+            });
+        }
+    }
 }
