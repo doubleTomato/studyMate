@@ -6,7 +6,7 @@
 @section('content')
 {{-- dd($data['study']) --}}
 <section class="detail-sec">
-    <h1> {{ $data['study']['title'] }}</h1>
+    <h1> <span class="label "> 모집중:마감</span> {{ $data['study']['title'] }}</h1>
     <div class="flex-wrap">
         <div class="header-con">
             <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
@@ -33,7 +33,6 @@
                     <th>카테고리</th>
                     <td>
                         {{-- $data['category'][$data['study']['category_id']] --}}
-                        <span class="label "> 모집중:마감</span>
                         {{ $data['category'][$data['study']['category_id']]['title'] }}
                     </td>
                     <th>모집 인원</th>
@@ -94,7 +93,7 @@
                     <th>지역</th>
                     <td>
                         <div class="region-wrap">
-                            @if(empty($data['study']['is_offline']) === 0)
+                            @if($data['study']['is_offline'] === 0)
                                 {{ $data['region'][$data['study']['region_id']]['name'] }}
                             @else
                                 온라인 진행

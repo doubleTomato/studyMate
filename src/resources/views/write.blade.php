@@ -52,8 +52,8 @@
                         <td>
                             <div class="region-wrap">
                                 <div>
-                                    <input id="isOnline" type="checkbox" name="isOnline"/>
-                                    <label for="isOnline">온라인 진행</label>
+                                    <input id="is-offline" type="checkbox" name="is-offline" value="1"/>
+                                    <label for="is-offline">온라인 진행</label>
                                 </div>
                                 <select id="region-sel" name="region">
                                     <option>1</option>
@@ -111,24 +111,24 @@
         console.log(f);
         const formData = new FormData(f);
         console.log(formData);
-        // 폼 객체 key 와 value 값을 순회.
-        let entries = formData.entries();
-        for (const pair of entries) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
+        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 
-        $.ajax({
-            url: '/study/write',
+        formData.append("description", document.getElementById("ir1").value);
+        
+        fetch('/study',{
             method: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(res) {
-                alert(res.msg);
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
             },
-            error: function(err) {
-                console.error('AJAX 요청 실패', err);
-            }
+            body: formData
+        }).then(res => res.json())
+        .then(data => { 
+            alert("성공:"+data.msg);
+            console.log(data);
+            window.location.href = `/detail/${data.id}`;
+        })
+        .catch(err => {
+            console.log("실패:", err);
         });
 
         

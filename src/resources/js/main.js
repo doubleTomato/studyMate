@@ -11,7 +11,7 @@ export const inputFunc = {
             success: function(data) {
                 console.log('기본 카테고리:', data);
 
-                let selectValue = "";
+                let selectValue = "<option value=''>카테고리를 선택해주세요.</option>";
 
                 data.forEach((v,i) => {
                     const {title, description} = v;
@@ -33,7 +33,7 @@ export const inputFunc = {
             success: function(data) {
                 console.log('지역:', data);
 
-                let selectValue = "";
+                let selectValue = "<option value=''>지역을 선택해주세요.</option>";
 
                 data.forEach((v,i) => {
                     const { name } = v;
