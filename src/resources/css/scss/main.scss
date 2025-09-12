@@ -158,7 +158,7 @@ footer{
             border-radius: 10px;
             width: calc(25% - 15px);
             outline: 1px solid #eee;
-            div{
+           & > div{
                 display: flex;
                 gap: 5px;
                 margin-bottom: 5px;
