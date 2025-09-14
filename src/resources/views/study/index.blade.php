@@ -30,13 +30,13 @@
                 $deadlineDate = DateTime::createFromFormat('Y-m-d',  $val['deadline']);
                 $d_day = $deadlineDate -> diff($today)
             @endphp
-            <li>
+            <li onclick="window.location.href='/detail/{{$val['id']}}'">
                 <div class="flex-wrap">
-                    <p class="list-tit">
+                    <p class="list-tit" title="{{$val['title']}}">
                         {{$val['title']}}
                     </p>
                     <div class="list-deadline">
-                        <span class="{{ $d_day -> invert === 0 ? 'cm-label deadline':'' }}">{{ $d_day -> invert === 0 ? '마감':$d_day -> format('D%R%a') }}</span>
+                        <span class="{{ $d_day -> invert === 0 ? 'cm-label deadline':'d-day' }}">{{ $d_day -> invert === 0 ? '마감':$d_day -> format('D%R%a') }}</span>
                         <span class="helper-text">({{ $val['deadline'] }})</span>
                     </div>
                 </div>
@@ -51,13 +51,10 @@
                     @endif
                 </div>
                 <div>
-                </div>
-                
-                <div>
                     <p><i class="xi-calendar"></i></p>
                     {{ $val['start_date'] }} ~ {{ !empty($val['end_date']) ? $val['end_date']:'기한없음' }}
                 </div>
-                <div>
+                <div class="participants-wrap">
                     <div class="participants-count">
                         <p><i class="xi-community"></i></p>
                         <div class="progress-bar">
@@ -71,22 +68,31 @@
                             </div>
                         </div>
                     </div>
-                    <ul class="flex-wrap">
-                        @foreach($participants[$val['id']] as $in_key => $in_val)
+                    <div class="flex-wrap">
+                        <ul class="participants-profile">
+                            <li><i class="xi-user"></i></li>
+                            @foreach($participants[$val['id']] as $in_key => $in_val)
                             <li>
-                                <span><i class="{{$in_val['study_member_rank'] === '1' ?? "xi-crown"}}"></i></span>
-                                <span>{{ $in_val['members_name'] }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-                <div class="flex-wrap">
-                    <p></p>
-                    <p>{{$val['views']}}</p>
+                                @if($in_key > 1)
+                                    <span class="xi-plus-circle-o"></span>
+                                    @break
+                                @else
+                                    <span class="{{ $in_val['members_name'] }}"><i class="{{$in_val['study_member_rank'] === 0 ?? "xi-crown"}}"></i></span>
+                                @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                        <p>
+                            <span><i class="xi-eye-o"></i></span>
+                            <span>{{$val['views']}}</span></p>
+                    </div>
                 </div>
             </li>
         @endforeach
         </ul>
     </div>
+    <ul class="pagination-sec">
+        <li>1</li>
+    </ul>
 </section>
 @endsection

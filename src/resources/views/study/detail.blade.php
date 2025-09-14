@@ -23,7 +23,7 @@
             <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
         </div>
         <div class="button-con">
-            <button type="button">목록으로</button>
+            <button onclick="window.location.href='/study'" type="button">목록으로</button>
             @if(!$isClosed) 
                 <button type="button" onclick="sendData(this.form)">수정하기</button>
             @endif
