@@ -58,6 +58,26 @@ button{
     font-size: 12px; color: #555;
     font-weight: 500; margin-left: 5px;
     vertical-align: middle;
+    line-height: inherit;
+}
+
+.participants-count{ 
+        height: 30px; margin-bottom: 15px;
+        .progress-bar{
+            width: 100%;
+            line-height: 24px;
+            height: 25px;
+            padding: 0 10px;
+            background-color: #eee;
+            box-sizing: border-box;
+            font-size: 12px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            .progress{ position: absolute; height: 100%; background-color: #a3dfbb; left: 0;}
+            .progress + div{ position: relative; z-index: 1;}
+        }
     }
 
 .header{
@@ -158,10 +178,11 @@ footer{
             border-radius: 10px;
             width: calc(25% - 15px);
             outline: 1px solid #eee;
-           & > div{
+            & > div{
                 display: flex;
                 gap: 5px;
                 margin-bottom: 5px;
+                p.helper-text{ line-height: 1.5;}
             }
         }
     }
@@ -172,6 +193,12 @@ footer{
             gap: 10px;
             height: 30px;
             line-height: 28px;
+        }
+    }
+    .participants-count{
+        .progress-bar{
+            line-height: 14px;
+            height: 15px;
         }
     }
 }
@@ -205,24 +232,7 @@ footer{
         }
         
     }
-    .participants-count{ 
-        height: 30px; margin-bottom: 15px;
-        .progress-bar{
-            width: 100%;
-            line-height: 24px;
-            height: 25px;
-            padding: 0 10px;
-            background-color: #eee;
-            box-sizing: border-box;
-            font-size: 12px;
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-            .progress{ position: absolute; height: 100%; background-color: #a3dfbb; left: 0;}
-            .progress + div{ position: relative; z-index: 1;}
-        }
-    }
+    
     .participants-list{
         &>div{ 
             margin-bottom: 15px;

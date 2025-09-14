@@ -26,11 +26,29 @@ class StudiesCrudController extends Controller
 
     public function index()
     {
-        // 데이터베이스에서 모든 스터디를 가져옵니다.
-        $studies = Studies::all();
+        // $studies = Studies::all();
 
-        // 'studies.index' 뷰로 데이터를 전달하여 반환합니다.
-        return view('study.index', ['studies' => $studies]);
+        $studiesJoin = Studies::query()
+        -> leftJoin('regions', 'studies.region_id', '=', 'regions.id')
+        -> leftJoin('members', 'studies.owner_id', '=', 'members.id')
+        -> select('studies.*', 'regions.name as regions_name', 'members.name as members_name')
+        -> get();
+
+        $participants = Study_members::leftJoin('members', 'study_members.member_id', '=', 'members.id')
+        ->leftJoin('studies', 'study_members.study_id', '=', 'studies.id')
+        ->select(
+            'study_members.member_id as study_member_id',
+            'study_members.rank as study_member_rank',
+            'study_members.study_id as study_member_study_id',
+            'studies.id as studies_id',
+            'members.name as members_name'
+        )
+        ->get()
+        ->groupBy('studies_id')
+        ->toArray();
+
+
+        return view('study.index', [ 'studyJoin' => $studiesJoin, 'participants' => $participants ]);
     }
 
     public function store(Request $request): JsonResponse
