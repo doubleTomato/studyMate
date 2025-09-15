@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     @vite(['resources/css/scss/main.scss', 'resources/js/app.js'])
+    <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 </head>
 
 <nav class="header">

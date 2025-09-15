@@ -1,7 +1,6 @@
 {{-- 스터디 모집 글 생성 --}}
 @extends('layouts.app')
 @section('content')
-<script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 <section class="write-sec">
     <form method="POST" action="/study/write">
         @csrf
@@ -120,25 +119,25 @@
             alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
             return;
         }
-        //  const formData = new FormData(f);
-        //  console.log(formData);
-        //  oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [    
-        //  formData.append("description", document.getElementById("ir1").valu 
-        //  fetch('/study',{
-        //      method: 'POST',
-        //      headers: {
-        //          'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-        //      },
-        //      body: formData
-        //  }).then(res => res.json())
-        //  .then(data => { 
-        //      alert("성공:"+data.msg);
-        //      console.log(data);
-        //      window.location.href = `/detail/${data.id}`;
-        //  })
-        //  .catch(err => {
-        //      console.log("실패:", err);
-        //  });
+         const formData = new FormData(f);
+         console.log(formData);
+         oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
+         formData.append("description", document.getElementById("ir1").value);
+         fetch('/study',{
+             method: 'POST',
+             headers: {
+                 'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+             },
+             body: formData
+         }).then(res => res.json())
+         .then(data => { 
+             alert("성공:" + data.msg);
+             console.log(data);
+             window.location.href = `/study/${data.id}`;
+         })
+         .catch(err => {
+             console.log("실패:", err);
+         });
 
     }
 </script>

@@ -2,9 +2,9 @@
     use Carbon\Carbon;
     $today = new DateTime();
     $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline']);
-    $isClosed = $today < $deadlineDate || count($data['participants']) === $data['study']['max_members'];
+    $isClosed = $today > $deadlineDate || count($data['participants']) === $data['study']['max_members'];
 @endphp
-{{-- 스터디 모집 글 생성 --}}
+{{-- 스터디 모집 글 상세 --}}
 @extends('layouts.app')
 @section('content')
 {{-- dd($data['study']) --}}
@@ -23,9 +23,9 @@
             <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
         </div>
         <div class="button-con">
-            <button onclick="window.location.href='/study'" type="button">목록으로</button>
+            <a class="cm-btn" href="{{ route('study.index') }}">목록으로</a>
             @if(!$isClosed) 
-                <button type="button" onclick="sendData(this.form)">수정하기</button>
+                <a class="cm-btn" href="{{ route('study.edit', $data['study']['id']) }}">수정하기</a>
             @endif
         </div>
     </div>
@@ -119,8 +119,15 @@
         </div>
         <div class="write-content detail">
             <h2>2. 세부 내용</h2>
-            <pre>{{$data['study']['description']}}</pre>
+            {{-- <textarea name="ir1" id="ir1" rows="10" cols="100"></textarea> --}}
+            <div id="description-el">
+                
+            </div>
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $("#description-el").html({{json_encode($data['study']['description'])}});
+</script>
+
 @endsection

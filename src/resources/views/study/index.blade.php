@@ -30,63 +30,65 @@
                 $deadlineDate = DateTime::createFromFormat('Y-m-d',  $val['deadline']);
                 $d_day = $deadlineDate -> diff($today)
             @endphp
-            <li onclick="window.location.href='/detail/{{$val['id']}}'">
-                <div class="flex-wrap">
-                    <p class="list-tit" title="{{$val['title']}}">
-                        {{$val['title']}}
-                    </p>
-                    <div class="list-deadline">
-                        <span class="{{ $d_day -> invert === 0 ? 'cm-label deadline':'d-day' }}">{{ $d_day -> invert === 0 ? '마감':$d_day -> format('D%R%a') }}</span>
-                        <span class="helper-text">({{ $val['deadline'] }})</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p><i class="xi-marker-circle"></i></p>
-                    @if($val['is_offline'] === 0 )
-                        <p>{{$val['regions_name']}}</p>
-                        <p class="helper-text">{{ !empty($val['location']) ? '('.$val['location'].')' : ''}}</p>
-                    @else
-                        <p>Online</p>
-                    @endif
-                </div>
-                <div>
-                    <p><i class="xi-calendar"></i></p>
-                    {{ $val['start_date'] }} ~ {{ !empty($val['end_date']) ? $val['end_date']:'기한없음' }}
-                </div>
-                <div class="participants-wrap">
-                    <div class="participants-count">
-                        <p><i class="xi-community"></i></p>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: {{ (100 / $val['max_members']) * count($participants[$val['id']]) }}%"></div>
-                            <div>
-                                <span>{{ count($participants[$val['id']]) }}</span>
-                                <span>/</span>
-                                <span>
-                                    {{ $val['max_members'] }}
-                                </span>
-                            </div>
+            <li>
+                <a href="{{ route('study.show', $val->id) }}">
+                    <div class="flex-wrap">
+                        <p class="list-tit" title="{{$val['title']}}">
+                            {{$val['title']}}
+                        </p>
+                        <div class="list-deadline">
+                            <span class="{{ $d_day -> invert === 0 ? 'cm-label deadline':'d-day' }}">{{ $d_day -> invert === 0 ? '마감':$d_day -> format('D%R%a') }}</span>
+                            <span class="helper-text">({{ $val['deadline'] }})</span>
                         </div>
                     </div>
-                    <div class="flex-wrap">
-                        <ul class="participants-profile">
-                            <li><i class="xi-user"></i></li>
-                            @foreach($participants[$val['id']] as $in_key => $in_val)
-                            <li>
-                                @if($in_key > 1)
-                                    <span class="xi-plus-circle-o"></span>
-                                    @break
-                                @else
-                                    <span class="{{ $in_val['members_name'] }}"><i class="{{$in_val['study_member_rank'] === 0 ?? "xi-crown"}}"></i></span>
-                                @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                        <p>
-                            <span><i class="xi-eye-o"></i></span>
-                            <span>{{$val['views']}}</span></p>
+
+                    <div>
+                        <p><i class="xi-marker-circle"></i></p>
+                        @if($val['is_offline'] === 0 )
+                            <p>{{$val['regions_name']}}</p>
+                            <p class="helper-text">{{ !empty($val['location']) ? '('.$val['location'].')' : ''}}</p>
+                        @else
+                            <p>Online</p>
+                        @endif
                     </div>
-                </div>
+                    <div>
+                        <p><i class="xi-calendar"></i></p>
+                        {{ $val['start_date'] }} ~ {{ !empty($val['end_date']) ? $val['end_date']:'기한없음' }}
+                    </div>
+                    <div class="participants-wrap">
+                        <div class="participants-count">
+                            <p><i class="xi-community"></i></p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: {{ (100 / $val['max_members']) * count($participants[$val['id']]) }}%"></div>
+                                <div>
+                                    <span>{{ count($participants[$val['id']]) }}</span>
+                                    <span>/</span>
+                                    <span>
+                                        {{ $val['max_members'] }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-wrap">
+                            <ul class="participants-profile">
+                                <li><i class="xi-user"></i></li>
+                                @foreach($participants[$val['id']] as $in_key => $in_val)
+                                <li>
+                                    @if($in_key > 1)
+                                        <span class="xi-plus-circle-o"></span>
+                                        @break
+                                    @else
+                                        <span class="{{ $in_val['members_name'] }}"><i class="{{$in_val['study_member_rank'] === 0 ?? "xi-crown"}}"></i></span>
+                                    @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <p>
+                                <span><i class="xi-eye-o"></i></span>
+                                <span>{{$val['views']}}</span></p>
+                        </div>
+                    </div>
+                </a>
             </li>
         @endforeach
         </ul>

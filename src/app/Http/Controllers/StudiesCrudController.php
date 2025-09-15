@@ -24,7 +24,7 @@ class StudiesCrudController extends Controller
     }
 
 
-    public function index()
+    public function index() // list page
     {
         // $studies = Studies::all();
 
@@ -49,6 +49,10 @@ class StudiesCrudController extends Controller
 
 
         return view('study.index', [ 'studyJoin' => $studiesJoin, 'participants' => $participants ]);
+    }
+
+    public function create(){
+        return view('study.create');
     }
 
     public function store(Request $request): JsonResponse
@@ -107,7 +111,7 @@ class StudiesCrudController extends Controller
         
     }
 
-    public function detail($id){
+    public function show($id){
         $data = array();
         $study =  Studies::where('id', $id)->first()?->toArray();
         $category =  $this -> lookupService -> getCategories();
@@ -122,6 +126,30 @@ class StudiesCrudController extends Controller
             'leader' => $leader,
             'participants' => $participants -> toArray() // 참여자 수
         ];
-        return view('study.detail', compact('data'));
+        return view('study.show', compact('data'));
+    }
+
+    public function edit($id){
+        $data = array();
+        $study =  Studies::where('id', $id)->first()?->toArray();
+        $category =  $this -> lookupService -> getCategories();
+        $region = $this -> lookupService -> getRegions();
+        $leader = Members::where('id', $study['owner_id'])->first()->toArray();
+        //$participantsNum = Study_members::where('study_id', $id) -> get();
+        $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') -> where('study_id', $study['id']) -> get();
+        $data = [
+            'study' => $study,
+            'category' => $category,
+            'region' => $region,
+            'leader' => $leader,
+            'participants' => $participants -> toArray() // 참여자 수
+        ];
+        return view('study.edit', compact('data'));
+    }
+
+
+
+    public function update($id){
+
     }
 }
