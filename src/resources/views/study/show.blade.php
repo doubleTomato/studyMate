@@ -3,6 +3,19 @@
     $today = new DateTime();
     $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline']);
     $isClosed = $today > $deadlineDate || count($data['participants']) === $data['study']['max_members'];
+
+    $d_day = $deadlineDate -> diff($today);
+    $d_day_val = 'D';
+    $d_day_class = "cm-label ";
+    if((int)$d_day -> format('%R%a') - 1 === 0){
+        $d_day_val = 'Today';
+        $d_day_class .= "today";
+    }
+    else if($d_day -> invert === 0){
+        $d_day_val = '마감';
+        $d_day_class .= "deadline";
+    }
+
 @endphp
 {{-- 스터디 모집 글 상세 --}}
 @extends('layouts.app')
@@ -10,15 +23,15 @@
 {{-- dd($data['study']) --}}
 <section class="detail-sec">
     <div class="flex-wrap title-wrap">
-        <h1><span class="cm-label {{ $isClosed ? 'deadline':'in-progress'  }}"> {{ 'deadline' ? "마감":"모집중" }}</span> {{ $data['study']['title'] }}</h1>
+        <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $data['study']['title'] }}</h1>
         @if(!$isClosed)
-        <button type="button" class="icon-button plus-user cta-button">
+        <button type="button" class="icon-button plus-user cta-btn">
             <i class="xi-user-plus"></i>
             <span>참여하기</span>
         </button>
         @endif
     </div>
-    <div class="flex-wrap">
+    <div class="flex-wrap header-wrap">
         <div class="header-con">
             <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
         </div>
@@ -28,6 +41,15 @@
                 <a class="cm-btn" href="{{ route('study.edit', $data['study']['id']) }}">수정하기</a>
             @endif
         </div>
+    </div>
+    <div class="flex-wrap right delete-btn-wrap">
+        <form method="POST" action="#">
+            @method('DELETE')
+            @csrf
+            @if(!$isClosed)
+                <button type="button" onclick="APP_FUNC.inputFunc.sendData(this.form, 'DELETE', '/{{$data['study']['id']}}')" class="cm-btn delete-btn">삭제하기</button>
+            @endif
+        </form>
     </div>
     <hr>
     <div class="content-tit">
@@ -119,15 +141,26 @@
         </div>
         <div class="write-content detail">
             <h2>2. 세부 내용</h2>
-            {{-- <textarea name="ir1" id="ir1" rows="10" cols="100"></textarea> --}}
-            <div id="description-el">
-                
-            </div>
+            <textarea style="width: 100%" name="ir1" id="ir1" rows="10" cols="100" readonly>
+                {{ $data['study']['description'] }}
+            </textarea>
         </div>
     </div>
 </section>
 <script type="text/javascript">
-    $("#description-el").html({{json_encode($data['study']['description'])}});
+    const oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "ir1",
+        sSkinURI: "{{ asset('plugin/se2/SmartEditor2Skin.html') }}",
+        fCreator: "createSEditor2",
+        fOnAppLoad: function(){
+            let editor = oEditors.getById["ir1"];
+		    editor.exec("DISABLE_WYSIWYG");
+		    editor.exec("DISABLE_ALL_UI");
+        }
+    });
+
 </script>
 
 @endsection

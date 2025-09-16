@@ -72,5 +72,53 @@ export const inputFunc = {
                 $("#"+v).attr("disabled",true);
             });
         }
+    },
+
+    //  form send
+    sendData(f, methodType, url="") {
+        if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
+            return;
+        }
+        if (!f.checkValidity()) {
+            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+            return;
+        }
+        if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
+            alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
+            return;
+        }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
+            alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
+            return;
+        }
+        const formData = new FormData(f);
+        $(".loading-sec").show();
+        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
+        formData.append("description", document.getElementById("ir1").value);
+        
+        const sendData = Object.fromEntries(formData.entries());
+        fetch('/study'+ url,{
+            method: methodType,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            body: JSON.stringify(sendData)
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => { 
+            alert("성공:" + data.msg);
+            // console.log(data);
+            $(".loading-sec").hide();
+            let idVal = data.id === ''? '':"/"+data.id;
+            window.location.href = `/study${idVal}`;
+        })
+        .catch(err => {
+            console.log("실패:", err);
+        });
+    
+
     }
 }

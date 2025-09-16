@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -65,7 +67,7 @@ class StudiesCrudController extends Controller
                 'category'=>'required|integer|min:0',
                 'region'=>'nullable|integer|min:0',
                 'recruited-num' => 'required|integer|min:0',
-                'is-offline' => 'integer|min:0',
+                'is-offline' => 'nullable|integer|min:0',
                 'start-date' => 'required|date_format:Y-m-d',
                 'end-date' => 'nullable|date_format:Y-m-d',
                 'deadline-date' => 'required|date_format:Y-m-d',
@@ -78,7 +80,7 @@ class StudiesCrudController extends Controller
             'category_id' => $validateData['category'],
             'region_id' => $validateData['region'] ?? null,
             'max_members' => $validateData['recruited-num'],
-            'is_offline' => $validateData['is-offline'],
+            'is_offline' => $validateData['is-offline'] ?? '0',
             'start_date' => $validateData['start-date'],
             'end_date' => $validateData['end-date'] ?? null,
             'deadline' => $validateData['deadline-date'],
@@ -118,7 +120,8 @@ class StudiesCrudController extends Controller
         $region = $this -> lookupService -> getRegions();
         $leader = Members::where('id', $study['owner_id'])->first()->toArray();
         //$participantsNum = Study_members::where('study_id', $id) -> get();
-        $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') -> where('study_id', $study['id']) -> get();
+        $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') 
+        -> where('study_id', $study['id']) -> get();
         $data = [
             'study' => $study,
             'category' => $category,
@@ -148,8 +151,79 @@ class StudiesCrudController extends Controller
     }
 
 
+    public function update(Request $request, Studies $study): JsonResponse
+    {
+        try{
+            $validateData = $request -> validate([
+                'description' => 'required|string|max:1000',
+                'titlename' => 'required|string|max:255',
+                'category'=>'required|integer|min:0',
+                'region'=>'nullable|integer|min:0',
+                'recruited-num' => 'required|integer|min:0',
+                'is-offline' => 'integer|min:0',
+                'start-date' => 'required|date_format:Y-m-d',
+                'end-date' => 'nullable|date_format:Y-m-d',
+                'deadline-date' => 'required|date_format:Y-m-d',
+                'location' =>'nullable|string|max:255'
+            ], [], $request->all());
+            $sendData = [
+            'description' => $validateData['description'],
+            'title' => $validateData['titlename'],
+            'category_id' => $validateData['category'],
+            'region_id' => $validateData['region'] ?? null,
+            'max_members' => $validateData['recruited-num'],
+            'is_offline' => $validateData['is-offline'],
+            'start_date' => $validateData['start-date'],
+            'end_date' => $validateData['end-date'] ?? null,
+            'deadline' => $validateData['deadline-date'],
+            'location' => $validateData['location'] ?? null,
+            ];
 
-    public function update($id){
+            logger()->info('update 호출, $study 값:', ['study' => $study -> id]);
+            $this_study = Studies::find($study -> id);
+            $this_study -> update( $sendData );
 
+            return response()->json([
+                'msg' => '스터디가 성공적으로 수정되었습니다.',
+                'id' => $this_study->id
+            ], 201); 
+        
+        }
+        catch (ValidationException $e) {
+            return response()->json([
+                'msg' => '수정에 실패했습니다.',
+                'errors' => $e->errors()
+            ], 422);
+        }
+        catch(Exception $err){
+            return response()->json([
+            'msg' => '수정에 실패했습니다. 다시 시도해주세요.',
+            'err_msg' => $err->getMessage(),
+            logger()->error('업데이트 실패', ['exception' => $err->getMessage()])
+        ], 500);
+
+        }
+
+        
+    }
+
+
+    public function destroy($id) {
+        try{
+            $study = Studies::find($id);
+            $study->delete();
+        
+            return response()->json([
+                'msg' => '스터디가 성공적으로 삭제 되었습니다.',
+                'id' => ''
+            ], 201);
+        }
+        catch(Exception $err){
+            return response()->json([
+            'msg' => '삭제에 실패했습니다. 다시 시도해주세요.',
+            'err_msg' => $err->getMessage(),
+            logger()->error('삭제 실패', ['exception' => $err->getMessage()])
+            ], 500);
+        }
     }
 }

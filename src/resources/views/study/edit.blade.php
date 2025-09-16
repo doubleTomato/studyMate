@@ -9,8 +9,10 @@
 @section('content')
 <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 <section class="write-sec">
-    <form method="POST" action="/study/write">
+    <form method="POST" action="#">
         @csrf
+        @method('patch')
+        <input type="hidden" name="study-id" value="{{ $data['study']['id'] }}"/>
         <div class="content-tit">
             <div class="write-content information">
                 <h1>1. 기본 정보</h1>
@@ -95,7 +97,7 @@
         </div>
         <div class="button-con">
             <a class="cm-btn" href="{{ route('study.show', $data['study']['id']) }}">취소</a>
-            <button type="button" onclick="sendData(this.form)">등록하기</button>
+            <button class="cta-btn" type="button" onclick="APP_FUNC.inputFunc.sendData(this.form,'PUT', '/{{$data['study']['id']}}')">수정하기</button>
             {{-- <button type="submit">등록하기</button> --}}
         </div>
     </form>
@@ -106,54 +108,18 @@
         oAppRef: oEditors,
         elPlaceHolder: "ir1",
         sSkinURI: "{{ asset('plugin/se2/SmartEditor2Skin.html') }}",
-        fCreator: "createSEditor2"
+        fCreator: "createSEditor2",
     });
-
-    
-
     window.onload = function(){
-        // APP_FUNC.inputFunc.categoryReturn('category-sel');
-        // APP_FUNC.inputFunc.regionReturn('region-sel');
-
         $(".datepicker").datepicker({
             dateFormat: 'yy-mm-dd',
             showAnim: 'slideDown'
         });
-
     }
-    //  저장
-    const sendData= (f) => {
-        if (!f.checkValidity()) {
-            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
-            return;
-        }
-        if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
-            alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
-            return;
-        }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
-            alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
-            return;
-        }
-        //  const formData = new FormData(f);
-        //  console.log(formData);
-        //  oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [    
-        //  formData.append("description", document.getElementById("ir1").valu 
-        //  fetch('/study',{
-        //      method: 'POST',
-        //      headers: {
-        //          'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-        //      },
-        //      body: formData
-        //  }).then(res => res.json())
-        //  .then(data => { 
-        //      alert("성공:"+data.msg);
-        //      console.log(data);
-        //      window.location.href = `/detail/${data.id}`;
-        //  })
-        //  .catch(err => {
-        //      console.log("실패:", err);
-        //  });
 
-    }
 </script>
+@endsection
+@section('loading-msg')
+<h1>수정 중입니다.</h1>
+<p>잠시만 기다려주세요.</p>
 @endsection

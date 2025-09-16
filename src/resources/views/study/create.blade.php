@@ -80,11 +80,15 @@
         </div>
         <div class="button-con">
             <button type="button">취소</button>
-            <button type="button" onclick="sendData(this.form)">등록하기</button>
+            <button class="cta-btn" type="button" onclick="APP_FUNC.inputFunc.sendData(this.form, 'POST')">등록하기</button>
             {{-- <button type="submit">등록하기</button> --}}
         </div>
     </form>
 </section>
+
+@section('loading-msg')
+
+@endsection
 <script type="text/javascript">
     const oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
@@ -106,39 +110,6 @@
         });
 
     }
-    //  저장
-    const sendData= (f) => {
-        if (!f.checkValidity()) {
-            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
-            return;
-        }
-        if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
-            alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
-            return;
-        }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
-            alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
-            return;
-        }
-         const formData = new FormData(f);
-         console.log(formData);
-         oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
-         formData.append("description", document.getElementById("ir1").value);
-         fetch('/study',{
-             method: 'POST',
-             headers: {
-                 'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-             },
-             body: formData
-         }).then(res => res.json())
-         .then(data => { 
-             alert("성공:" + data.msg);
-             console.log(data);
-             window.location.href = `/study/${data.id}`;
-         })
-         .catch(err => {
-             console.log("실패:", err);
-         });
-
-    }
+    
 </script>
 @endsection
