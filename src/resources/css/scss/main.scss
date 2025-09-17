@@ -1,6 +1,8 @@
 @forward 'include/reset.scss';
 @import 'include/variable.scss';
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 // 공통
 *{font-family: 'Noto Sans KR', sans-serif; color: #444;}
 body, html{ 
@@ -123,18 +125,39 @@ button, .cm-btn{
     display: flex;
     align-items: center;
     justify-content: center;
-    li{
-        width: 30px;
-        height: 30px;
-        line-height: 28px;
-        background-color: #444;
-        border-radius: 30px;
-        color: $gray_100;
-        text-align: center;
-        font-size: 14px;
-        &:hover{ cursor: pointer; }
+    nav{
+        box-shadow: 1px 1px 1px $gray_100;
+        & > div{
+            &:last-child{
+                & > div{
+                    &:first-child{
+                        display: none;
+                    }
+                    a{ 
+                        &:hover{cursor: pointer;}
+                    }
+                    a.bg-white{
+                            background-color: $gray_100;
+                        &:hover{
+                            background-color: darken($gray_100, 30%);
+                            color: $gray_100;
+                            cursor: pointer;
+                        }
+                    }
+                    span.bg-white{
+                        background-color: $gray_400;
+                        color: $gray_100;
+                        font-weight: 500;
+                        &:hover{
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
 
 footer{
     width: 100%; height: 200px; padding: 15px 40px; box-sizing: border-box;

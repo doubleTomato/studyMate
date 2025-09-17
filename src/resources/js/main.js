@@ -118,7 +118,5 @@ export const inputFunc = {
         .catch(err => {
             console.log("실패:", err);
         });
-    
-
-    }
+    },
 }
