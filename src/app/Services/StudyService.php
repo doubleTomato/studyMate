@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Studies;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 
 class StudyService
@@ -14,20 +15,23 @@ class StudyService
     {
         $query = Studies::query();
 
-
+        Log::info('필터값 확인:', $filters);
         // 카테고리
         if (!empty($filters['category'])) {
             $query->where('category_id', $filters['category']);
+            Log::info('필터값 확인:', ['log' => 'category']);
         }
 
         // 지역
         if (!empty($filters['region'])) {
             $query->where('region_id', $filters['region']);
+            Log::info('필터값 확인:', ['log' => 'region']);
         }
 
         // 진행 상태 (진행중)
         if (!empty($filters['active']) && $filters['active'] === 'true') {
             $query->whereDate('deadline', '>=', now());
+            Log::info('필터값 확인:', ['log' => 'active']);
         }
 
         // 검색 (제목 + 설명)
@@ -37,12 +41,16 @@ class StudyService
                 $q->where('title', 'like', "%$search%")
                 ->orWhere('description', 'like', "%$search%");
             });
+            Log::info('필터값 확인:', ['log' => 'search']);
         }
 
         // 정렬
         switch ($filters['sort'] ?? 'latest') {
             case 'popular': // 인기순
                 $query->orderBy('views', 'desc');
+                break;
+            case 'deadline': // 마감 임박 순
+                $query->orderBy('deadline', 'desc');
                 break;
             case 'oldest': // 오래된 순
                 $query->orderBy('created_at', 'asc');
@@ -51,6 +59,10 @@ class StudyService
                 $query->orderBy('created_at', 'desc');
         }
 
-        return $query->paginate($filters['pagination'] ?? 10);
+        Log::info('필터값 확인:', ['log' => 'pagination', 'pagination' => $filters['pagination']]);
+        $returnVal = $query->paginate($filters['pagination'] === 1 ? 16 : $filters['pagination']);
+        Log::info('필터값 확인:', ['log' => 'pagination', 'returnVal' => $returnVal]);
+
+        return $returnVal;
     }
 }

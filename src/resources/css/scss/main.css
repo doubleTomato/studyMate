@@ -1,3 +1,5 @@
+@tailwind components;
+@tailwind utilities;
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,6 +22,10 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
+a {
+  text-decoration: none;
+}
+
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
@@ -48,11 +54,677 @@ table {
   border-spacing: 0;
 }
 
-.signup-sec {
+button {
+  background: transparent;
+  border-width: 0px;
+}
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+  color: #444;
+}
+
+body, html {
+  letter-spacing: 0.25px;
+}
+
+hr {
+  opacity: 0.6;
+}
+
+input {
+  border-radius: 5px;
+  border: 0px solid #defefe;
+  border: 1px solid #ddd;
+  padding: 4px 10px;
+}
+input:disabled:hover {
+  cursor: no-drop;
+}
+input:focus {
+  outline: 0px solid #000;
+  background-color: transparent;
+  border: 2px solid #71dd9c;
+}
+
+select:disabled:hover {
+  cursor: no-drop;
+}
+
+textarea {
+  border-color: #ddd;
+  border-radius: 5px;
+}
+
+button, .cm-btn {
+  border-radius: 5px;
+  transition: all linear 0.16s;
+  position: relative;
+  background-color: #ddd;
+  overflow: hidden;
+  display: inline-block;
+  padding: 0px 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  height: 28px;
+  line-height: 26px;
+}
+button:hover, .cm-btn:hover {
+  cursor: pointer;
+  color: #f9f9f9;
+  background-color: rgb(144.5, 144.5, 144.5);
+  transition: background-color 0.3s ease;
+  box-shadow: -1px 2px 4px 0px rgb(161.5, 161.5, 161.5);
+}
+button:hover span, button:hover i, .cm-btn:hover span, .cm-btn:hover i {
+  color: inherit;
+  font-weight: inherit;
+}
+button.icon-button i, .cm-btn.icon-button i {
+  margin-right: 5px;
+}
+button.cta-btn, .cm-btn.cta-btn {
+  background-color: #a3dfbb !important;
+}
+button.cta-btn:hover, .cm-btn.cta-btn:hover {
+  background-color: rgb(60.1290322581, 172.8709677419, 105.2258064516) !important;
+}
+button.delete-btn, .cm-btn.delete-btn {
+  background-color: #e74c3c;
+  color: #f9f9f9;
+}
+button.delete-btn:hover, .cm-btn.delete-btn:hover {
+  background-color: rgb(122.8767123288, 25.2054794521, 15.1232876712);
+}
+button.active, .cm-btn.active {
+  background-color: rgb(60.1290322581, 172.8709677419, 105.2258064516);
+  color: #f9f9f9;
+}
+button.active > i, .cm-btn.active > i {
+  color: inherit;
+}
+
+.cm-label {
+  border-radius: 5px;
+  padding: 2.5px 10px;
+  height: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 0px;
+  line-height: 24px;
+  display: inline-block;
+  background-color: #ddd;
+  color: #f9f9f9;
+}
+.cm-label.deadline {
+  background-color: #aaa;
+  color: #f9f9f9;
+}
+.cm-label.in-progress {
+  background-color: #a3dfbb;
+}
+.cm-label.today {
+  background-color: #7fc89a;
+  color: #f9f9f9;
+}
+
+.helper-text {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  margin-left: 5px;
+  vertical-align: middle;
+  line-height: inherit;
+}
+
+.participants-count {
+  height: 30px;
+  margin-bottom: 15px;
+}
+.participants-count .progress-bar {
+  width: 100%;
+  line-height: 24px;
+  height: 25px;
+  padding: 0 10px;
+  background-color: #eee;
+  box-sizing: border-box;
+  font-size: 12px;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.participants-count .progress-bar .progress {
+  position: absolute;
+  height: 100%;
+  background-color: #a3dfbb;
+  left: 0;
+}
+.participants-count .progress-bar .progress + div {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  width: 100%;
+  height: 60px;
+  padding: 15px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  background-color: #444;
+  color: #f9f9f9;
+}
+.header > div {
+  width: 100px;
+  height: 30px;
+  background-color: #71dd9c;
+}
+.header ul {
+  display: flex;
+  gap: 15px;
+}
+.header ul li {
+  color: #f9f9f9;
+}
+
+.fold {
+  display: none;
+}
+
+.flex-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-wrap.right {
+  justify-content: right;
+}
+.flex-wrap.left {
+  justify-content: left;
+}
+
+.pagination-sec {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination-sec nav {
+  box-shadow: 1px 1px 1px #f9f9f9;
+}
+.pagination-sec nav > div:last-child > div:first-child {
+  display: none;
+}
+.pagination-sec nav > div:last-child > div a:hover {
+  cursor: pointer;
+}
+.pagination-sec nav > div:last-child > div a.bg-white {
+  background-color: #f9f9f9;
+}
+.pagination-sec nav > div:last-child > div a.bg-white:hover {
+  background-color: rgb(172.5, 172.5, 172.5);
+  color: #f9f9f9;
+  cursor: pointer;
+}
+.pagination-sec nav > div:last-child > div span.bg-white {
+  background-color: #aaa;
+  color: #f9f9f9;
+  font-weight: 500;
+}
+.pagination-sec nav > div:last-child > div span.bg-white:hover {
+  cursor: not-allowed;
+}
+
+footer {
+  width: 100%;
+  height: 200px;
+  padding: 15px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  background-color: #444;
+  color: #f9f9f9;
+}
+
+[class*=-sec] {
+  padding-top: 100px;
   width: 1200px;
   margin: 0 auto;
-  background: yellowgreen;
-  color: blue;
-  padding: 12px;
+}
+[class*=-sec] table {
+  margin-bottom: 20px;
+  width: 100%;
+}
+[class*=-sec] table th {
+  width: 200px;
+  text-align: left;
+  line-height: 59px;
+}
+[class*=-sec] table th i {
+  margin-left: 10px;
+}
+[class*=-sec] table td {
+  margin-right: 20px;
+  padding-bottom: 20px;
+  padding-right: 40px;
   box-sizing: border-box;
+}
+[class*=-sec] table input[type=text] {
+  width: calc(100% - 40px);
+}
+[class*=-sec] table select {
+  width: 100%;
+}
+[class*=-sec] [class*=-content] {
+  margin-bottom: 60px;
+}
+[class*=-sec] h1 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+[class*=-sec] .button-con {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 10px;
+}
+[class*=-sec] .button-con button {
+  float: right;
+  background-color: #aaa;
+  font-size: 14px;
+  font-weight: 400;
+}
+[class*=-sec] .datetime-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+[class*=-sec] .datetime-duration-disable {
+  text-align: right;
+  margin-top: 20px;
+}
+[class*=-sec] .datetime-duration-disable label {
+  font-size: 12px;
+  vertical-align: middle;
+}
+[class*=-sec] .region-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+[class*=-sec] .region-wrap > div {
+  flex-shrink: 0;
+}
+[class*=-sec] .region-wrap input[type=checkbox] {
+  vertical-align: middle;
+}
+[class*=-sec] .region-wrap label {
+  font-size: 12px;
+  vertical-align: middle;
+}
+[class*=-sec] .title-wrap {
+  margin-bottom: 20px;
+}
+
+.loading-sec {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: none;
+  z-index: 999;
+}
+.loading-sec > div {
+  z-index: 1000;
+  max-width: 1000px;
+  min-height: 100px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  position: absolute;
+  top: 30%;
+  transform: translateX(-50%);
+  left: 50%;
+  padding: 20px 60px;
+}
+.loading-sec > div h1 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.loading-sec > div p {
+  margin-bottom: 20px;
+}
+.loading-sec > div i {
+  font-size: 20px;
+}
+
+.list-sec .list-wrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.list-sec .list-wrap > li {
+  padding: 15px 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  width: calc(25% - 15px);
+  outline: 1px solid #eee;
+}
+.list-sec .list-wrap > li:hover {
+  cursor: pointer;
+  box-shadow: 1px 5px 12px #ddd;
+}
+.list-sec .list-wrap > li a > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.list-sec .list-wrap > li a > div p.helper-text {
+  line-height: 1.5;
+}
+.list-sec .list-wrap > li a > div:last-child {
+  margin-bottom: 0;
+}
+.list-sec .list-wrap > li a > .participants-wrap {
+  display: block;
+}
+.list-sec .list-wrap > li .list-tit {
+  width: 30%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.list-sec .list-wrap > li.list.deadline {
+  background-color: #f9f9f9;
+  color: #333;
+}
+.list-sec .list-deadline .d-day {
+  font-size: 20px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+.list-sec .list-deadline .helper-text {
+  line-height: 1.5;
+}
+.list-sec .content-head {
+  margin-bottom: 20px;
+}
+.list-sec .content-head .filter-list {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  line-height: 28px;
+}
+.list-sec .content-head .filter-list input:focus {
+  padding: 1.5px 10px;
+}
+.list-sec .content-head .filter-list .search-wrap > button {
+  margin-left: -5px;
+}
+.list-sec .participants-profile {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 80%;
+}
+.list-sec .participants-profile > li {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+}
+.list-sec .participants-profile > li:first-child {
+  border-width: 0px;
+  height: max-content;
+  width: max-content;
+}
+.list-sec .participants-count {
+  height: max-content;
+  display: flex;
+  gap: 5px;
+}
+.list-sec .participants-count .progress-bar {
+  line-height: 14px;
+  height: 15px;
+}
+
+.detail-sec h1 {
+  font-weight: 700;
+}
+.detail-sec hr {
+  margin: 20px 0;
+}
+.detail-sec h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.detail-sec table {
+  border-radius: 4px;
+}
+.detail-sec table tr th, .detail-sec table tr td {
+  border: 1px solid #eee;
+  padding: 5px;
+}
+.detail-sec table tr th {
+  background-color: #ddd;
+}
+.detail-sec pre {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.detail-sec .header-con p {
+  display: flex;
+  gap: 5px;
+}
+.detail-sec .header-con p span:last-child {
+  color: #666;
+  line-height: 16px;
+}
+.detail-sec .participants-list > div {
+  margin-bottom: 15px;
+}
+.detail-sec .participants-list > div .list-title {
+  width: max-content;
+  gap: 10px;
+}
+.detail-sec .participants-list h3 {
+  font-size: 14px;
+}
+.detail-sec .participants-list li {
+  height: 25px;
+  line-height: 24px;
+  margin-top: 1px solid #eee;
+}
+.detail-sec .delete-btn-wrap {
+  margin-top: 20px;
+}
+
+.signup-sec nav {
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  margin: 15px 0;
+}
+.signup-sec nav ul {
+  height: 50px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.signup-sec nav ul li {
+  width: 100px;
+  height: 100%;
+  position: relative;
+}
+.signup-sec nav ul li::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 55px;
+  right: 5px;
+  height: 2px;
+  background-color: #666;
+}
+.signup-sec nav ul li:last-child {
+  width: 50px;
+}
+.signup-sec nav ul li:last-child::after {
+  display: none;
+}
+.signup-sec nav ul li p {
+  width: 50px;
+  height: 100%;
+  border-radius: 50px;
+  background-color: #ddd;
+  color: #f9f9f9;
+  line-height: 48px;
+  text-align: center;
+}
+.signup-sec nav ul li span {
+  margin-top: 10px;
+  display: block;
+  width: 50px;
+  word-break: keep-all;
+  line-height: 1.25;
+  font-size: 12px;
+  font-weight: 500;
+}
+.signup-sec nav ul li.active p {
+  background-color: #a3dfbb;
+}
+.signup-sec .step {
+  display: none;
+}
+.signup-sec .step h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+.signup-sec .step.active {
+  display: block;
+}
+.signup-sec .step1-sec {
+  width: 60%;
+  margin: 0 auto;
+}
+.signup-sec .step1-sec dl {
+  margin-bottom: 30px;
+}
+.signup-sec .step1-sec dl dt label {
+  font-size: 18px;
+  font-weight: 500;
+}
+.signup-sec .step1-sec dl dd input {
+  margin-top: 15px;
+  width: 100%;
+}
+.signup-sec .step1-sec button {
+  margin-top: 30px;
+  background-color: #ddd;
+  width: 100%;
+  padding: 0px;
+  font-size: 16px;
+  font-weight: 400;
+}
+.signup-sec .step2-sec {
+  display: none;
+  justify-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+.signup-sec .step2-sec.active {
+  display: flex;
+}
+.signup-sec .step2-sec .icon {
+  width: 120px;
+  height: 120px;
+  background-color: antiquewhite;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+.signup-sec .step2-sec dl dt h1 {
+  margin-bottom: 30px;
+}
+.signup-sec .step2-sec dl dd input {
+  width: 70%;
+}
+.signup-sec .step2-sec dl dd button {
+  width: 20%;
+  background-color: #ddd;
+  padding: 0px;
+  font-size: 13px;
+  font-weight: 400;
+}
+.signup-sec .step2-sec dl dd button.active {
+  background-color: #a3dfbb;
+  color: #f9f9f9;
+}
+.signup-sec .step2-sec .suggested-nickname {
+  width: 100%;
+  text-align: left;
+  margin-top: 60px;
+}
+.signup-sec .step2-sec .suggested-nickname h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.signup-sec .step2-sec .suggested-nickname .lists {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+.signup-sec .step2-sec .suggested-nickname .lists li {
+  background-color: #ddd;
+  padding: 10px 15px;
+  border-radius: 15px;
+}
+.signup-sec .step2-sec .suggested-nickname .lists li:hover {
+  background-color: #a3dfbb;
+  color: #f9f9f9;
+  cursor: pointer;
+}
+.signup-sec .step3-sec {
+  width: 100%;
+}
+.signup-sec .step3-sec ul {
+  display: flex;
+  flex-wrap: wrap;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.signup-sec .step3-sec ul li {
+  width: 20%;
+  height: 100px;
+  line-height: 98px;
+  text-align: center;
+  outline: 1px solid #ddd;
+}
+.signup-sec .step3-sec ul li:hover, .signup-sec .step3-sec ul li.active {
+  cursor: pointer;
+  outline: 1px solid #a3dfbb;
+  color: #a3dfbb;
+  font-weight: 600;
+}
+.signup-sec .step3-sec button {
+  margin-top: 30px;
+  background-color: #ddd;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
 }/*# sourceMappingURL=main.css.map */

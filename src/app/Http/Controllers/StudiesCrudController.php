@@ -28,26 +28,8 @@ class StudiesCrudController extends Controller
 
     public function index(Request $request) // list page
     {
-        // $studies = Studies::all();
-
-        // $studiesJoin = Studies::query()
-        // -> leftJoin('regions', 'studies.region_id', '=', 'regions.id')
-        // -> leftJoin('members', 'studies.owner_id', '=', 'members.id')
-        // -> select('studies.*', 'regions.name as regions_name', 'members.name as members_name')
-        // -> get();
-
-        // $participants = Study_members::leftJoin('members', 'study_members.member_id', '=', 'members.id')
-        // ->leftJoin('studies', 'study_members.study_id', '=', 'studies.id')
-        // ->select(
-        //     'study_members.member_id as study_member_id',
-        //     'study_members.rank as study_member_rank',
-        //     'study_members.study_id as study_member_study_id',
-        //     'studies.id as studies_id',
-        //     'members.name as members_name'
-        // )
-        // ->get()
-        // ->groupBy('studies_id')
-        // ->toArray();
+        $category =  $this -> lookupService -> getCategories();
+        $region = $this -> lookupService -> getRegions();
 
 
         $study = Studies::with([
@@ -62,7 +44,7 @@ class StudiesCrudController extends Controller
             return view('study._list', compact('study'))->render();
         }
 
-        return view('study.index', [ 'study' => $study ]);
+        return view('study.index', [ 'study' => $study, 'category' => $category, 'region' => $region ]);
     }
 
     public function create(){

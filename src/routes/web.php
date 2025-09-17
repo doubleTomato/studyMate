@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LookupGetInfo;
 use App\Http\Controllers\StudiesCrudController;
+use App\Http\Controllers\StudyController;
 use Illuminate\Support\Facades\Route;
 
 //페이지
@@ -27,3 +28,6 @@ Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 
 // study crud
 Route::resource('/study',StudiesCrudController::class);
+
+// api
+Route::post('/studies/list', [StudyController::class, 'getOrderList']);

@@ -20,6 +20,10 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
+a {
+  text-decoration: none;
+}
+
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
@@ -46,4 +50,9 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+button {
+  background: transparent;
+  border-width: 0px;
 }/*# sourceMappingURL=reset.css.map */

@@ -1,6 +1,9 @@
         @php
             $today = (new DateTime()) ->setTime(0, 0);
         @endphp
+        @if(empty($study))
+            <li style="width: 100%">조회된 내역이 없습니다.</li>
+        @else
         @foreach($study as $key => $val)
             @php
                 $deadlineDate = DateTime::createFromFormat('Y-m-d',  $val['deadline']) ->setTime(0, 0);;
@@ -20,7 +23,7 @@
                     $d_day_class = "";
                 }
             @endphp
-            <li class="list {{ $d_day -> invert === 0 ? 'deadline' : ''}}">
+            <li class="list {{ $d_day_val === '마감' ? 'deadline':'' }}">
                 <a href="{{ route('study.show', $val->id) }}">
                     <div class="flex-wrap">
                         <p class="list-tit" title="{{$val['title']}}">
@@ -34,9 +37,9 @@
                     </div>
 
                     <div>
-                        <p><i class="xi-marker-circle"></i>{{(int)$d_day -> format('%R%a')}}</p>
+                        <p><i class="xi-marker-circle"></i></p>
                         @if($val['is_offline'] === 0 )
-                            <p>{{$val['regions_name']}}</p>
+                            <p>{{$val -> region['name']}}</p>
                             <p class="helper-text">{{ !empty($val['location']) ? '('.$val['location'].')' : ''}}</p>
                         @else
                             <p>Online</p>
@@ -60,7 +63,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-wrap">
+                        <div>
                             <ul class="participants-profile">
                                 <li><i class="xi-user"></i></li>
                                 @foreach($val -> members as $in_key => $in_val)
@@ -74,11 +77,26 @@
                                     </li>
                                 @endforeach
                             </ul>
-                            <p>
-                                <span><i class="xi-eye-o"></i></span>
-                                <span>{{$val['views']}}</span></p>
                         </div>
                     </div>
+                    <div class="flex-wrap left">
+                        <p><i class="xi-label"></i></p>
+                        <p class="cm-label category">
+                            <span>{{ $val -> category['title'] }}</span>
+                        </p>
+                    </div>
+                    <div class="flex-wrap">
+                        <p>
+                            <span><i class="xi-eye-o"></i></span>
+                            <span>{{$val['views']}}</span>
+                        </p>
+                        <p>
+                            <span><i class="xi-calendar"></i></span>
+                            <span class="helper-text">{{$val['created_at']}}</span>
+                        </p>
+                    </div>
+                    
                 </a>
             </li>
         @endforeach
+    @endif
