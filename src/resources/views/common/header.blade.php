@@ -19,28 +19,30 @@
 </head>
 
 <nav class="header">
-    <div>로고</div>
-    <ul class="flex-wrap">
-        <li>
-            <a class="cm-btn cta-btn icon-btn" href="{{route("study.create")}}">
-                <span>스터디 만들기</span>
-                <span><i class="xi-plus"></i></span>
-            </a>
-        </li>
-        <li>
-            <a href="{{route("study.index")}}">
-                <span>스터디 찾기</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{route("study.index")}}">
-                <span>My Page</span>
-            </a>
-        </li>
-        <li> 
-            <a href="{{route("study.index")}}">
-                <span>프로필</span>
-            </a>
-        </li>
-    </ul>
+    <div class="flex-wrap">
+        <div class="logo">로고</div>
+        <ul class="flex-wrap">
+            <li>
+                <a class="cm-btn cta-btn icon-btn" href="{{route("study.create")}}">
+                    <span>스터디 만들기</span>
+                    <span><i class="xi-plus"></i></span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route("study.index")}}">
+                    <span>스터디 찾기</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{route("study.index")}}">
+                    <span>My Page</span>
+                </a>
+            </li>
+            <li> 
+                <a href="{{route("study.index")}}">
+                    <span>프로필</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>
