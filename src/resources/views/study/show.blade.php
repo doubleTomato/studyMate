@@ -5,15 +5,18 @@
     $isClosed = $today > $deadlineDate || count($data['participants']) === $data['study']['max_members'];
 
     $d_day = $deadlineDate -> diff($today);
-    $d_day_val = 'D';
+    $d_day_val = '';
     $d_day_class = "cm-label ";
-    if((int)$d_day -> format('%R%a') - 1 === 0){
+    if((int)$d_day -> format('%R%a') === 0){
         $d_day_val = 'Today';
         $d_day_class .= "today";
     }
     else if($d_day -> invert === 0){
         $d_day_val = '마감';
         $d_day_class .= "deadline";
+    }else{
+        $d_day_val = '진행중';
+        $d_day_class .= "progress";
     }
 
 @endphp
@@ -25,7 +28,7 @@
     <div class="flex-wrap title-wrap">
         <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $data['study']['title'] }}</h1>
         @if(!$isClosed)
-        <button type="button" class="icon-button plus-user cta-btn">
+        <button type="button" class="icon-btn plus-user cta-btn">
             <i class="xi-user-plus"></i>
             <span>참여하기</span>
         </button>
@@ -51,7 +54,7 @@
             @endif
         </form>
     </div>
-    <hr>
+    <hr/>
     <div class="content-tit">
         <div class="detail-content information">
             <h2>1. 기본 정보</h2>

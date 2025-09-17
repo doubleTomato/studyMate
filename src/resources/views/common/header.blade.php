@@ -11,15 +11,36 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @vite(['resources/css/scss/main.scss', 'resources/js/app.js'])
     <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 </head>
 
 <nav class="header">
     <div>로고</div>
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
+    <ul class="flex-wrap">
+        <li>
+            <a class="cm-btn cta-btn icon-btn" href="{{route("study.create")}}">
+                <span>스터디 만들기</span>
+                <span><i class="xi-plus"></i></span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route("study.index")}}">
+                <span>스터디 찾기</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route("study.index")}}">
+                <span>My Page</span>
+            </a>
+        </li>
+        <li> 
+            <a href="{{route("study.index")}}">
+                <span>프로필</span>
+            </a>
+        </li>
     </ul>
 </nav>

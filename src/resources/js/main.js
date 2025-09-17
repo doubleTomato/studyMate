@@ -76,6 +76,8 @@ export const inputFunc = {
 
     //  form send
     sendData(f, methodType, url="") {
+        let msgCon = url === "" ? "등록" : "수정";
+        $(".loading-sec .msg-con").html(msgCon);
         if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
             return;
         }

@@ -28,7 +28,7 @@
                     <tr>
                         <th>카테고리</th>
                         <td>
-                            <select id="category-sel" name="category" required>
+                            <select class="select2-basic" id="category-sel" name="category" required>
                                 <option value="">선택해주세요</option>
                                 @foreach($data['category'] as $key => $val)
                                     <option value="{{ $key }}" {{$data['study']['category_id'] === $key ? 'selected' :''}}>{{$val['title']}}</option>
@@ -43,14 +43,14 @@
                     <tr>
                         <th>모집 마감일<i class="xi-calendar"/></th>
                         <td>
-                            <input type="datetime" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline'] }}">
+                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline'] }}">
                         </td>
                         <th>스터디 기간<i class="xi-calendar"/></th>
                         <td>
                             <div class="datetime-wrap">
-                                <input type="datetime" class="datepicker" id="start-date" name="start-date" required value="{{ $data['study']['start_date'] }}">
+                                <input type="text" class="datepicker" id="start-date" name="start-date" required value="{{ $data['study']['start_date'] }}">
                                 <span>~</span>
-                                <input type="datetime" class="datepicker"  id="end-date" name="end-date" value="{{ $data['study']['end_date'] }}" {{ empty($data['study']['end_date']) ?'disabled':'' }}>
+                                <input type="text" class="datepicker"  id="end-date" name="end-date" value="{{ $data['study']['end_date'] }}" {{ empty($data['study']['end_date']) ?'disabled':'' }}>
                             </div>
                             <div class="datetime-duration-disable">
                                 <input {{empty($data['study']['end_date']) ?'checked':''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
@@ -66,7 +66,7 @@
                                     <input {{$data['study']['is_offline'] === 1 ? 'checked' : ''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
                                     <label for="is-offline">온라인 진행</label>
                                 </div>
-                                <select id="region-sel" name="region" {{$data['study']['is_offline'] === 1 ? 'disabled' : ''}}>
+                                <select class="select2-basic" id="region-sel" name="region" {{$data['study']['is_offline'] === 1 ? 'disabled' : ''}}>
                                     <option value="">선택해주세요.</option>
                                     @foreach($data['region'] as $key => $val)
                                     <option value="{{ $key }}" {{$data['study']['region_id'] === $key ? 'selected':''}}>{{$val['name']}}</option>
@@ -120,6 +120,4 @@
 </script>
 @endsection
 @section('loading-msg')
-<h1>수정 중입니다.</h1>
-<p>잠시만 기다려주세요.</p>
 @endsection

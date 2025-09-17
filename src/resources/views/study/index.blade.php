@@ -31,7 +31,7 @@
                 </select>
             </li>
             <li>
-                <button id="active-btn" onclick="filterChange('',true)" class="icon-button">
+                <button id="active-btn" onclick="filterChange('',true)" class="icon-btn">
                     <i class="xi-repeat"></i>진행중인것만
                 </button>
                 <input type="hidden" name="active" value="false"/>
@@ -97,7 +97,7 @@ async function filterChange(isReset = '', isActive = false){
     let filter4 = isReset !== 'r' ? $("select[name='sort']").val() : '';
     let filter5 = isReset !== 'r' ? $("input[name='pagination']").val() : 1;
     let filter6 = isReset !== 'r' ? $("input[name='active']").val() : '';
-    $(".loading-sec .msg-con").html("필터 적용")
+    $(".loading-sec .msg-con").html("필터 적용");
     $(".loading-sec").show();
 
     if(isReset == '' && isActive){

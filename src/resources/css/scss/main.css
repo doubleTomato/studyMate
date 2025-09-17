@@ -78,7 +78,10 @@ input {
   border: 1px solid #ddd;
   padding: 4px 10px;
 }
-input:disabled:hover {
+input:disabled, input:read-only {
+  background-color: #eee;
+}
+input:disabled:hover, input:read-only:hover {
   cursor: no-drop;
 }
 input:focus {
@@ -86,9 +89,51 @@ input:focus {
   background-color: transparent;
   border: 2px solid #71dd9c;
 }
+input[type=checkbox] {
+  display: none;
+}
+input[type=checkbox] + label {
+  position: relative;
+  display: inline-block;
+  width: max-content;
+  padding-left: 25px;
+  line-height: 15px;
+  color: #333;
+}
+input[type=checkbox] + label::before {
+  content: "";
+  display: block;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+input[type=checkbox]:checked + label::before {
+  content: "";
+  background-color: #7fc89a;
+}
+input[type=checkbox]:checked + label::after {
+  content: "\e929";
+  font-family: xeicon !important;
+  color: #f9f9f9;
+  position: absolute;
+  left: 2.5px;
+  top: 2px;
+}
 
-select:disabled:hover {
+select:disabled, select:read-only {
+  background-color: #eee;
+}
+select:disabled:hover, select:read-only:hover {
   cursor: no-drop;
+}
+
+.select2-container--default .select2-selection--single {
+  border-color: #ddd;
+  font-size: 13px;
 }
 
 textarea {
@@ -120,7 +165,7 @@ button:hover span, button:hover i, .cm-btn:hover span, .cm-btn:hover i {
   color: inherit;
   font-weight: inherit;
 }
-button.icon-button i, .cm-btn.icon-button i {
+button.icon-btn i, .cm-btn.icon-btn i {
   margin-right: 5px;
 }
 button.cta-btn, .cm-btn.cta-btn {
@@ -167,6 +212,10 @@ button.active > i, .cm-btn.active > i {
   background-color: #7fc89a;
   color: #f9f9f9;
 }
+.cm-label.progress {
+  background-color: #ddd;
+  color: #666;
+}
 
 .helper-text {
   font-size: 12px;
@@ -212,7 +261,9 @@ button.active > i, .cm-btn.active > i {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  background-color: #444;
+  position: sticky;
+  top: 0;
+  background-color: #333;
   color: #f9f9f9;
 }
 .header > div {
@@ -222,9 +273,21 @@ button.active > i, .cm-btn.active > i {
 }
 .header ul {
   display: flex;
-  gap: 15px;
+  gap: 20px;
 }
 .header ul li {
+  color: #f9f9f9;
+}
+.header ul li a, .header ul li span {
+  color: inherit;
+}
+.header ul li a:hover, .header ul li span:hover {
+  color: #7fc89a;
+}
+.header ul li .cm-btn span {
+  color: #333;
+}
+.header ul li .cm-btn:hover {
   color: #f9f9f9;
 }
 
@@ -305,14 +368,17 @@ footer {
 [class*=-sec] table th i {
   margin-left: 10px;
 }
+[class*=-sec] table th:nth-child(3n) {
+  padding-left: 40px;
+}
 [class*=-sec] table td {
   margin-right: 20px;
   padding-bottom: 20px;
-  padding-right: 40px;
   box-sizing: border-box;
 }
-[class*=-sec] table input[type=text] {
-  width: calc(100% - 40px);
+[class*=-sec] table input[type=text], [class*=-sec] table input[type=number] {
+  width: 100%;
+  box-sizing: border-box;
 }
 [class*=-sec] table select {
   width: 100%;
@@ -518,6 +584,7 @@ footer {
 }
 .detail-sec table tr th {
   background-color: #ddd;
+  padding-left: 0;
 }
 .detail-sec pre {
   border: 1px solid #eee;

@@ -19,7 +19,7 @@
                     <tr>
                         <th>카테고리</th>
                         <td>
-                            <select id="category-sel" name="category" required>
+                            <select class="select2-basic" id="category-sel" name="category" required>
                                 <option value="">선택해주세요</option>
                             </select>
                         </td>
@@ -31,14 +31,14 @@
                     <tr>
                         <th>모집 마감일<i class="xi-calendar"/></th>
                         <td>
-                            <input type="datetime" class="datepicker"  id="deadLine" name="deadline-date" required>
+                            <input type="text" class="datepicker"  id="deadLine" name="deadline-date" required>
                         </td>
                         <th>스터디 기간<i class="xi-calendar"/></th>
                         <td>
                             <div class="datetime-wrap">
-                                <input type="datetime" class="datepicker" id="start-date" name="start-date" required>
+                                <input type="text" class="datepicker" id="start-date" name="start-date" required>
                                 <span>~</span>
-                                <input type="datetime" class="datepicker"  id="end-date" name="end-date">
+                                <input type="text" class="datepicker"  id="end-date" name="end-date">
                             </div>
                             <div class="datetime-duration-disable">
                                 <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
@@ -54,7 +54,7 @@
                                     <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
                                     <label for="is-offline">온라인 진행</label>
                                 </div>
-                                <select id="region-sel" name="region">
+                                <select class="select2-basic" id="region-sel" name="region">
                                     <option value="">선택해주세요.</option>
                                 </select>
                             </div>
@@ -103,11 +103,6 @@
     window.onload = function(){
         APP_FUNC.inputFunc.categoryReturn('category-sel');
         APP_FUNC.inputFunc.regionReturn('region-sel');
-
-        $(".datepicker").datepicker({
-            dateFormat: 'yy-mm-dd',
-            showAnim: 'slideDown'
-        });
 
     }
     
