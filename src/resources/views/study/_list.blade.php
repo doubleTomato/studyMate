@@ -28,7 +28,6 @@
                     <div class="flex-wrap">
                         <p class="list-tit" title="{{$val['title']}}">
                             {{$val['title']}}
-                            
                         </p>
                         <div class="list-deadline">
                             <span class="{{$d_day_class}}">{{$d_day_val}}</span>
@@ -90,7 +89,7 @@
                             <span><i class="xi-eye-o"></i></span>
                             <span>{{$val['views']}}</span>
                         </p>
-                        <p>
+                        <p class="flex-wrap left                        ">
                             <span><i class="xi-calendar"></i></span>
                             <span class="helper-text">{{$val['created_at']}}</span>
                         </p>

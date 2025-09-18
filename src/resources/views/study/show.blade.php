@@ -58,22 +58,17 @@
     <div class="content-tit">
         <div class="detail-content information">
             <h2>1. 기본 정보</h2>
-            <table>
-                <colgroup>
-                    <col width="20%" style="width: 15%"/>
-                    <col width="80%" style="width: 35%"/>
-                    <col width="20%" style="width: 15%"/>
-                    <col width="80%" style="width: 35%"/>
-                </colgroup>
-                <tbody>
-                <tr>
-                    <th>카테고리</th>
-                    <td>
+            <ul class="info-list">
+                <li>
+                    <div class="label">카테고리</div>
+                    <div class="value">
                         {{-- $data['category'][$data['study']['category_id']] --}}
                         {{ $data['category'][$data['study']['category_id']]['title'] }}
-                    </td>
-                    <th>모집 인원</th>
-                    <td>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">모집 인원</div>
+                    <div class="value">
                         <div class="participants-count">
                             <div class="progress-bar">
                                 <div class="progress" style="width: {{ (100 / $data['study']['max_members']) * count($data['participants']) }}%"></div>
@@ -87,33 +82,21 @@
                             </div>
                         </div>
                         <div class="participants-list">
-                            <div class="flex-wrap">
-                                <div class="flex-wrap list-title">
-                                    <h3>현재 참여자 목록</h3>
-                                    {{-- ###로그인 한 사용자가 현재 스터디에 참여하지 않았다면 출력 --}}
-                                    
-                                </div>
-                                <button type="button" title="상세보기" onclick="APP_FUNC.inputFunc.foldToggle(this)" type="button"><i class="xi-caret-down"></i></button>
+                            <div>
+                                <a class="cm-btn" title="참여멤버전체보기" href="#member-lists">참여멤버전체보기</a>
                             </div>
-                            <ul class="fold-wrap fold">
-                                @foreach($data['participants'] as $key => $val)
-                                    <li>
-                                        <span><i class="{{ $val['rank'] === '1' ? "xi-crown" : "xi-user" }}"></i></span>
-                                        &nbsp;
-                                        <span>{{ $val['nickname'] }}</span>
-                                    </li>
-                                @endforeach 
-                            </ul>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>모집 마감일<i class="xi-calendar"/></th>
-                    <td>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">모집 마감일<i class="xi-calendar"></i></div>
+                    <div class="value">
                         {{ $data['study']['deadline'] }}
-                    </td>
-                    <th>스터디 기간<i class="xi-calendar"/></th>
-                    <td>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">스터디 기간<i class="xi-calendar"></i></div>
+                    <div class="value">
                         <div class="datetime-wrap">
                             @if(!empty($data['study']['end_date']))
                                 <span>{{ $data['study']['start_date'] }}</span>
@@ -123,11 +106,11 @@
                                 (<label for="durationdisable">기간 제한 없음</label>)
                             @endif
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>지역</th>
-                    <td>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">지역</div>
+                    <div class="value">
                         <div class="region-wrap">
                             @if($data['study']['is_offline'] === 0)
                                 {{ $data['region'][$data['study']['region_id']]['name'] }}
@@ -135,18 +118,54 @@
                                 온라인 진행
                             @endif
                         </div>
-                    </td>
-                    <th>상세 주소</th>
-                    <td>{{ $data['study']['location'] }}</td>
-                </tr>
-                </tbody>
-            </table>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">상세 주소</div>
+                    <div class="value">{{ $data['study']['location'] }}</div>
+                </li>
+            </ul>
         </div>
         <div class="write-content detail">
             <h2>2. 세부 내용</h2>
             <textarea style="width: 100%" name="ir1" id="ir1" rows="10" cols="100" readonly>
                 {{ $data['study']['description'] }}
             </textarea>
+        </div>
+        <div id="member-lists" class="write-content detail">
+            <h2>3. 참여 멤버</h2>
+            
+            <ul class="tabs member-tab-menu flex-wrap left">
+                <li class="tab active">기본 멤버</li>
+                <li class="tab">대기 멤버</li>
+            </ul>
+            <div class="member-list-wrap">
+                <ul class="member-list">
+                    <li class="title">
+                        <span class="no">No</span>
+                        <span class="profile"></span>
+                        <span class="name">이름</span>
+                        <span class="nickname">닉네임</span>
+                        <span class="date">참가일</span>
+                        <span class="actions"></span>
+                    </li>
+                @foreach($data['participants'] as $key => $val)
+                    <li>
+                        <span class="no">{{$key+1}}</span>
+                        <div class="profile {{ $val['rank'] === '0' ? 'crown':'' }}">
+                            <img src="{{ !empty($val['profile_url']) ? asset($participants['profile_url']):asset("images/default-profile.png") }}" alt="프로필 이미지"/>
+                        </div>
+                        <span class="name">{{$val['name']}}</span>
+                        <span class="nickname">{{$val['nickname']}}</span>
+                        <span class="date">2025-09-18</span>
+                        <div class="actions-btn">
+                            <button type="button" class="cm-btn exit-btn">퇴장</button>
+                                {{-- <button class="btn btn-block">차단</button> --}}
+                        </div>
+                    </li>
+                @endforeach
+            </table>
+            </div>
         </div>
     </div>
 </section>
@@ -159,8 +178,8 @@
         fCreator: "createSEditor2",
         fOnAppLoad: function(){
             let editor = oEditors.getById["ir1"];
-		    editor.exec("DISABLE_WYSIWYG");
-		    editor.exec("DISABLE_ALL_UI");
+            editor.exec("DISABLE_WYSIWYG");
+            editor.exec("DISABLE_ALL_UI");
         }
     });
 

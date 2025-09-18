@@ -16,51 +16,52 @@
         <div class="content-tit">
             <div class="write-content information">
                 <h1>1. 기본 정보</h1>
-                <table>
-                    <colgroup>
-                        <col width="20%" style="width: 15%"/>
-                        <col width="80%" style="width: 35%"/>
-                        <col width="20%" style="width: 15%"/>
-                        <col width="80%" style="width: 35%"/>
-                    </colgroup>
-                    <thead></thead>
-                    <tbody>
-                    <tr>
-                        <th>카테고리</th>
-                        <td>
+                <ul class="info-list">
+                    <li>
+                        <div class="label">카테고리</div>
+                        <div class="value">
                             <select class="select2-basic" id="category-sel" name="category" required>
                                 <option value="">선택해주세요</option>
                                 @foreach($data['category'] as $key => $val)
-                                    <option value="{{ $key }}" {{$data['study']['category_id'] === $key ? 'selected' :''}}>{{$val['title']}}</option>
+                                    <option value="{{ $val['id'] }}" {{$data['study']['category_id'] === $val['id'] ? 'selected' :''}}>{{$val['title']}}</option>
                                 @endforeach
                             </select>
-                        </td>
-                        <th>모집 인원</th>
-                        <td>
-                            <input type="number" name="recruited-num" required value="{{ $data['study']['max_members'] }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>모집 마감일<i class="xi-calendar"/></th>
-                        <td>
-                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline'] }}">
-                        </td>
-                        <th>스터디 기간<i class="xi-calendar"/></th>
-                        <td>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">모집 인원</div>
+                        <div class="value recruited-num-wrap flex-wrap">
+                            <input type="number" name="recruited-num" required value="{{ $data['study']['max_members'] }}" placeholder="모집 인원을 입력해주세요.">
+                            <div class="flex-wrap">
+                                <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">모집 마감일<i class="xi-calendar"></i></div>
+                        <div class="value">
+                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline'] }}" placeholder="yyyy-mm-dd">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">스터디 기간<i class="xi-calendar"></i></div>
+                        <div class="value">
                             <div class="datetime-wrap">
-                                <input type="text" class="datepicker" id="start-date" name="start-date" required value="{{ $data['study']['start_date'] }}">
+                                <input type="text" class="datepicker" id="start-date" name="start-date" required value="{{ $data['study']['start_date'] }}" placeholder="yyyy-mm-dd">
                                 <span>~</span>
-                                <input type="text" class="datepicker"  id="end-date" name="end-date" value="{{ $data['study']['end_date'] }}" {{ empty($data['study']['end_date']) ?'disabled':'' }}>
+                                <input type="text" class="datepicker"  id="end-date" name="end-date" value="{{ $data['study']['end_date'] }}" {{ empty($data['study']['end_date']) ?'disabled':'' }} placeholder="yyyy-mm-dd">
                             </div>
                             <div class="datetime-duration-disable">
                                 <input {{empty($data['study']['end_date']) ?'checked':''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
                                 <label for="durationdisable">기간 제한 없음</label>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>지역</th>
-                        <td>
+                        </div>
+                    <li>
+                        <div class="label">지역</div>
+                        <div class="value">
                             <div class="region-wrap">
                                 <div>
                                     <input {{$data['study']['is_offline'] === 1 ? 'checked' : ''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
@@ -69,16 +70,17 @@
                                 <select class="select2-basic" id="region-sel" name="region" {{$data['study']['is_offline'] === 1 ? 'disabled' : ''}}>
                                     <option value="">선택해주세요.</option>
                                     @foreach($data['region'] as $key => $val)
-                                    <option value="{{ $key }}" {{$data['study']['region_id'] === $key ? 'selected':''}}>{{$val['name']}}</option>
+                                    <option value="{{ $val['id'] }}" {{$data['study']['region_id'] === $key ? 'selected':''}}>{{$val['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </td>
-                        <th>상세 주소<span class="helper-text">(선택)</span></th>
-                        <td><input type="text" name="location" id="location" value="{{ $data['study']['location'] }}" {{$data['study']['is_offline'] === 1 ? 'disabled' : '' }}></td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">상세 주소<span class="helper-text">(선택)</span></div>
+                        <div class="value"><input type="text" name="location" id="location" value="{{ $data['study']['location'] }}" {{$data['study']['is_offline'] === 1 ? 'disabled' : '' }} placeholder="예: 서울시 강남구 …"></div>
+                    </li>
+                </ul>
             </div>
             <div class="write-content detail">
                 <h1>2. 세부 내용</h1>
@@ -86,7 +88,7 @@
                     <tr>
                         <th>제목</th>
                         <td>
-                            <input type="text" name="titlename" required value="{{ $data['study']['title'] }}">
+                            <input type="text" name="titlename" required value="{{ $data['study']['title'] }}" placeholder="제목을 입력해주세요.">
                         </td>
                     </tr>
                 </table>

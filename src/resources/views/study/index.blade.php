@@ -1,10 +1,6 @@
 {{-- 메인화면 --}}
 @extends('layouts.app')
 @section('content')
-@php
-    //$today = (new DateTime()) ->setTime(0, 0);
-    // dd($participants);
-@endphp
 <section class="list-sec">
     <input type="hidden" name="pagination" value="">
     {{-- <h1>스터디 모집글</h1> --}}
@@ -66,7 +62,7 @@
 document.addEventListener('click', async function(e){
     const a = e.target.closest('.pagination a');
     if(!a) return;
-    $(".loading-sec").show();
+    $(".loading-sec").addClass("active");
     e.preventDefault();
     const url = a.href;
     const res = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
@@ -75,7 +71,7 @@ document.addEventListener('click', async function(e){
     const pageUrl = new URL(a.href);
     const page = pageUrl.searchParams.get('page'); 
     $("input[name='pagination']").val(page);
-    $(".loading-sec").hide();
+    $(".loading-sec").removeClass('active');
 });
 
 // filter change
@@ -98,7 +94,7 @@ async function filterChange(isReset = '', isActive = false){
     let filter5 = isReset !== 'r' ? $("input[name='pagination']").val() : 1;
     let filter6 = isReset !== 'r' ? $("input[name='active']").val() : '';
     $(".loading-sec .msg-con").html("필터 적용");
-    $(".loading-sec").show();
+    $(".loading-sec").addClass('active');
 
     if(isReset == '' && isActive){
         if($("input[name='active']").val() === 'true'){
@@ -137,7 +133,7 @@ async function filterChange(isReset = '', isActive = false){
 
         // 페이지 번호 input 초기화
         $("input[name='pagination']").val(filters.pagination);
-        $(".loading-sec").hide();
+        $(".loading-sec").removeClass('active');
 }
 
 

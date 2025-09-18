@@ -9,13 +9,13 @@ export const inputFunc = {
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log('기본 카테고리:', data);
+                // console.log('기본 카테고리:', data);
 
                 let selectValue = "<option value=''>카테고리를 선택해주세요.</option>";
 
                 data.forEach((v,i) => {
-                    const {title, description} = v;
-                    selectValue += `<option value="${i+1}" title="${description}">${title}</option>`;
+                    const {id, title, description} = v;
+                    selectValue += `<option value="${id}" title="${description}">${title}</option>`;
                 });
                 // 화면에 표시할 때 처리
                 $(`#${idV}`).html(selectValue);
@@ -70,10 +70,23 @@ export const inputFunc = {
         }else{
             o.forEach((v) => {
                 $("#"+v).attr("disabled",true);
+                $("#"+v).val('');
+                $('#'+v).val(null).trigger('change');
             });
         }
+    }, modalHidden(msg, typeV="success", ...rest){
+        let defaultMsg =  `<h1>${msg}이 완료되었습니다.</h1>`;
+        if(rest.length !== 0 || typeV !== 'success'){
+            defaultMsg = rest.join("<br/>");
+        }
+        setTimeout(() => {
+            $(".loading-sec .msg").html(`${defaultMsg}`);
+            $(".loading-sec").addClass("active");
+            setTimeout(() => {
+                $(".loading-sec").removeClass("active");
+            }, 1000);
+        }, 1000);
     },
-
     //  form send
     sendData(f, methodType, url="") {
         let msgCon = url === "" ? "등록" : "수정";
@@ -93,7 +106,7 @@ export const inputFunc = {
             return;
         }
         const formData = new FormData(f);
-        $(".loading-sec").show();
+        $(".loading-sec").addClass('active');
         oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
         formData.append("description", document.getElementById("ir1").value);
         
@@ -111,9 +124,10 @@ export const inputFunc = {
             return res.json();
         })
         .then(data => { 
-            alert("성공:" + data.msg);
+            // alert("성공:" + data.msg);
+            $(".loading-sec").removeClass('active');
+            this.modalHidden(msgCon);
             // console.log(data);
-            $(".loading-sec").hide();
             let idVal = data.id === ''? '':"/"+data.id;
             window.location.href = `/study${idVal}`;
         })

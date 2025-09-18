@@ -4,10 +4,21 @@
 @import 'include/reset.scss';
 @import 'include/variable.scss';
 
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 // 공통
 *{font-family: 'Noto Sans KR', sans-serif; color: #444;}
 body, html{ 
     letter-spacing: 0.25px;
+    scroll-behavior: smooth;
 }
 
 hr{ opacity: 0.6;}
@@ -60,6 +71,120 @@ input{
 
     }
 }
+
+.top-btn{
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background-color: $gray_200;
+    border-radius: 100%;
+    padding: 10px;
+    border-radius: 100%;
+    &:hover{ 
+        background-color: $gray_400; color: $gray_100;
+        transition: background-color 0.3s ease;
+        box-shadow: -1px 2px 4px 0px darken($gray_200, 30%);
+        a, i{color: inherit}
+    }
+}
+// 정보 테이블
+.info-list {
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+    border: 1px solid $gray_200;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid $gray_200;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    .label {
+        font-size: 14px;
+        font-weight: 600;
+        color: $gray_500;
+        i{ margin-left: 5px;}
+    }
+
+    .value {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        min-width: 60%;
+    }
+}
+
+.member-list-wrap {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid $gray_300;
+    border-radius: 12px;
+    background: #fff;
+
+    .member-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid $gray_100;
+            min-height: 56px;
+            gap: 10px;
+            &:hover {
+                background: $gray_200;
+            }
+
+            &.title {
+                font-weight: 600;
+                color: #555;
+                background: $gray_100;
+            }
+            span,div {
+                display: flex;
+                align-items: center;
+                min-width: 60px;
+            }
+            .name,.nickname{ width: 25%;}
+            .profile{
+                width: 60px; height: 60px; border-radius: 100%;
+                background-color: $gray_100; object-fit: contain;
+                img{width: 100%; object-fit: contain;}
+                &.crown{
+                    position: relative;
+                    &::after{
+                        content: "";
+                        background-image: url("../../../public/images/crown.png");
+                        display: block;
+                        position: absolute;
+                        height: 20px;
+                        width: 100px;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        top: -11px;
+                        left: 5px;
+                        z-index: 2;
+                    }
+                }
+            }
+            .actions-btn, .actions{ width: 100px; justify-content: center;}
+        }
+    }
+}
+
+
+
+
 select{
     &:disabled, &:read-only{
         background-color: $gray_200;
@@ -75,7 +200,7 @@ textarea{
     border-color: $gray_300;
     border-radius: 5px;
 }
-button, .cm-btn{ 
+button, .cm-btn{
     border-radius: 5px;
     transition: all linear 0.16s;
     position: relative;
@@ -118,6 +243,11 @@ button, .cm-btn{
         background-color: darken($main_color, 30%); 
         color: $gray_100;
         & > i{color: inherit;}
+    }
+    &.exit-btn{
+        background-color: $error_color;
+        color: $gray_100;
+        &:hover{ background-color: darken($error_color, 30%);}
     }
 }
 
@@ -170,7 +300,13 @@ button, .cm-btn{
     background-color: $gray_600;
     color: $gray_100;
     & > div{width: 1200px; margin: 0 auto; height: 100%;}
-    .logo{width: 100px; height: 30px; background-color: #71dd9c;}
+    .logo{
+        width: 100px; height: 40px;
+        img{
+            height: 100%;
+            object-fit: contain;
+        }
+    }
     ul{
         display: flex;
         gap: 20px;
@@ -242,6 +378,28 @@ button, .cm-btn{
     }
 }
 
+.tabs {
+    display: flex;
+    margin-bottom: 15px;
+    .tab {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
+
+    &.active {
+        border-color: $main_color;
+        color: $gray_600;
+    }
+
+        &:hover {
+            color: $main_color;
+        }
+    }
+}
+
+
 
 footer{
     width: 100%; height: 80px; padding: 15px 40px; box-sizing: border-box;
@@ -255,17 +413,17 @@ footer{
     width: 1200px;
     margin: 0 auto;
     // background-color: $main_color;
-    table{
+    .info-list,table{
         margin-bottom: 20px;
         width: 100%;
-        th{
+        .label,th{
             width: 200px;
             text-align: left;
-            line-height: 59px;
+            // line-height: 59px;
             i{ margin-left: 10px;}
             &:nth-child(3n){padding-left: 40px;}
         }
-        td{margin-right: 20px; padding-bottom: 20px;  box-sizing: border-box;}
+        .value,td{margin-right: 20px; padding-bottom: 20px;  box-sizing: border-box;}
         input[type='text'], input[type='number']{ width: 100%; box-sizing: border-box; }
         select{ width: 100%; }
         .recruited-num-wrap{
@@ -282,8 +440,8 @@ footer{
     }
     h1{
         font-size: 20px;
-        font-weight: 500;
-        margin-bottom: 15px;
+        font-weight: 600;
+        margin-bottom: 30px;
     }
     .button-con{
         display: flex;
@@ -334,21 +492,46 @@ footer{
     text-align: center;
     display: none;
     z-index: 999;
-    & > div{
-        z-index: 1000;
-        max-width: 1000px;
-        min-height: 100px;
-        background-color: $gray_100;
-        border-radius: 10px;
-        position: absolute;
-        top: 30%;
-        transform: translateX(calc(-50%));
-        left: 50%;
-        padding: 20px 60px;
-        h1{ font-size: 20px; margin-bottom: 20px;}
-        p{margin-bottom: 20px;}
-        i{font-size: 20px;}
+    justify-content: center;
+    &.active{
+        display: flex;
     }
+    .msg {
+        position: relative;
+        top: 30%;
+        background: $gray_100;
+        padding: 24px 32px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 360px;
+        width: 80%;
+        flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        animation: fadeInScale 0.2s ease forwards;
+        height: max-content;
+        h1 {
+            font-size: 20px;
+            margin: 16px 0 8px;
+            color: $gray_600;
+            .msg-con {
+            color: $main_color; /* 포인트 컬러 */
+            font-weight: 600;
+            }
+    }
+
+    p {
+        font-size: 14px;
+        color: $gray_600;
+        margin-bottom: 16px;
+    }
+
+    div i {
+    font-size: 32px;
+      color: $main_color; /* 포인트 컬러 */
+    }
+}
+
+
 }
 
 
@@ -446,17 +629,20 @@ footer{
 
 .detail-sec{
     h1{font-weight: 700;}
-    hr{margin: 20px 0;}
-    h2{margin-bottom: 20px; font-size: 18px; font-weight: 500;}
+    hr{margin: 20px 0; border-color: $gray_100;}
+    h2{margin-bottom: 20px; font-size: 18px; font-weight: 600;}
     table{
         // border: 1px solid $gray_500;
         border-radius: 4px;
         tr{
+            th{
+                background-color: $gray_300; padding-left: 0;
+                &:nth-child(odd){padding: 5px;}
+            }
             th,td{
                 border: 1px solid #eee;
                 padding: 5px;
             }
-            th{background-color: $gray_300; padding-left: 0;}
         }
     }
     pre{
@@ -476,7 +662,7 @@ footer{
     
     .participants-list{
         &>div{ 
-            margin-bottom: 15px;
+            // margin-bottom: 15px;
             .list-title{ 
                 width: max-content; gap: 10px;
             }

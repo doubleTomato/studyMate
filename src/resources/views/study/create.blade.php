@@ -7,57 +7,49 @@
         <div class="content-tit">
             <div class="write-content information">
                 <h1>1. 기본 정보</h1>
-                <table>
-                    <colgroup>
-                        <col width="20%" style="width: 15%"/>
-                        <col width="80%" style="width: 35%"/>
-                        <col width="20%" style="width: 15%"/>
-                        <col width="80%" style="width: 35%"/>
-                    </colgroup>
-                    <thead></thead>
-                    <tbody>
-                    <tr>
-                        <th>카테고리</th>
-                        <td>
+                <ul class="info-list">
+                    <li>
+                        <div class="label">카테고리</div>
+                        <div class="value">
                             <select class="select2-basic" id="category-sel" name="category" required>
                                 <option value="">선택해주세요</option>
                             </select>
-                        </td>
-                        <th>모집 인원</th>
-                        <td>
-                            <div class="recruited-num-wrap flex-wrap">
-                                <input type="number" name="recruited-num" min="0" value="0" required placeholder="모집 인원을 입력해주세요.">
-                                <div class="flex-wrap">
-                                    <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
-                                    <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
-                                    <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
-                                    <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
-                                </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">모집 인원</div>
+                        <div class="value recruited-num-wrap flex-wrap">
+                            <input type="number" name="recruited-num" required value="" placeholder="모집 인원을 입력해주세요.">
+                            <div class="flex-wrap">
+                                <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
+                                <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
                             </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>모집 마감일<i class="xi-calendar"/></th>
-                        <td>
-                            <input type="text" class="datepicker" placeholder="yyyy-mm-dd"  id="deadLine" name="deadline-date" required autocomplete="off">
-                        </td>
-                        <th>스터디 기간<i class="xi-calendar"/></th>
-                        <td>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">모집 마감일<i class="xi-calendar"></i></div>
+                        <div class="value">
+                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="" placeholder="yyyy-mm-dd">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">스터디 기간<i class="xi-calendar"></i></div>
+                        <div class="value">
                             <div class="datetime-wrap">
-                                <input type="text" class="datepicker" placeholder="yyyy-mm-dd" id="start-date" name="start-date" required autocomplete="off">
+                                <input type="text" class="datepicker" placeholder="yyyy-mm-dd" id="start-date" name="start-date" required autocomplete="off" placeholder="yyyy-mm-dd">
                                 <span>~</span>
-                                <input type="text" class="datepicker" placeholder="yyyy-mm-dd"  id="end-date" name="end-date" autocomplete="off">
+                                <input type="text" class="datepicker"  id="end-date" name="end-date" value=""  placeholder="yyyy-mm-dd">
                             </div>
                             <div class="datetime-duration-disable">
                                 <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
                                 <label for="durationdisable">기간 제한 없음</label>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>지역</th>
-                        <td>
+                        </div>
+                    <li>
+                        <div class="label">지역</div>
+                        <div class="value">
                             <div class="region-wrap">
                                 <div>
                                     <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
@@ -67,12 +59,13 @@
                                     <option value="">선택해주세요.</option>
                                 </select>
                             </div>
-                        </td>
-                        <th>상세 주소<span class="helper-text">(선택)</span></th>
-                        <td><input type="text" name="location" id="location" placeholder="예: 서울시 강남구 …"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">상세 주소<span class="helper-text">(선택)</span></div>
+                        <div class="value"><input type="text" name="location" id="location" value="" placeholder="예: 서울시 강남구 …"></div>
+                    </li>
+                </ul>
             </div>
             <div class="write-content detail">
                 <h1>2. 세부 내용</h1>
@@ -80,15 +73,17 @@
                     <tr>
                         <th>제목</th>
                         <td>
-                            <input type="text" name="titlename" required placeholder="제목을 입력해주세요.">
+                            <input type="text" name="titlename" required value="" placeholder="제목을 입력해주세요.">
                         </td>
                     </tr>
                 </table>
-                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100">스터디의 상세 설명을 입력해주세요.</textarea>
+                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100">
+                    스터디의 상세 설명을 입력해주세요.
+                </textarea>
             </div>
         </div>
         <div class="button-con">
-            <button type="button">취소</button>
+            <a class="cm-btn" href="{{ route('study.index') }}">취소</a>
             <button class="cta-btn" type="button" onclick="APP_FUNC.inputFunc.sendData(this.form, 'POST')">등록하기</button>
             {{-- <button type="submit">등록하기</button> --}}
         </div>
