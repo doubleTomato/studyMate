@@ -24,7 +24,12 @@
 
 <nav class="header">
     <div class="flex-wrap">
-        <div class="logo">로고</div>
+        <div class="logo">
+            <a href="{{ route('study.index') }}">
+                <img src="{{ asset('images/studymate_bk_none_logo.png') }}" alt="Logo">
+            </a>
+            {{-- <img src="{{ asset('images/studymate_bk_none_logo_s.png') }}" alt="Logo"> --}}
+        </div>
         <ul class="flex-wrap">
             <li>
                 <a class="cm-btn cta-btn icon-btn {{ $route_name === 'study.create' ? 'active':'' }}" href="{{route("study.create")}}">
@@ -37,14 +42,9 @@
                     <span>스터디 찾기</span>
                 </a>
             </li>
-            <li class="{{ $route_name === 'mypage.index' ? 'active':'' }}">
-                <a href="{{route("study.index")}}">
-                    <span>My Page</span>
-                </a>
-            </li>
             <li class="{{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
                 <a href="{{route("study.index")}}">
-                    <span>프로필</span>
+                    <span>로그인</span>
                 </a>
             </li>
         </ul>
