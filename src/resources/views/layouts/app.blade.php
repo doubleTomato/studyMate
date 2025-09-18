@@ -19,11 +19,6 @@
     <script>
         $(document).ready(function() {
             $('.select2-basic').select2();
-            $(".datepicker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                showAnim: 'slideDown'
-            });
-            console.log("ready..!");
         });
     </script>
 </body>

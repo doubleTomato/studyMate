@@ -99,11 +99,13 @@ button, .cm-btn{
         i{ margin-right: 5px;}
     }
     &.cta-btn{
-        background-color: $main_color !important;
+        background-color: $main_color_dark !important;
+        i{ color: inherit; }
         &:hover{
-        background-color: darken($main_color, 30%) !important;
-        color: $gray_100;
+            background-color: darken($main_color, 30%) !important;
+            color: $gray_100;
         }
+        &.active{ background-color: darken($main_color_dark, 30%) !important;}
     }
     &.delete-btn{
         background-color: $error_color;
@@ -142,8 +144,6 @@ button, .cm-btn{
     line-height: inherit;
 }
 
-
-
 .participants-count{ 
         height: 30px; margin-bottom: 15px;
         .progress-bar{
@@ -172,23 +172,29 @@ button, .cm-btn{
     & > div{width: 1200px; margin: 0 auto; height: 100%;}
     .logo{width: 100px; height: 30px; background-color: #71dd9c;}
     ul{
-        
         display: flex;
         gap: 20px;
         li{
             color: $gray_100;
-            .cm-btn{
-                span{color: $gray_600}
-                &:hover{color: $gray_100}
+            &.active{
+                color: $main_color;
             }
-            a, span{
-                color: inherit;
+            a, span{ color: inherit; }
+            &:hover{
+                a, span{
+                    color: $main_color_dark;
+                    font-weight: 500;
+                    }
+                }
+            }
+            .cm-btn{
                 &:hover{
-                    color: $gray_100;
+                    span{
+                        color: $gray_100;
+                    }
                 }
             }
         }
-    }
 }
 .fold{ display: none;}
 
@@ -262,6 +268,14 @@ footer{
         td{margin-right: 20px; padding-bottom: 20px;  box-sizing: border-box;}
         input[type='text'], input[type='number']{ width: 100%; box-sizing: border-box; }
         select{ width: 100%; }
+        .recruited-num-wrap{
+            flex-wrap: nowrap;
+            gap: 10px;
+            &   >  div{
+                flex-shrink: 0;
+                gap: 5px;
+            }
+        }
     }
     [class*='-content']{
         margin-bottom: 60px;

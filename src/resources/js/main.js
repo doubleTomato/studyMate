@@ -121,4 +121,33 @@ export const inputFunc = {
             console.log("실패:", err);
         });
     },
+
+    // validate function
+
+    // 종료날짜 > 시작날짜 비활성화
+    dateDisabled(){
+        $("#start-date").datepicker({
+                dateFormat: "yy-mm-dd",
+                showAnim: "slideDown",
+                onSelect: function(selectedDate) {
+                    // end date 최소 날짜 설정
+                    $("#end-date").datepicker("option", "minDate", selectedDate);
+                }
+        });
+    
+        $("#end-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showAnim: "slideDown"
+        });
+    
+        $("#deadLine").datepicker({
+            dateFormat: "yy-mm-dd",
+            showAnim: "slideDown"
+        });
+    },
+    // 모집인원 추가 버튼
+    addCount(num=0){
+        let curVal = num === 0 ? 0 : parseInt($("input[name='recruited-num']").val());
+        $("input[name='recruited-num']").val(curVal + num);
+    }
 }

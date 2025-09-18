@@ -25,20 +25,29 @@
                         </td>
                         <th>모집 인원</th>
                         <td>
-                            <input type="number" name="recruited-num" required>
+                            <div class="recruited-num-wrap flex-wrap">
+                                <input type="number" name="recruited-num" min="0" value="0" required placeholder="모집 인원을 입력해주세요.">
+                                <div class="flex-wrap">
+                                    <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
+                                    <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
+                                    <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
+                                    <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                     <tr>
                         <th>모집 마감일<i class="xi-calendar"/></th>
                         <td>
-                            <input type="text" class="datepicker"  id="deadLine" name="deadline-date" required>
+                            <input type="text" class="datepicker" placeholder="yyyy-mm-dd"  id="deadLine" name="deadline-date" required autocomplete="off">
                         </td>
                         <th>스터디 기간<i class="xi-calendar"/></th>
                         <td>
                             <div class="datetime-wrap">
-                                <input type="text" class="datepicker" id="start-date" name="start-date" required>
+                                <input type="text" class="datepicker" placeholder="yyyy-mm-dd" id="start-date" name="start-date" required autocomplete="off">
                                 <span>~</span>
-                                <input type="text" class="datepicker"  id="end-date" name="end-date">
+                                <input type="text" class="datepicker" placeholder="yyyy-mm-dd"  id="end-date" name="end-date" autocomplete="off">
                             </div>
                             <div class="datetime-duration-disable">
                                 <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
@@ -60,7 +69,7 @@
                             </div>
                         </td>
                         <th>상세 주소<span class="helper-text">(선택)</span></th>
-                        <td><input type="text" name="location" id="location"></td>
+                        <td><input type="text" name="location" id="location" placeholder="예: 서울시 강남구 …"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -71,11 +80,11 @@
                     <tr>
                         <th>제목</th>
                         <td>
-                            <input type="text" name="titlename" required>
+                            <input type="text" name="titlename" required placeholder="제목을 입력해주세요.">
                         </td>
                     </tr>
                 </table>
-                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100">에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다.</textarea>
+                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100">스터디의 상세 설명을 입력해주세요.</textarea>
             </div>
         </div>
         <div class="button-con">
@@ -98,12 +107,12 @@
         fCreator: "createSEditor2"
     });
 
-    
+    // oEditors.getById["ir1"].exec("PASTE_HTML",  ["스터디의 상세 설명을 입력해주세요."]);
 
     window.onload = function(){
         APP_FUNC.inputFunc.categoryReturn('category-sel');
         APP_FUNC.inputFunc.regionReturn('region-sel');
-
+        APP_FUNC.inputFunc.dateDisabled(); // datetime 초기화
     }
     
 </script>
