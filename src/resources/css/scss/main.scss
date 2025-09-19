@@ -22,6 +22,9 @@ body, html{
 }
 
 hr{ opacity: 0.6;}
+
+main{ min-height: calc(100vh - 180px);}
+
 input{
     &:disabled, &:read-only{
         background-color: $gray_200;
@@ -225,6 +228,7 @@ button, .cm-btn{
     }
     &.cta-btn{
         background-color: $main_color_dark !important;
+        color: $gray_100;
         i{ color: inherit; }
         &:hover{
             background-color: darken($main_color, 30%) !important;
@@ -249,19 +253,22 @@ button, .cm-btn{
         color: $gray_100;
         &:hover{ background-color: darken($error_color, 30%);}
     }
+
+    span{ color: inherit}
 }
 
 .cm-label{
     border-radius: 5px;
     padding: 2.5px 10px;
     height: 25px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     margin-right: 0px;
-    line-height: 24px;
+    line-height: 20px;
     display: inline-block;
     background-color: $gray_300;
     color: $gray_100;
+    box-sizing: border-box;
     &.deadline{ background-color: $gray_400; color: $gray_100}
     &.in-progress{ background-color: $main_color; }
     &.today{background-color: $main_color_dark; color: $gray_100;}
@@ -497,10 +504,11 @@ footer{
         display: flex;
     }
     .msg {
+        display: none;
         position: relative;
         top: 30%;
         background: $gray_100;
-        padding: 24px 32px;
+        padding: 20px 30px;
         border-radius: 12px;
         text-align: center;
         max-width: 360px;
@@ -511,24 +519,78 @@ footer{
         height: max-content;
         h1 {
             font-size: 20px;
-            margin: 16px 0 8px;
+            margin: 0 16px 20px 0px;
             color: $gray_600;
             .msg-con {
-            color: $main_color; /* 포인트 컬러 */
+            color: $main_color_dark;
             font-weight: 600;
             }
-    }
+        }
 
-    p {
-        font-size: 14px;
-        color: $gray_600;
-        margin-bottom: 16px;
-    }
+        p {
+            font-size: 15px;
+            color: $gray_600;
+            margin-bottom: 16px;
+        }
 
-    div i {
-    font-size: 32px;
-      color: $main_color; /* 포인트 컬러 */
-    }
+        div i {
+        font-size: 32px;
+        color: $main_color;
+        }
+
+        .state-icon{
+            color: $main_color_dark;
+            i{color: inherit}
+            &.error{ color: $error_color; }
+        }
+
+        &.modal, &.confirm{
+            width: 50%;
+            max-width: none;
+            .modal-head{
+                h1{
+                    text-align: left; margin-bottom: 15px;
+                    
+                }
+                border-bottom: 1px solid $gray_300;
+                margin-bottom: 20px;
+            }
+            .modal-con{
+                margin-bottom: 20px;
+                text-align: left;
+                line-height: 1.6;
+            }
+
+            .modal-buttons{
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                justify-content: right;
+            }
+        }
+
+        &.confirm{ 
+            width: 25%;
+            .msg-con-wrap{ margin-bottom: 40px;}
+            h1{ text-align: left; margin-bottom: 20px;}
+            p{ text-align: center;}
+            i{font-size: 3em; color: $error_color}
+        }
+
+        & > .close-btn{
+            width: 30px; height: 30px;
+            position: absolute;
+            right: 15px; top: 15px;
+            line-height: 30px;
+            i{ font-size: 16px; color: $gray_500; }
+            &:hover{
+                background-color: $gray_300;
+                transition: background-color 0.3s ease;
+                box-shadow: -1px 2px 4px 0px darken($gray_200, 30%);
+                border-radius: 100%;
+                cursor: pointer;
+            }
+        }
 }
 
 

@@ -93,30 +93,32 @@ async function filterChange(isReset = '', isActive = false){
     let filter4 = isReset !== 'r' ? $("select[name='sort']").val() : '';
     let filter5 = isReset !== 'r' ? $("input[name='pagination']").val() : 1;
     let filter6 = isReset !== 'r' ? $("input[name='active']").val() : '';
-    $(".loading-sec .msg-con").html("필터 적용");
-    $(".loading-sec").addClass('active');
+
+
+    APP_FUNC.commonFunc.modalOpen('alert','필터 적용');
+
 
     if(isReset == '' && isActive){
         if($("input[name='active']").val() === 'true'){
-            activeVal6 = 'false';
+            filter6 = 'false';
             $("input[name='active']").val('false');
             $("#active-btn").removeClass("active");
         } else{
-            activeVal6 = 'true';
+            filter6 = 'true';
             $("input[name='active']").val('true');
             $("#active-btn").addClass("active");
         }
     }
+    
     const filters = {
             category: filter1,
             region: filter2,
-            active: filter6,
             search: filter3,
             sort: filter4,
-            pagination: filter5
+            pagination: filter5,
+            active: filter6,
         }
 
-        console.log(filters);
      // Ajax 요청
         const res = await fetch('/studies/list', {
             method: 'POST',
@@ -133,7 +135,7 @@ async function filterChange(isReset = '', isActive = false){
 
         // 페이지 번호 input 초기화
         $("input[name='pagination']").val(filters.pagination);
-        $(".loading-sec").removeClass('active');
+        APP_FUNC.commonFunc.modalHide('alert');
 }
 
 

@@ -19,12 +19,12 @@
                     <li>
                         <div class="label">모집 인원</div>
                         <div class="value recruited-num-wrap flex-wrap">
-                            <input type="number" name="recruited-num" required value="" placeholder="모집 인원을 입력해주세요.">
+                            <input type="number" name="recruited-num" required value="0" placeholder="모집 인원을 입력해주세요.">
                             <div class="flex-wrap">
-                                <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(5)" type="button">+5</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(10)" type="button">+10</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(15)" type="button">+15</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
                             </div>
                         </div>
                     </li>
@@ -43,7 +43,7 @@
                                 <input type="text" class="datepicker"  id="end-date" name="end-date" value=""  placeholder="yyyy-mm-dd">
                             </div>
                             <div class="datetime-duration-disable">
-                                <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
+                                <input onclick="APP_FUNC.commonFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
                                 <label for="durationdisable">기간 제한 없음</label>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                         <div class="value">
                             <div class="region-wrap">
                                 <div>
-                                    <input onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
+                                    <input onclick="APP_FUNC.commonFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
                                     <label for="is-offline">온라인 진행</label>
                                 </div>
                                 <select class="select2-basic" id="region-sel" name="region">
@@ -84,15 +84,12 @@
         </div>
         <div class="button-con">
             <a class="cm-btn" href="{{ route('study.index') }}">취소</a>
-            <button class="cta-btn" type="button" onclick="APP_FUNC.inputFunc.sendData(this.form, 'POST')">등록하기</button>
+            <button class="cta-btn" type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'POST')">등록하기</button>
             {{-- <button type="submit">등록하기</button> --}}
         </div>
     </form>
 </section>
 
-@section('loading-msg')
-
-@endsection
 <script type="text/javascript">
     const oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
@@ -105,9 +102,9 @@
     // oEditors.getById["ir1"].exec("PASTE_HTML",  ["스터디의 상세 설명을 입력해주세요."]);
 
     window.onload = function(){
-        APP_FUNC.inputFunc.categoryReturn('category-sel');
-        APP_FUNC.inputFunc.regionReturn('region-sel');
-        APP_FUNC.inputFunc.dateDisabled(); // datetime 초기화
+        APP_FUNC.commonFunc.categoryReturn('category-sel');
+        APP_FUNC.commonFunc.regionReturn('region-sel');
+        APP_FUNC.commonFunc.dateDisabled(); // datetime 초기화
     }
     
 </script>

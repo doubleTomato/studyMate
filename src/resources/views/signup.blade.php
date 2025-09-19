@@ -70,7 +70,7 @@ $location_names = [
                             <input class="req" type="password" value="" placeholder="비밀번호를 다시 입력해주세요."  name="confirm_pw"/>
                         </dd>
                     </dl>
-                    <button type="button" onclick="APP_FUNC.inputFunc.requireConfirm(this)">다음으로</button>
+                    <button type="button" onclick="APP_FUNC.commonFunc.requireConfirm(this)">다음으로</button>
                     {{-- <button type="button" onclick="testAlert()">다음으로</button> --}}
                 </div>
                 {{-- 닉네임 --}}

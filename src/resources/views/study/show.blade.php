@@ -50,7 +50,7 @@
             @method('DELETE')
             @csrf
             @if(!$isClosed)
-                <button type="button" onclick="APP_FUNC.inputFunc.sendData(this.form, 'DELETE', '/{{$data['study']['id']}}')" class="cm-btn delete-btn">삭제하기</button>
+                <button type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'DELETE', '/{{$data['study']['id']}}')" class="cm-btn delete-btn">삭제하기</button>
             @endif
         </form>
     </div>

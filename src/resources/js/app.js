@@ -1,5 +1,5 @@
 import './bootstrap';
-import { inputFunc } from './main';
+import { commonFunc } from './main';
 
 import Alpine from 'alpinejs';
 
@@ -10,6 +10,6 @@ Alpine.start();
 
 window.APP_FUNC = {
     // "requireConfirm":(thisV) =>{ requireConfirm(thisV)}
-    "inputFunc": inputFunc,
+    "commonFunc": commonFunc,
 }
 

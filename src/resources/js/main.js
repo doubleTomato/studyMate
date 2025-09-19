@@ -1,5 +1,42 @@
+const getDataFunc = {
+    getAlertData(msg){
+        let returnData = '';
+        returnData += `<h1><span class="msg-con">${msg}</span> 중 입니다.</h1>`;
+        return returnData
+    },
+    getResponseData(msg, state){
+        let returnData = "";
+        returnData += `
+                <p class="state-icon">
+                    <i class="xi-${state === 'success' ? 'check-circle' : 'xi-error'} xi-3x"></i>
+                </p>
+                <h1><span class="msg-con">${msg}</span> ${state ==='success' ? '완료':'실패'}되었습니다.${state ==='success' ? '':'다시 시도해주세요.'}</h1>
+            `;
+        return returnData
+    },
+    getModalData(title, content){
+        const returnMsg = {
+            'title':`<h1>${title}</h1>`,
+            'content':`${content}`
+        }
+        return returnMsg
+    },
+    getConfirmData(msg){
+        let returnData = '';
+        returnData += `
+            <h1>${msg}</h1>
+            <p class="state-icon">
+                <i class="xi-'${msg === '삭제'? 'xi-warning' : ''}' xi-3x"></i>
+            </p>
+            <p>${msg === '삭제'? '삭제 시 다시 복구 되지 않습니다.':''} 계속 진행 하시겠습니까?</p>
+        `;
+        return returnData
+    }
+}
+
 // 인풋 관련 함수들
-export const inputFunc = {
+export const commonFunc = {
+    
     requireConfirm(thisV){
         console.log(thisV);
     },
@@ -74,24 +111,58 @@ export const inputFunc = {
                 $('#'+v).val(null).trigger('change');
             });
         }
-    }, modalHidden(msg, typeV="success", ...rest){
-        let defaultMsg =  `<h1>${msg}이 완료되었습니다.</h1>`;
-        if(rest.length !== 0 || typeV !== 'success'){
-            defaultMsg = rest.join("<br/>");
+    },
+    modalHide(typeV){
+        $(".loading-sec .msg." + typeV).hide();
+        $(".loading-sec").removeClass("active");
+    },
+    confirmOpen(){
+        return new Promise((resolve) => {
+            const okBtn = document.getElementById('modal-ok-btn');
+            const closeBtn = document.getElementById('modal-close-btn');
+            this.modalOpen('confirm', '삭제');
+
+            const closeConfirm = (result) => {
+                this.modalHide('confirm');
+                okBtn.removeEventListener('click', onOk);
+                closeBtn.removeEventListener('click', onClose);
+                resolve(result);
+            };
+
+            const onOk = () => closeConfirm(true);
+            const onClose = () => closeConfirm(false);
+
+            okBtn.addEventListener('click',onOk);
+            closeBtn.addEventListener('click',onClose);
+        });
+    },
+    modalOpen(typeV ='', msg ='', state = null){
+        let returnData = '';
+        if(typeV === 'response'){
+            returnData = getDataFunc.getResponseData(msg, state);
+        }else if(typeV === 'alert'){
+            returnData = getDataFunc.getAlertData(msg);
+        }else if(typeV === 'confirm'){
+            returnData = getDataFunc.getConfirmData(msg);
         }
+        $(".loading-sec .msg." + typeV + " .msg-con-wrap").html(`${returnData}`);
+        $(".loading-sec .msg." + typeV).show();
+        $(".loading-sec").addClass("active");
+        
+    },modalResponseHidden(msg, typeV="success",state){
         setTimeout(() => {
-            $(".loading-sec .msg").html(`${defaultMsg}`);
-            $(".loading-sec").addClass("active");
+            this.modalOpen('response', msg, state);
             setTimeout(() => {
                 $(".loading-sec").removeClass("active");
             }, 1000);
         }, 1000);
     },
     //  form send
-    sendData(f, methodType, url="") {
+    async sendData(f, methodType, url="") {
         let msgCon = url === "" ? "등록" : "수정";
-        $(".loading-sec .msg-con").html(msgCon);
-        if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
+        // if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
+        msgCon = methodType === 'DELETE' ? '삭제': msgCon;
+        if(methodType === 'DELETE' && !(await this.confirmOpen())){
             return;
         }
         if (!f.checkValidity()) {
@@ -106,7 +177,8 @@ export const inputFunc = {
             return;
         }
         const formData = new FormData(f);
-        $(".loading-sec").addClass('active');
+        // $(".loading-sec").addClass('active');
+        this.modalOpen('alert',msgCon);
         oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
         formData.append("description", document.getElementById("ir1").value);
         
@@ -125,14 +197,15 @@ export const inputFunc = {
         })
         .then(data => { 
             // alert("성공:" + data.msg);
-            $(".loading-sec").removeClass('active');
-            this.modalHidden(msgCon);
+            this.modalHide('alert');
+            this.modalResponseHidden(msgCon, 'response', 'success');
             // console.log(data);
             let idVal = data.id === ''? '':"/"+data.id;
             window.location.href = `/study${idVal}`;
         })
         .catch(err => {
             console.log("실패:", err);
+            this.modalResponseHidden('실패', 'response', 'fail');
         });
     },
 

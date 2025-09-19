@@ -33,10 +33,10 @@
                         <div class="value recruited-num-wrap flex-wrap">
                             <input type="number" name="recruited-num" required value="{{ $data['study']['max_members'] }}" placeholder="모집 인원을 입력해주세요.">
                             <div class="flex-wrap">
-                                <button onclick="APP_FUNC.inputFunc.addCount(5)" type="button">+5</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(10)" type="button">+10</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(15)" type="button">+15</button>
-                                <button onclick="APP_FUNC.inputFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(5)" type="button">+5</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(10)" type="button">+10</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(15)" type="button">+15</button>
+                                <button onclick="APP_FUNC.commonFunc.addCount(0)" type="button"><i class="xi-refresh"></i></button>
                             </div>
                         </div>
                     </li>
@@ -55,7 +55,7 @@
                                 <input type="text" class="datepicker"  id="end-date" name="end-date" value="{{ $data['study']['end_date'] }}" {{ empty($data['study']['end_date']) ?'disabled':'' }} placeholder="yyyy-mm-dd">
                             </div>
                             <div class="datetime-duration-disable">
-                                <input {{empty($data['study']['end_date']) ?'checked':''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
+                                <input {{empty($data['study']['end_date']) ?'checked':''}} onclick="APP_FUNC.commonFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
                                 <label for="durationdisable">기간 제한 없음</label>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                         <div class="value">
                             <div class="region-wrap">
                                 <div>
-                                    <input {{$data['study']['is_offline'] === 1 ? 'checked' : ''}} onclick="APP_FUNC.inputFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
+                                    <input {{$data['study']['is_offline'] === 1 ? 'checked' : ''}} onclick="APP_FUNC.commonFunc.checkDisabled(this, ['region-sel','location'])" id="is-offline" type="checkbox" name="is-offline" value="1"/>
                                     <label for="is-offline">온라인 진행</label>
                                 </div>
                                 <select class="select2-basic" id="region-sel" name="region" {{$data['study']['is_offline'] === 1 ? 'disabled' : ''}}>
@@ -99,7 +99,7 @@
         </div>
         <div class="button-con">
             <a class="cm-btn" href="{{ route('study.show', $data['study']['id']) }}">취소</a>
-            <button class="cta-btn" type="button" onclick="APP_FUNC.inputFunc.sendData(this.form,'PUT', '/{{$data['study']['id']}}')">수정하기</button>
+            <button class="cta-btn" type="button" onclick="APP_FUNC.commonFunc.sendData(this.form,'PUT', '/{{$data['study']['id']}}')">수정하기</button>
             {{-- <button type="submit">등록하기</button> --}}
         </div>
     </form>
@@ -120,6 +120,4 @@
     }
 
 </script>
-@endsection
-@section('loading-msg')
 @endsection

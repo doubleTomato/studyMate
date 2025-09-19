@@ -6,14 +6,7 @@
         @yield('content')
     </main>
     <div class="loading-sec">
-        <div class="msg">
-            @yield('loading-msg')
-            <h1><span class="msg-con">등록</span> 중 입니다.</h1>
-            <p>잠시만 기다려주세요.</p>
-            <div>
-                <i class="xi-spinner-5 xi-spin"></i>
-            </div>
-        </div>
+        @include('common.modal')
     </div>
     @include('common.footer')
     <script>
