@@ -1,8 +1,8 @@
         @php
             $today = (new DateTime()) ->setTime(0, 0);
         @endphp
-        @if(empty($study))
-            <li style="width: 100%">조회된 내역이 없습니다.</li>
+        @if($study -> count() === 0)
+            <li class="empty-list" style="width: 100%">조회된 내역이 없습니다.</li>
         @else
         @foreach($study as $key => $val)
             @php
