@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li class="{{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
-                <a href="{{route('/login')}}">
+                <a href="{{route('login')}}">
                     <span>로그인</span>
                 </a>
             </li>

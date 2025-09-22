@@ -26,14 +26,22 @@ hr{ opacity: 0.6;}
 main{ min-height: calc(100vh - 180px);}
 
 input{
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid $gray_200;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
     &:disabled, &:read-only{
         background-color: $gray_200;
         &:hover{cursor: no-drop;}
     }
-    border-radius: 5px;
-    border: 0px solid #defefe;
-    border: 1px solid $gray_300;
-    padding: 4px 10px;
+    // border-radius: 5px;
+    // border: 0px solid #defefe;
+    // border: 1px solid $gray_300;
+    // padding: 4px 10px;
     &:focus{outline: 0px solid #000; background-color: transparent; border: 2px solid #71dd9c;}
     &[type='checkbox']{
         display: none;
@@ -133,9 +141,9 @@ input{
     background: #fff;
 
     .member-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
 
         li {
             display: flex;
@@ -752,6 +760,113 @@ footer{
 
 
 
+// 로그인
+
+.login-wrap{
+     background-color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    transform: translateY(-50%);
+    margin-bottom: 0;
+    width: 400px;
+    text-align: center;
+    .login-logo {
+        max-width: 120px;
+        margin-bottom: 30px;
+    }
+    .login-info {
+        p {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .msg{ color: $main_color; font-weight: 600; font-size: 1.15em}
+    }
+
+    // form
+    .login-form 
+    { 
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            height: max-content;
+            &:hover{
+                background-color: $main_color;
+            }
+        }
+    }
+
+    .links-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+            a{
+                color: $gray_600;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        // 소셜로그인
+        .social-wrap {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: $gray_300;
+            margin: 30px 0;
+            &::before,&::after{
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid $gray_500;
+            }
+            &:not(:empty){
+                &::before{
+                    margin-right: .5em;
+                }
+                &::after{
+                    margin-left: .5em;
+                }
+            }
+            .social-login-title {
+                font-size: 14px;
+                color: $gray_600;
+                margin-bottom: 20px;
+            }
+            .social-login-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                .social-btn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: 1px solid $gray_500;
+                    color: $gray_600;
+                    font-size: 24px;
+                    text-decoration: none;
+                    transition: background-color 0.3s;
+                    &:hover{
+                         background-color: $gray_100;
+                    }
+                }
+            }
+        }
+
+}
+
+
+//== 로그인 end
 // 회원가입
 .signup-sec{
     // step

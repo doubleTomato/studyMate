@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 //페이지
 Route::get('/', function () { return view('home'); }); //home
-Route::get('/login', function () { return view('login'); }); //로그인
-Route::get('/signup', function () { return view('signup'); }); //회원가입
+Route::get('/login', function () { return view('login'); }) -> name('login') ; //로그인
+Route::get('/signup', function () { return view('signup.signup'); }) -> name('signup'); //회원가입
 Route::get('/write', function () { return view('write'); }); // 작성
 Route::get('/mypage', function () { return view('mypage'); }); // 마이페이지
 Route::get('/settings', function () { return view('settings'); }); // 설정
