@@ -70,7 +70,7 @@
                                 <select class="select2-basic" id="region-sel" name="region" {{$data['study']['is_offline'] === 1 ? 'disabled' : ''}}>
                                     <option value="">선택해주세요.</option>
                                     @foreach($data['region'] as $key => $val)
-                                    <option value="{{ $val['id'] }}" {{$data['study']['region_id'] === $key ? 'selected':''}}>{{$val['name']}}</option>
+                                    <option value="{{ $val['id'] }}" {{$data['study']['region_id'] === $val['id'] ? 'selected':''}}>{{$val['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>

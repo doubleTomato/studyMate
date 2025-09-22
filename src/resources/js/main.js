@@ -229,7 +229,8 @@ export const commonFunc = {
     
         $("#deadLine").datepicker({
             dateFormat: "yy-mm-dd",
-            showAnim: "slideDown"
+            showAnim: "slideDown",
+            minDate: new Date()
         });
     },
     // 모집인원 추가 버튼

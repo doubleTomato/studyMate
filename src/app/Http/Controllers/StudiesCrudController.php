@@ -108,22 +108,31 @@ class StudiesCrudController extends Controller
     }
 
     public function show($id){
-        $data = array();
-        $study =  Studies::where('id', $id)->first()?->toArray();
-        $category =  $this -> lookupService -> getCategories();
-        $region = $this -> lookupService -> getRegions();
-        $leader = Members::where('id', $study['owner_id'])->first()->toArray();
-        //$participantsNum = Study_members::where('study_id', $id) -> get();
-        $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') 
-        -> where('study_id', $study['id']) -> get();
-        $data = [
-            'study' => $study,
-            'category' => $category,
-            'region' => $region,
-            'leader' => $leader,
-            'participants' => $participants -> toArray() // 참여자 수
-        ];
-        return view('study.show', compact('data'));
+        // $data = array();
+        // $study =  Studies::where('id', $id)->first()?->toArray();
+        // $category =  $this -> lookupService -> getCategories();
+        // $region = $this -> lookupService -> getRegions();
+        // $leader = Members::where('id', $study['owner_id'])->first()->toArray();
+        // //$participantsNum = Study_members::where('study_id', $id) -> get();
+        // $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') 
+        // -> where('study_id', $study['id']) -> get();
+        // $data = [
+        //     'study' => $study,
+        //     'category' => $category,
+        //     'region' => $region,
+        //     'leader' => $leader,
+        //     'participants' => $participants -> toArray() // 참여자 수
+        // ];
+        // return view('study.show', compact('data'));
+
+        $study = Studies::with([
+        'category:id,title',
+        'region:id,name',
+        'leader:id,name,nickname',
+        'members:id,name,nickname'
+        ]) -> where('id',$id) -> first()?-> toArray();
+
+        return view('study.show', [ 'study' => $study ]);
     }
 
     public function edit($id){

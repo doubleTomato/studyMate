@@ -12,7 +12,7 @@
     <script>
         $(document).ready(function() {
             $('.select2-basic').select2({
-                width: 'auto'
+                width: 'resolve'
             });
         });
     </script>

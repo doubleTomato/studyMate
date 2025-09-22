@@ -1,8 +1,9 @@
 @php
     use Carbon\Carbon;
+    //dd($study);
     $today = new DateTime();
-    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline']);
-    $isClosed = $today > $deadlineDate || count($data['participants']) === $data['study']['max_members'];
+    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $study['deadline']);
+    $isClosed = $today > $deadlineDate || count($study['members']) === $study['max_members'];
 
     $d_day = $deadlineDate -> diff($today);
     $d_day_val = '';
@@ -23,10 +24,10 @@
 {{-- 스터디 모집 글 상세 --}}
 @extends('layouts.app')
 @section('content')
-{{-- dd($data['study']) --}}
+{{-- dd($study) --}}
 <section class="detail-sec">
     <div class="flex-wrap title-wrap">
-        <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $data['study']['title'] }}</h1>
+        <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $study['title'] }}</h1>
         @if(!$isClosed)
         <button type="button" class="icon-btn plus-user cta-btn">
             <i class="xi-user-plus"></i>
@@ -36,12 +37,12 @@
     </div>
     <div class="flex-wrap header-wrap">
         <div class="header-con">
-            <p><i class="xi-crown"></i><span class="leader">{{ $data['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($data['study']['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
+            <p><i class="xi-crown"></i><span class="leader">{{ $study['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($study['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
         </div>
         <div class="button-con">
             <a class="cm-btn" href="{{ route('study.index') }}">목록으로</a>
             @if(!$isClosed) 
-                <a class="cm-btn" href="{{ route('study.edit', $data['study']['id']) }}">수정하기</a>
+                <a class="cm-btn" href="{{ route('study.edit', $study['id']) }}">수정하기</a>
             @endif
         </div>
     </div>
@@ -50,7 +51,7 @@
             @method('DELETE')
             @csrf
             @if(!$isClosed)
-                <button type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'DELETE', '/{{$data['study']['id']}}')" class="cm-btn delete-btn">삭제하기</button>
+                <button type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'DELETE', '/{{$study['id']}}')" class="cm-btn delete-btn">삭제하기</button>
             @endif
         </form>
     </div>
@@ -62,26 +63,25 @@
                 <li>
                     <div class="label">카테고리</div>
                     <div class="value">
-                        {{-- $data['category'][$data['study']['category_id']] --}}
-                        {{ $data['category'][$data['study']['category_id']]['title'] }}
+                        {{ $study['category']['title'] }}
                     </div>
                 </li>
                 <li>
                     <div class="label">모집 인원</div>
                     <div class="value">
-                        <div class="participants-count">
+                        <div class="members-count participants-count">
                             <div class="progress-bar">
-                                <div class="progress" style="width: {{ (100 / $data['study']['max_members']) * count($data['participants']) }}%"></div>
+                                <div class="progress" style="width: {{ (100 / $study['max_members']) * count($study['members']) }}%"></div>
                                 <div>
-                                    <span>{{ count($data['participants']) }}</span>
+                                    <span>{{ count($study['members']) }}</span>
                                     <span>/</span>
                                     <span>
-                                        {{ $data['study']['max_members'] }}
+                                        {{ $study['max_members'] }}
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="participants-list">
+                        <div class="members-list">
                             <div>
                                 <a class="cm-btn" title="참여멤버전체보기" href="#member-lists">참여멤버전체보기</a>
                             </div>
@@ -91,17 +91,17 @@
                 <li>
                     <div class="label">모집 마감일<i class="xi-calendar"></i></div>
                     <div class="value">
-                        {{ $data['study']['deadline'] }}
+                        {{ $study['deadline'] }}
                     </div>
                 </li>
                 <li>
                     <div class="label">스터디 기간<i class="xi-calendar"></i></div>
                     <div class="value">
                         <div class="datetime-wrap">
-                            @if(!empty($data['study']['end_date']))
-                                <span>{{ $data['study']['start_date'] }}</span>
+                            @if(!empty($study['end_date']))
+                                <span>{{ $study['start_date'] }}</span>
                                 <span>~</span>
-                                <span>{{$data['study']['end_date']}}</span>
+                                <span>{{$study['end_date']}}</span>
                             @else
                                 (<label for="durationdisable">기간 제한 없음</label>)
                             @endif
@@ -112,8 +112,8 @@
                     <div class="label">지역</div>
                     <div class="value">
                         <div class="region-wrap">
-                            @if($data['study']['is_offline'] === 0)
-                                {{ $data['region'][$data['study']['region_id']]['name'] }}
+                            @if($study['is_offline'] === 0)
+                                {{ $study['region']['name'] }}
                             @else
                                 온라인 진행
                             @endif
@@ -122,14 +122,14 @@
                 </li>
                 <li>
                     <div class="label">상세 주소</div>
-                    <div class="value">{{ $data['study']['location'] }}</div>
+                    <div class="value">{{ $study['location'] }}</div>
                 </li>
             </ul>
         </div>
         <div class="write-content detail">
             <h2>2. 세부 내용</h2>
             <textarea style="width: 100%" name="ir1" id="ir1" rows="10" cols="100" readonly>
-                {{ $data['study']['description'] }}
+                {{ $study['description'] }}
             </textarea>
         </div>
         <div id="member-lists" class="write-content detail">
@@ -149,11 +149,11 @@
                         <span class="date">참가일</span>
                         <span class="actions"></span>
                     </li>
-                @foreach($data['participants'] as $key => $val)
+                @foreach($study['members'] as $key => $val)
                     <li>
                         <span class="no">{{$key+1}}</span>
-                        <div class="profile {{ $val['rank'] === '0' ? 'crown':'' }}">
-                            <img src="{{ !empty($val['profile_url']) ? asset($participants['profile_url']):asset("images/default-profile.png") }}" alt="프로필 이미지"/>
+                        <div class="profile {{ $val['pivot']['rank'] === '0' ? 'crown':'' }}">
+                            <img src="{{ !empty($val['profile_url']) ? asset($members['profile_url']):asset("images/default-profile.png") }}" alt="프로필 이미지"/>
                         </div>
                         <span class="name">{{$val['name']}}</span>
                         <span class="nickname">{{$val['nickname']}}</span>
