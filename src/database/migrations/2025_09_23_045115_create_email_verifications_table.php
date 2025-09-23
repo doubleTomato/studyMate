@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('email_verifications', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->string('email')->primary(); // email이 기본 키
+            $table->string('code'); // 인증 코드
+            $table ->timestamp('created_at')->nullable();//생성 시간
         });
     }
 

@@ -149,7 +149,7 @@ export const commonFunc = {
         $(".loading-sec .msg." + typeV).show();
         $(".loading-sec").addClass("active");
         
-    },modalResponseHidden(msg, typeV="success",state){
+    },modalResponseHidden(msg,state){
         setTimeout(() => {
             this.modalOpen('response', msg, state);
             setTimeout(() => {
