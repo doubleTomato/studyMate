@@ -7,6 +7,8 @@ use Illuminate\Validation\ValidationException;
 
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
+
 
 use App\Models\Studies;
 use App\Models\Members;
@@ -54,6 +56,7 @@ class StudiesCrudController extends Controller
     public function store(Request $request): JsonResponse
     {
         try{
+            $member_id = auth()->id(); 
             DB::beginTransaction();
             $validateData = $request -> validate([
                 'description' => 'required|string|max:1000',
@@ -68,34 +71,33 @@ class StudiesCrudController extends Controller
                 'location' =>'nullable|string|max:255'
             ]);
             $sendData = [
-            'owner_id' => 1,
-            'description' => $validateData['description'],
-            'title' => $validateData['titlename'],
-            'category_id' => $validateData['category'],
-            'region_id' => $validateData['region'] ?? null,
-            'max_members' => $validateData['recruited-num'],
-            'is_offline' => $validateData['is-offline'] ?? '0',
-            'start_date' => $validateData['start-date'],
-            'end_date' => $validateData['end-date'] ?? null,
-            'deadline' => $validateData['deadline-date'],
-            'views' => 0,
-            'location' => $validateData['location'] ?? null,
+                'owner_id' => $member_id,
+                'description' => $validateData['description'],
+                'title' => $validateData['titlename'],
+                'category_id' => $validateData['category'],
+                'region_id' => $validateData['region'] ?? null,
+                'max_members' => $validateData['recruited-num'],
+                'is_offline' => $validateData['is-offline'] ?? '0',
+                'start_date' => $validateData['start-date'],
+                'end_date' => $validateData['end-date'] ?? null,
+                'deadline' => $validateData['deadline-date'],
+                'views' => 0,
+                'location' => $validateData['location'] ?? null,
             ];
             $study = Studies::create($sendData);
             $study_mem_count = Study_members::where('study_id', $study -> id) -> count();
 
             $rank_val = $study_mem_count > 0 ? 0 : 1; // 멤버가 있을 시 일반 회원으로 저장
 
-            // rank는 우짜지...
             Study_members::create(['study_id' => $study -> id,  'member_id' => 1, 'rank' => $rank_val, 'join_datetime' => now()]);
-            
+
             DB::commit();
 
             return response()->json([
                 'msg' => '스터디가 성공적으로 저장되었습니다.',
                 'id' => $study->id
             ], 201); 
-        
+    
         }catch(Exception $err){
             return response()->json([
             'msg' => '저장에 실패했습니다. 다시 시도해주세요.',

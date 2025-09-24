@@ -20,6 +20,8 @@
         $d_day_class .= "progress";
     }
 
+
+
 @endphp
 {{-- 스터디 모집 글 상세 --}}
 @extends('layouts.app')
@@ -28,7 +30,7 @@
 <section class="detail-sec">
     <div class="flex-wrap title-wrap">
         <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $study['title'] }}</h1>
-        @if(!$isClosed)
+        @if(auth()->check() && !$isClosed && Auth::user()->id !== $study['owner_id'])
         <button type="button" class="icon-btn plus-user cta-btn">
             <i class="xi-user-plus"></i>
             <span>참여하기</span>
@@ -41,7 +43,7 @@
         </div>
         <div class="button-con">
             <a class="cm-btn" href="{{ route('study.index') }}">목록으로</a>
-            @if(!$isClosed) 
+            @if(!$isClosed && auth()->check() && Auth::user()->id === $study['owner_id']) 
                 <a class="cm-btn" href="{{ route('study.edit', $study['id']) }}">수정하기</a>
             @endif
         </div>
@@ -50,7 +52,7 @@
         <form method="POST" action="#">
             @method('DELETE')
             @csrf
-            @if(!$isClosed)
+            @if(!$isClosed && auth()->check() && Auth::user()->id === $study['owner_id'])
                 <button type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'DELETE', '/{{$study['id']}}')" class="cm-btn delete-btn">삭제하기</button>
             @endif
         </form>
@@ -159,7 +161,9 @@
                         <span class="nickname">{{$val['nickname']}}</span>
                         <span class="date">2025-09-18</span>
                         <div class="actions-btn">
+                            @if( $val['pivot']['rank'] !== '0' && auth()->check() && Auth::user()->id === $study['owner_id'])
                             <button type="button" class="cm-btn exit-btn">퇴장</button>
+                            @endif
                                 {{-- <button class="btn btn-block">차단</button> --}}
                         </div>
                     </li>
