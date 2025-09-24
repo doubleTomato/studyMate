@@ -934,6 +934,7 @@ footer{
                     max-height: 35px; height: max-content; font-size: 12px; font-weight: 600; color: $error_color;
                     position: relative; padding-left: 15px;
                     overflow: hidden;
+                        &.success{ color: $main_color_dark;}
                         &.err{
                             &::before{
                             content:"\ea2d";

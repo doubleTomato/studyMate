@@ -25,6 +25,14 @@ Route::get('/search', function () { return view('search'); }); // 검색
 Route::get('/signup', function(){ return view('signup.signup'); })->name('signup');
 Route::post('/signup', [SignupController::class, 'signup'])->name('signup.post');
 
+// 닉네임 중복확인
+Route::post('/nickname/duplicate', [SignupController::class, 'nicknameDuplicate'])->name('signup.nickname');
+
+// 이메일 인증 관련
+Route::get('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verify.email'); //이메일 인증 메일 폼
+Route::post('/email/send-code', [EmailVerificationController::class, 'sendCode'])->name('email.send.code');//메일로 코드 전송
+Route::post('/email/verify-code', [EmailVerificationController::class, 'verifyCode'])->name('email.verify.code'); // 코드 인증
+
 // 로그인
 Route::post('/login/post', [AuthController::class, 'store'])
                 ->name('login.post');
@@ -33,11 +41,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
                 ->middleware('auth')
                 ->name('logout');
 
-// 이메일 인증 관련
 
-Route::get('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verify.email'); //이메일 인증 메일 폼
-Route::post('/email/send-code', [EmailVerificationController::class, 'sendCode'])->name('email.send.code');//메일로 코드 전송
-Route::post('/email/verify-code', [EmailVerificationController::class, 'verifyCode'])->name('email.verify.code'); // 코드 인증
 
 // controller연결
 //Route::resource('/posts', [AuthController::class, 'register']);

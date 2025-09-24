@@ -56,7 +56,7 @@ $location_names = [
                 <dd>
                     <div>
                         <input id="nickname-input" class="req" type="text" value="" placeholder="이름을 입력해주세요." name="nickname"/>
-                        <button type="button">중복확인</button>
+                        <button id="nickname-duplicate-btn" type="button" onclick="nicknameDuplicate()">중복확인</button>
                     </div>
                     <span class="msg" id="nickname-msg"></span>
                 </dd>
@@ -108,7 +108,8 @@ $(document).ready(function () {
         width: '100%'
     });
 });
-    let isEmailVerified = false;
+    let isEmailVerified = false; //이메일 인증 확인
+    let nicknameDuplicated = false; //닉네임 중복확인
 
 
     const regEx = {
@@ -147,7 +148,7 @@ $(document).ready(function () {
 
 
 
-
+    // 인증메일 보내기
     function emailVerification(thisBtn){
         const emailInput = $("#email-input").val();
         console.log(!emailInput);
@@ -244,38 +245,6 @@ $(document).ready(function () {
         .catch(err => {
             APP_FUNC.commonFunc.modalResponseHidden(err.message, 'fail');
         });
-
-        //  $.ajax({
-        //     url: "{{ route('email.verify.code') }}",
-        //     method: "POST",
-        //     data: {
-        //         '_token': $('meta[name="csrf-token"]').attr('content'), 
-        //         'email': emailInput,
-        //         'code': codeInput
-        //     },
-        //     success:function(res){
-        //         isEmailVerified = true;
-        //         let is_full = true;
-        //          $("#email-msg").text(res.msg).css('color','green');
-
-        //          // 인증 성공 시 이메일, 코드 입력창, 버튼들 비활성화
-        //         $('#email-input').prop('readonly', true);
-        //         $('#code-input').prop('readonly', true);
-        //         $('.email-verification-btn').prop('disabled', true);
-        //         $('.code-verification-btn').prop('disabled', true);
-        //         $('.req').each((i, e) => {
-        //             if(!$(e).val()) is_full = false;
-        //         });
-
-        //         if(is_full){
-        //             $('#signup-send-btn').prop('disabled', false);
-        //             $('#signup-send-btn').addClass('cta-btn');
-        //         }
-                
-        //     },
-        //     error: function()
-
-        //  })
     }
 
     $('input').change((e) => {
@@ -288,100 +257,155 @@ $(document).ready(function () {
             }
             
         });
-        if(is_full && isEmailVerified){
+        if($("select[name='region']").val() === ''){
+            is_full = false;
+        }else{
+            is_full = true;
+        }
+
+        if(is_full && isEmailVerified && nicknameDuplicated){
             $('#signup-send-btn').prop('disabled', false);
             $('#signup-send-btn').addClass('cta-btn');
         }else{
             $('#signup-send-btn').prop('disabled', true);
             $('#signup-send-btn').removeClass('cta-btn');
         }
+
+    
+
     });
+    
 
-
-    function signupSend(thisBtn, f){
-        let isOk = 0;
-        $('input.req').each((i, e) => {
-            const eName = $(e).attr('name');
-            const eValue = $(e).val();
-            //console.log(eName, eValue, regEx.space.test(eValue));
-            
-            if(regEx.space.test(eValue)){
-                if(eName !== 'password'){
-                    $(`#${eName}-msg`).text('공백이 포함 될 수 없습니다.');
-                    $(`#${eName}-msg`).addClass("err");
-                }else{
-                    $("#pw-space").addClass('err');
-                }
-            }else{
-                if(eName === 'password'){
-                     $("#pw-space").removeClass('err');
-                     if(eValue.length < 8){
-                        $(`#pw-length`).addClass('err');
-                     }else {
-                        isOk += 1;
-                        $(`#pw-length`).removeClass('err');
-                     }
-                     if(!regExInputCheck(eName, eValue)){ 
-                        $(`#pw-form`).addClass('err');
+    //닉네임 중복체크
+    function nicknameDuplicate(){
+        const nickname = document.getElementById('nickname-input').value;
+        if(nickname !== ''){
+             $.ajax({
+                url:'{{ route("signup.nickname") }}',
+                method:'POST',
+                data:{
+                    '_token': $('meta[name="csrf-token"]').attr('content'), 
+                    'nickname':nickname
+                },
+                success:function(res){
+                    if(res.status !== 'success'){
+                        $("#nickname-msg").addClass("err");
+                        $("#nickname-duplicate-btn").prop("disabled", false);
+                        $("#nickname-input").prop("readonly", false);
                     }else{
-                        $(`#pw-form`).removeClass('err');
+                        nicknameDuplicated  = true;
+                        $("#nickname-msg").removeClass("err");
+                        $("#nickname-msg").addClass("success");
+                        $("#nickname-duplicate-btn").prop("disabled", true);
+                        $("#nickname-input").prop("readonly", true);
+                    }
+                    $("#nickname-msg").text(res.msg);
+
+                },
+                error: function (xhr) {
+                    const errMessage = xhr.responseJSON.message || '오류가 발생했습니다.';
+                    console.log(errMessage);
+                },
+                complete: function() {
+                }
+            });
+        }else{
+            $("#nickname-msg").text('닉네임을 입력해주세요.');
+            $("#nickname-msg").addClass("err");
+        }
+    }
+
+
+    // 회원가입
+    function signupSend(thisBtn, f){
+        if($("select[name='region']").val() === ''){
+            $("#region-msg").text('지역을 선택해주세요!');
+        }else{
+            let isOk = 0;
+            $('input.req').each((i, e) => {
+                const eName = $(e).attr('name');
+                const eValue = $(e).val();
+
+                if(regEx.space.test(eValue)){
+                    if(eName !== 'password'){
+                        $(`#${eName}-msg`).text('공백이 포함 될 수 없습니다.');
+                        $(`#${eName}-msg`).addClass("err");
+                    }else{
+                        $("#pw-space").addClass('err');
+                    }
+                }else{
+                    if(eName === 'password'){
+                         $("#pw-space").removeClass('err');
+                         if(eValue.length < 8){
+                            $(`#pw-length`).addClass('err');
+                         }else {
+                            isOk += 1;
+                            $(`#pw-length`).removeClass('err');
+                         }
+                         if(!regExInputCheck(eName, eValue)){ 
+                            $(`#pw-form`).addClass('err');
+                        }else{
+                            $(`#pw-form`).removeClass('err');
+                            isOk += 1;
+                        }
+                    }
+                    else if(!regExInputCheck(eName, eValue)){
+                        $(`#${eName}-msg`).text(regMsg[eName]);
+                        $(`#${eName}-msg`).addClass("err");
+                    }
+                    else{
+                        $(`#${eName}-msg`).text('');
+                        $(`#${eName}-msg`).removeClass("err");
                         isOk += 1;
                     }
                 }
-                else if(!regExInputCheck(eName, eValue)){
-                    $(`#${eName}-msg`).text(regMsg[eName]);
-                    $(`#${eName}-msg`).addClass("err");
-                }
-                else{
-                    $(`#${eName}-msg`).text('');
-                    $(`#${eName}-msg`).removeClass("err");
-                    //isOk = true;
-                    isOk += 1;
-                }
-            }
-        });
-
-        if($('input[name="password_confirmation"]').val() !== $("#password-input").val()){
-            $("#password-confirm-msg").text('비밀번호가 일치하지 않습니다.');
-            $("#password-confirm-msg").addClass("err");
-        }else{
-            $("#password-confirm-msg").removeClass("err");
-            isOk += 1;
-        }
-
-        if(isOk === 6 && isEmailVerified){
-            const formData = new FormData(f);
-            const sendData = Object.fromEntries(formData.entries());
-
-            fetch('{{route("signup.post")}}',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                },
-                body: JSON.stringify(sendData)
-            })
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                console.log('???',data.message);
-                 // 응답 데이터에 redirect_url이 있는지 확인
-                if (data.redirect_url) {
-                    window.location.href = data.redirect_url;
-                } else {
-                    alert("실패:" + data.message);
-                }
-                
-            })
-            .catch(err => {
-                console.error("실패:", err);
-                alert("처리 중 오류가 발생했습니다.");
             });
+
+            if($('input[name="password_confirmation"]').val() !== $("#password-input").val()){
+                $("#password-confirm-msg").text('비밀번호가 일치하지 않습니다.');
+                $("#password-confirm-msg").addClass("err");
+            }else{
+                $("#password-confirm-msg").removeClass("err");
+                isOk += 1;
+            }
+
+         
+            //console.log(isOk);
+            if(isOk === 6 && isEmailVerified && nicknameDuplicated){
+                const formData = new FormData(f);
+                const sendData = Object.fromEntries(formData.entries());
+
+                fetch('{{route("signup.post")}}',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    },
+                    body: JSON.stringify(sendData)
+                })
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        // alert("실패:" + data.message);
+                        APP_FUNC.commonFunc.modalOpen('alert-btn', "실패: " + data.message, 'btn-include');
+                    }
+
+                })
+                .catch(err => {
+                    console.error("실패:", err);
+                     APP_FUNC.commonFunc.modalOpen('alert-btn', "처리 중 오류가 발생했습니다.", 'btn-include');
+                    // alert("처리 중 오류가 발생했습니다.");
+                });
+            }else{
+                APP_FUNC.commonFunc.modalOpen('alert-btn', "입력되지 않은 항목이 있습니다. 모든 항목을 입력해주세요.", 'btn-include');
+            }
         }
     }
-//   });
 
 </script>
 @endsection

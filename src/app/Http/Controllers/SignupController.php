@@ -33,6 +33,24 @@ class SignupController extends Controller
         
         }
     }
+
+    public function nicknameDuplicate(Request $request){
+        $nickname = $request -> nickname;
+        $is_duplicate = Members::where('nickname', $nickname)->exists();
+        if($is_duplicate){
+            return response()->json([
+                'status' => 'fail',
+                'msg' => '이미 존재하는 닉네임입니다. 다른 닉네임을 사용해주세요.',
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'success',
+                'msg' => '사용할 수 있는 닉네임입니다.',
+            ]);
+        }
+    }
+
+
      protected function validator(array $data)
     {
         return Validator::make($data, [

@@ -6,7 +6,7 @@ const getDataFunc = {
     },
     getResponseData(msg, state, type=""){
         let returnData = "";
-        let msgCon = type !== 'mail'? `<span class="msg-con">${msg}</span> ${state ==='success' ? '완료':'실패'}되었습니다.${state ==='success' ? '':'다시 시도해주세요.'}`:'';
+        let msgCon = type !== 'mail'? `<span class="msg-con">${msg}</span> ${state ==='success' ? '완료':'실패'}되었습니다.${state ==='success' ? '':'다시 시도해주세요.'}`:msg;
         returnData += `
                 <p class="state-icon">
                     <i class="xi-${state === 'success' ? 'check-circle' : 'xi-error'} xi-3x"></i>
@@ -137,10 +137,10 @@ export const commonFunc = {
             closeBtn.addEventListener('click',onClose);
         });
     },
-    modalOpen(typeV ='', msg ='', state = null){
+    modalOpen(typeV ='', msg ='', state = null, type=""){
         let returnData = '';
         if(typeV === 'response'){
-            returnData = getDataFunc.getResponseData(msg, state);
+            returnData = getDataFunc.getResponseData(msg, state, type);
         }else if(typeV === 'alert'){
             returnData = getDataFunc.getAlertData(msg);
         }else if(typeV === 'confirm'){
@@ -155,11 +155,12 @@ export const commonFunc = {
         $(".loading-sec .msg." + typeV ).show();
         $(".loading-sec").addClass("active");
         
-    },modalResponseHidden(msg,state){
+    },modalResponseHidden(msg, state, type=""){
         setTimeout(() => {
-            this.modalOpen('response', msg, state);
+            this.modalOpen('response', msg, state, type);
             setTimeout(() => {
-                $(".loading-sec").removeClass("active");
+                //$(".loading-sec").removeClass("active");
+                this.modalHide('response');
             }, 1000);
         }, 1000);
     },
