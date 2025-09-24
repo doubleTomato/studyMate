@@ -8,6 +8,17 @@
     </div>
 </div>
 
+{{-- button 포함된 alert --}}
+<div class="msg alert-btn">
+    <div class="msg-con-wrap">
+    </div>
+    <div class="modal-buttons">
+        <button type="button" class="close-btn" onclick="APP_FUNC.commonFunc.modalHide('alert-btn')">
+            확인
+        </button>
+    </div>
+</div>
+
 <div class="msg response">
     <div class="msg-con-wrap">
         <p class="state-icon">

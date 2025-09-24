@@ -367,7 +367,7 @@ button, .cm-btn{
             &.active{
                 color: $main_color;
             }
-            a, span{ color: inherit; }
+            div, a, span, p, i{ color: inherit; }
             &:hover{
                 a, span{
                     color: $main_color_dark;
@@ -381,6 +381,10 @@ button, .cm-btn{
                         color: $gray_100;
                     }
                 }
+            }
+            button.logout{
+                background-color: transparent; border-width: 0px; color: $gray_100;
+                &:hover{box-shadow: none; color: $main_color_dark}
             }
         }
 }
@@ -566,6 +570,7 @@ footer{
             font-size: 20px;
             margin: 0 16px 20px 0px;
             color: $gray_600;
+            line-height: 1.6;
             .msg-con {
             color: $main_color_dark;
             font-weight: 600;

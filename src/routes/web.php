@@ -1,15 +1,15 @@
 <?php
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LookupGetInfo;
 use App\Http\Controllers\StudiesCrudController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\SignupController;
 
-use App\Http\Controllers\Auth\CustomRegisterController;
+use App\Http\Controllers\Auth\AuthController;
 
 use Illuminate\Support\Facades\Route;
+
 
 //페이지
 Route::get('/', function () { return view('home'); }); //home
@@ -23,7 +23,15 @@ Route::get('/search', function () { return view('search'); }); // 검색
 
 // 회원가입
 Route::get('/signup', function(){ return view('signup.signup'); })->name('signup');
-Route::post('/signup', [SignupController::class, 'signup'])->name('signup.signup');
+Route::post('/signup', [SignupController::class, 'signup'])->name('signup.post');
+
+// 로그인
+Route::post('/login/post', [AuthController::class, 'store'])
+                ->name('login.post');
+// 로그아웃
+Route::post('/logout', [AuthController::class, 'logout'])
+                ->middleware('auth')
+                ->name('logout');
 
 // 이메일 인증 관련
 

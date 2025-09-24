@@ -1,16 +1,17 @@
 const getDataFunc = {
-    getAlertData(msg){
+    getAlertData(msg, status = null){
         let returnData = '';
-        returnData += `<h1><span class="msg-con">${msg}</span> 중 입니다.</h1>`;
+        returnData += `<h1><span class="${!status ? 'msg-con': ''}">${msg}</span>${!status ? ' 중 입니다.': ''}</h1>`;
         return returnData
     },
-    getResponseData(msg, state){
+    getResponseData(msg, state, type=""){
         let returnData = "";
+        let msgCon = type !== 'mail'? `<span class="msg-con">${msg}</span> ${state ==='success' ? '완료':'실패'}되었습니다.${state ==='success' ? '':'다시 시도해주세요.'}`:'';
         returnData += `
                 <p class="state-icon">
                     <i class="xi-${state === 'success' ? 'check-circle' : 'xi-error'} xi-3x"></i>
                 </p>
-                <h1><span class="msg-con">${msg}</span> ${state ==='success' ? '완료':'실패'}되었습니다.${state ==='success' ? '':'다시 시도해주세요.'}</h1>
+                <h1>${msgCon}</h1>
             `;
         return returnData
     },
@@ -144,9 +145,14 @@ export const commonFunc = {
             returnData = getDataFunc.getAlertData(msg);
         }else if(typeV === 'confirm'){
             returnData = getDataFunc.getConfirmData(msg);
+        }else{
+            returnData = getDataFunc.getAlertData(msg, state);
         }
+
+
+
         $(".loading-sec .msg." + typeV + " .msg-con-wrap").html(`${returnData}`);
-        $(".loading-sec .msg." + typeV).show();
+        $(".loading-sec .msg." + typeV ).show();
         $(".loading-sec").addClass("active");
         
     },modalResponseHidden(msg,state){
@@ -205,7 +211,7 @@ export const commonFunc = {
         })
         .catch(err => {
             console.log("실패:", err);
-            this.modalResponseHidden('실패', 'response', 'fail');
+            this.modalOpen('alert-btn','실패', 'btn-include');
         });
     },
 
