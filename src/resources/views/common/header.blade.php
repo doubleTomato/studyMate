@@ -43,9 +43,20 @@
                 </a>
             </li>
             <li class="{{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
-                <a href="{{route('login')}}">
-                    <span>로그인</span>
-                </a>
+                @auth
+                <div class="flex-wrap" style="gap:10px;">
+                    <p>{{ Auth::user()->name }}님</p>
+                     <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button title="logout" class="logout" type="submit"><i class="xi-log-out"></i></button>
+                    </form>
+                </div>
+                @endauth
+    
+                @guest
+                    <a href="{{route('login')}}">로그인</a>
+                    {{-- <a href="/register">회원가입</a> --}}
+                @endguest
             </li>
         </ul>
     </div>
