@@ -55,8 +55,8 @@ Route::resource('/study',StudiesCrudController::class);
 //mypage ru
 Route::resource('/mypage',MypageCrudController::class);
 
-Route::get('/mypage/mystudy/{id}', function () { return view('mypage.mystudy'); }); // 생성 스터디 전체
-Route::get('/mypage/participation/{id}', function () { return view('mypage.participation'); }); // 참가 스터디 전체
+Route::get('/mypage/mystudy/{id}', function ($id) { return view('mypage.mystudy'); }); // 생성 스터디 전체
+Route::get('/mypage/participation/{id}', function ($id) { return view('mypage.participation'); }); // 참가 스터디 전체
 
 
 // api
