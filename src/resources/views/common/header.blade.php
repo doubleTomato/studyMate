@@ -42,15 +42,19 @@
                     <span>스터디 찾기</span>
                 </a>
             </li>
-            <li class="{{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
+            <li class="username {{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
                 @auth
                 <div class="flex-wrap" style="gap:10px;">
-                    <p>{{ Auth::user()->name }}님</p>
-                     <form method="POST" action="{{ route('logout') }}">
+                    <p class="username-user"><span>{{ Auth::user()->name }}</span><span>님</span> <i class="xi-caret-down-min"></i></p>
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button title="logout" class="logout" type="submit"><i class="xi-log-out"></i></button>
                     </form>
                 </div>
+                <ul class="mypage-dropdown">
+                    <li><a href="{{ route('mypage.index') }}">내 스터디</a></li>
+                    <li><a href="{{ route('mypage.edit', auth() -> id()) }}">내 프로필</a></li>
+                </ul>
                 @endauth
     
                 @guest

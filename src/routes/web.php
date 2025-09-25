@@ -3,8 +3,10 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LookupGetInfo;
 use App\Http\Controllers\StudiesCrudController;
+use App\Http\Controllers\MypageCrudController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\SignupController;
+use App\Http\Controllers\ImageUploadController;
 
 use App\Http\Controllers\Auth\AuthController;
 
@@ -16,7 +18,7 @@ Route::get('/', function () { return view('home'); }); //home
 Route::get('/login', function () { return view('login'); }) -> name('login') ; //로그인
 //Route::get('/signup', function () { return view('signup.step1'); }) -> name('signup'); //회원가입
 Route::get('/write', function () { return view('write'); }); // 작성
-Route::get('/mypage', function () { return view('mypage'); }); // 마이페이지
+// Route::get('/mypage', function () { return view('mypage'); }); // 마이페이지
 Route::get('/settings', function () { return view('settings'); }); // 설정
 Route::get('/search', function () { return view('search'); }); // 검색
 
@@ -41,7 +43,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
                 ->middleware('auth')
                 ->name('logout');
 
-
+// 마이페이지
+Route::post('/imageupload', [ImageUploadController::class,'updateProfile']) -> name('image.upload'); // 이미지 업로드
 
 // controller연결
 //Route::resource('/posts', [AuthController::class, 'register']);
@@ -50,6 +53,9 @@ Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 
 // study crud
 Route::resource('/study',StudiesCrudController::class);
+
+//mypage ru
+Route::resource('/mypage',MypageCrudController::class);
 
 // api
 Route::post('/studies/list', [StudyController::class, 'getOrderList']);

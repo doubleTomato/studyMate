@@ -162,8 +162,11 @@ ul.helper-list{
         font-weight: 500;
         color: #333;
         min-width: 60%;
+        textarea{width: 100%; padding: 8px; box-sizing: border-box;}
     }
 }
+
+
 
 .member-list-wrap {
     max-height: 400px;
@@ -359,7 +362,8 @@ button, .cm-btn{
             object-fit: contain;
         }
     }
-    ul{
+    div > ul{
+        height: 100%;
         display: flex;
         gap: 20px;
         li{
@@ -387,6 +391,51 @@ button, .cm-btn{
                 &:hover{box-shadow: none; color: $main_color_dark}
             }
         }
+        .username{
+            position: relative;
+            height: 100%;
+            .username-user{
+                font-size: 14px;
+                span{ 
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+            }
+            &>div{height: 100%}
+            .mypage-dropdown{
+                height: 0px;
+                overflow: hidden;
+                position: absolute;
+                min-width: 140px;
+                top: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #fff;
+                box-shadow: 1px 5px 12px $gray_300;
+                border-radius: 10px;
+                opacity: 0;
+                padding: 20px 25px;
+                box-sizing: border-box;
+                li{
+                    height: 35px;
+                    line-height: 34px;
+                    text-align: center;
+                    border-bottom: 2px solid $gray_200;
+                    a{
+                        color: $gray_600;
+                    }
+                    &:hover{
+                        a{ color: $main_color_dark; transition: color 0.2s linear; font-weight: 600;}
+                        
+                    }
+                    &:last-child{ border-bottom: 0px solid #fff;}
+                }
+            }
+            &:hover{
+                cursor: pointer;
+                .mypage-dropdown{ height: max-content; opacity: 1; transition: opacity 0.4s linear;}
+            }
+    }
 }
 .fold{ display: none;}
 
@@ -805,11 +854,39 @@ footer{
         li {height: 25px; line-height: 24px; margin-top: 1px solid #eee;}
     }
     .delete-btn-wrap{ margin-top: 20px;}
+
 }
 
 // crud layout
 
-
+.mypage-sec{
+    .image-con{
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 30px;
+        border-radius: 200px;
+        border: 1px solid $gray_400;
+        background-color: $main_color_dark;
+        overflow: hidden;
+        img{width: 100%; object-fit: cover;}
+        #profile_image_input{display: none;}
+        label{
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 35px;
+            height: 35px;
+            line-height: 30px;
+            border-radius: 35px;
+            padding: 0; text-align: center;
+            box-shadow: -1px 2px 4px 0px darken($gray_200, 30%);
+            i{ vertical-align: middle; font-size: 18px;}
+         }
+    }
+}
 
 // 로그인
 
