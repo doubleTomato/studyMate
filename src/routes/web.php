@@ -43,8 +43,6 @@ Route::post('/logout', [AuthController::class, 'logout'])
                 ->middleware('auth')
                 ->name('logout');
 
-// 마이페이지
-Route::post('/imageupload', [ImageUploadController::class,'updateProfile']) -> name('image.upload'); // 이미지 업로드
 
 // controller연결
 //Route::resource('/posts', [AuthController::class, 'register']);
@@ -56,6 +54,10 @@ Route::resource('/study',StudiesCrudController::class);
 
 //mypage ru
 Route::resource('/mypage',MypageCrudController::class);
+
+Route::get('/mypage/mystudy/{id}', function () { return view('mypage.mystudy'); }); // 생성 스터디 전체
+Route::get('/mypage/participation/{id}', function () { return view('mypage.participation'); }); // 참가 스터디 전체
+
 
 // api
 Route::post('/studies/list', [StudyController::class, 'getOrderList']);
