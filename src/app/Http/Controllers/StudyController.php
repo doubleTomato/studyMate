@@ -25,6 +25,6 @@ class StudyController extends Controller
         $study = $this->studyService->getOrderList($filters);
 
         // return response()->json($data);
-        return view('study._list', compact('study'))->render();
+        return view('common._list', compact('study'))->render();
     }
 }

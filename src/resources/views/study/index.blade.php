@@ -49,7 +49,7 @@
     </div>
     <div class="content">
         <ul id="study-list" class="list-wrap">
-            @include('study._list', ['study' => $study])
+            @include('common._list', ['study' => $study])
         </ul>
     </div>
     <div id="paginationSec" class="pagination-sec">

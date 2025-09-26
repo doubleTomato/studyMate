@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LookupGetInfo;
 use App\Http\Controllers\StudiesCrudController;
 use App\Http\Controllers\MypageCrudController;
+use App\Http\Controllers\MypageController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ImageUploadController;
@@ -55,9 +56,8 @@ Route::resource('/study',StudiesCrudController::class);
 //mypage ru
 Route::resource('/mypage',MypageCrudController::class);
 
-Route::get('/mypage/mystudy/{id}', function ($id) { return view('mypage.mystudy'); }); // 생성 스터디 전체
-Route::get('/mypage/participation/{id}', function ($id) { return view('mypage.participation'); }); // 참가 스터디 전체
-
+Route::get('/mystudy', [MypageController::class, 'myStudy'])-> name("mypage.mystudy"); // 생성 스터디 전체
+Route::get('/participation', [MypageController::class, 'participation'])-> name("mypage.participation"); // 생성 스터디 전체
 
 // api
 Route::post('/studies/list', [StudyController::class, 'getOrderList']);

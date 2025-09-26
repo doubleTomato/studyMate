@@ -52,8 +52,9 @@
                     </form>
                 </div>
                 <ul class="mypage-dropdown">
-                    <li><a href="{{ route('mypage.index') }}">내 스터디</a></li>
                     <li><a href="{{ route('mypage.edit', auth() -> id()) }}">내 프로필</a></li>
+                    <li><a href="{{ route('mypage.mystudy') }}">생성한 스터디</a></li>
+                    <li><a href="{{ route('mypage.participation') }}">참여 스터디</a></li>
                 </ul>
                 @endauth
     

@@ -10,22 +10,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
-use App\Models\Studies;
-use App\Models\Members;
-use App\Models\Study_members;
 // use App\Services\LookupDbServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use App\Models\Studies;
+use App\Models\Members;
+use App\Models\Study_members;
+use App\Services\LookupDbServices;
+
 class MypageCrudController extends Controller
 {
-    // protected LookupDbServices $lookupService;
+    protected LookupDbServices $lookupService;
 
 
-    // public function __construct(LookupDbServices $lookupService)
-    // {
-    //     $this->lookupService = $lookupService;
-    // }
+    public function __construct(LookupDbServices $lookupService)
+    {
+        $this->lookupService = $lookupService;
+    }
 
 
     public function index(Request $request) // list page

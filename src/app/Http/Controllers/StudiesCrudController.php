@@ -43,7 +43,7 @@ class StudiesCrudController extends Controller
         ->paginate(16);
 
         if ($request->ajax()) {
-            return view('study._list', compact('study'))->render();
+            return view('common._list', compact('study'))->render();
         }
 
         return view('study.index', [ 'study' => $study, 'category' => $category, 'region' => $region ]);
