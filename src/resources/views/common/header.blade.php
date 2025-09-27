@@ -59,7 +59,9 @@
                 @endauth
     
                 @guest
-                    <a href="{{route('login')}}">로그인</a>
+                    <div>
+                        <a class="login-link" href="{{route('login')}}">로그인</a>
+                    </div>
                     {{-- <a href="/register">회원가입</a> --}}
                 @endguest
             </li>

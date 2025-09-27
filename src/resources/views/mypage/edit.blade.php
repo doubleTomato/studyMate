@@ -1,3 +1,6 @@
+@php
+    ['category' => $category, 'region' => $region, 'member' => $member] = $data;
+@endphp
 @extends('layouts.app')
 @section('content')
     <section class="mypage-sec">
@@ -17,13 +20,13 @@
                         <li>
                             <div class="label">이름</div>
                             <div class="value">
-                                 <input type="text" readonly name="name" value="김하비" placeholder="">
+                                 <input type="text" readonly name="name" value="{{ $member['name'] }}" placeholder="">
                             </div>
                         </li>
                         <li>
                             <div class="label">닉네임</div>
                             <div class="value">
-                                 <input type="text" readonly name="nickname" value="영고하비" placeholder="">
+                                 <input type="text" readonly name="nickname" value="{{ $member['nickname'] }}" placeholder="">
                             </div>
                         </li>
                          <li>
@@ -31,7 +34,12 @@
                             <div class="value">
                                 <div class="region-wrap">
                                     <select class="select2-basic" id="region-sel" name="region">
-                                        <option value="">선택해주세요.</option>
+                                        <option value="">선택해주세요</option>
+                                        @foreach($region as $key => $val)
+                                            <option value="{{$val['id']}}" {{ $val['id'] == $member['region_id'] ? 'selected':''}}>
+                                                {{ $val['name'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -41,11 +49,16 @@
                             <div class="value">
                                 <select class="select2-basic" id="category-sel" name="category" required>
                                     <option value="">선택해주세요</option>
+                                    @foreach($category as $key => $val)
+                                        <option value="{{$val['id']}}" {{ $val['id'] == $member['category_id'] ? 'selected':''}}>
+                                            {{ $val['title'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </li>
                         <li>
-                            <div class="label">선호 시간대</div>
+                            <div class="label">선호 시간대<span class="helper-text">(선택)</span></div>
                             <div class="value">
                                 <select class="select2-basic" id="timeline" name="timeline-date">
                                     <option value="">무관</option>

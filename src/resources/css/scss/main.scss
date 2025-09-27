@@ -355,6 +355,7 @@ button, .cm-btn{
     background-color: $gray_600;
     color: $gray_100;
     & > div{width: 1200px; margin: 0 auto; height: 100%;}
+    .login-link{line-height: 58px;}
     .logo{
         width: 100px; height: 40px;
         img{

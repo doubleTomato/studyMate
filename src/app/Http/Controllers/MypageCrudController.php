@@ -46,22 +46,16 @@ class MypageCrudController extends Controller
 
 
     public function edit($id){
-        // $data = array();
-        // $study =  Studies::where('id', $id)->first()?->toArray();
-        // $category =  $this -> lookupService -> getCategories();
-        // $region = $this -> lookupService -> getRegions();
-        // $leader = Members::where('id', $study['owner_id'])->first()->toArray();
-        // //$participantsNum = Study_members::where('study_id', $id) -> get();
-        // $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') -> where('study_id', $study['id']) -> get();
-        // $data = [
-        //     'study' => $study,
-        //     'category' => $category,
-        //     'region' => $region,
-        //     'leader' => $leader,
-        //     'participants' => $participants -> toArray() // 참여자 수
-        // ];
-        // return view('mypage.edit', compact('data'));
-        return view('mypage.edit');
+        $data = array();
+        $member = Members::where('id', $id) -> first()->toArray();
+        $category =  $this -> lookupService -> getCategories();
+        $region = $this -> lookupService -> getRegions();
+        $data = [
+            'category' => $category,
+            'region' => $region,
+            'member' => $member,
+        ];
+        return view('mypage.edit', compact('data'));
     }
 
 
