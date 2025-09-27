@@ -60,10 +60,10 @@
                         <li>
                             <div class="label">선호 시간대<span class="helper-text">(선택)</span></div>
                             <div class="value">
-                                <select class="select2-basic" id="timeline" name="timeline-date">
-                                    <option value="">무관</option>
-                                    <option value="am">오전</option>
-                                    <option value="pm">오후</option>
+                                <select class="select2-basic" id="preferred_time_slot" name="preferred_time_slot">
+                                    <option value="any">무관</option>
+                                    <option value="morning">오전</option>
+                                    <option value="afternoon">오후</option>
                                     <option value="weekend">주말</option>
                                 </select>
                             </div>
