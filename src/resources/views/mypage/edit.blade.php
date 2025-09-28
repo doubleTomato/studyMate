@@ -1,10 +1,11 @@
 @php
     ['category' => $category, 'region' => $region, 'member' => $member] = $data;
+    $preferred_time_slot_arr = array("any" =>"무관","morning"=>"오전","afternoon"=>"오후","weekend"=>"주말");
 @endphp
 @extends('layouts.app')
 @section('content')
     <section class="mypage-sec">
-        <form method="POST" action="/study/write">
+        <form method="POST" action="#"  enctype="multipart/form-data">
             @csrf
             <div class="content-tit">
                 <div>
@@ -61,10 +62,13 @@
                             <div class="label">선호 시간대<span class="helper-text">(선택)</span></div>
                             <div class="value">
                                 <select class="select2-basic" id="preferred_time_slot" name="preferred_time_slot">
-                                    <option value="any">무관</option>
-                                    <option value="morning">오전</option>
-                                    <option value="afternoon">오후</option>
-                                    <option value="weekend">주말</option>
+                                    <!-- <option value="any">무관</option> -->
+                                    <!-- <option value="morning">오전</option> -->
+                                    <!-- <option value="afternoon">오후</option> -->
+                                    <!-- <option value="weekend">주말</option> -->
+                                    @foreach($preferred_time_slot_arr as $key => $val)
+                                        <option {{ $member['preferred_time_slot'] === $key ? 'selected':''}} value="{{$key}}">{{$val}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </li>
@@ -74,46 +78,106 @@
                                 <textarea name="self-introduce" rows="3" 
                                 placeholder="어떤 분야에 관심이 있는지, 어떤 목표를 가지고 있는지 알려주세요.
 함께하고 싶은 스터디 방식이나 자신의 장점을 어필해도 좋아요.
-자유롭게 자신을 소개해 주세요!"></textarea>
+자유롭게 자신을 소개해 주세요!">{{$member['self_introduce']}}</textarea>
                             </div>
                         </li>
                     </ul>
                 </div>
             <div class="button-con">
                 <a class="cm-btn" href="{{ route('study.index') }}">취소</a>
-                <button class="cta-btn" type="button" onclick="APP_FUNC.commonFunc.sendData(this.form, 'POST')">수정하기</button>
+                <button class="cta-btn" type="button" onclick="profileUpdate(this.form, 'PUT')">수정하기</button>
                 {{-- <button type="submit">등록하기</button> --}}
             </div>
         </form>
     </section>
     <script>
-    // 1. id로 HTML 요소들을 가져옵니다.
     const imageInput = document.getElementById('profile_image_input');
     const imagePreview = document.getElementById('image_preview');
 
-    // 2. 파일 인풋(imageInput)에 'change' 이벤트가 발생했을 때 실행될 함수를 설정합니다.
     imageInput.addEventListener('change', (event) => {
-        // 사용자가 선택한 파일을 가져옵니다.
         const file = event.target.files[0];
 
-        // 파일이 선택되었는지 확인합니다.
         if (file) {
-            // FileReader 객체를 생성합니다.
             const reader = new FileReader();
 
-            // 파일 읽기가 완료되었을 때 실행될 콜백 함수를 정의합니다.
             reader.onload = (e) => {
-                // 읽어온 파일 데이터를 이미지 미리보기(imagePreview)의 src 속성에 할당합니다.
                 imagePreview.src = e.target.result;
             };
 
-            // FileReader가 파일을 읽도록 지시합니다.
-            // 파일을 'Data URL' 형태로 읽어옵니다.
             reader.readAsDataURL(file);
         } else {
-            // 파일 선택이 취소된 경우, 기본 이미지로 되돌릴 수 있습니다.
             imagePreview.src = "/images/default-profile.png";
         }
     });
+
+    async function profileUpdate(f, methodType){
+        // if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
+        // if(methodType === 'DELETE' && !(await APP_FUNC.commonFunc.confirmOpen())){
+        //     return;
+        // }
+        // if (!f.checkValidity()) {
+        //     alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+        //     return;
+        // }
+        // if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
+        //     alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
+        //     return;
+        // }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
+        //     alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
+        //     return;
+        // }
+        const formData = new FormData(f);
+        
+
+        const categoryId = $('#category-sel').val(); 
+        const regionId = $('#region-sel').val();  
+        const preferredTimeSlot = $('#preferred_time_slot').val();  
+        
+        console.log(categoryId, regionId);
+
+        if (categoryId) {
+            formData.set('category', categoryId);
+        }
+        if (regionId) {
+            formData.set('region', 3);
+        }
+        if (preferredTimeSlot) {
+            formData.set('preferred_time_slot', preferredTimeSlot);
+        }
+
+
+
+        // $(".loading-sec").addClass('active');
+        APP_FUNC.commonFunc.modalOpen('alert','프로필이 수정되는 중입니다.');
+        // formData.append('_method', 'PUT');/
+        // const sendData = Object.fromEntries(formData.entries());
+        fetch('/mypage/'+{{auth() -> id()}},{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            // body: JSON.stringify(sendData)
+            body: formData
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => { 
+            // alert("성공:" + data.msg);
+            APP_FUNC.commonFunc.modalHide('alert');
+            APP_FUNC.commonFunc.modalResponseHidden('프로필 수정이', 'response', 'success');
+            // console.log(data);
+            let idVal = data.id === ''? '':"/"+data.id;
+            // window.location.href = `/mypage${idVal}/edit`;
+        })
+        .catch(err => {
+            console.log("실패:", err);
+            APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
+        });
+    }
+
+
 </script>
 @endsection

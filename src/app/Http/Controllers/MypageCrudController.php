@@ -32,15 +32,6 @@ class MypageCrudController extends Controller
 
     public function index(Request $request) // list page
     {
-        // $study = Studies::with([
-        // 'category:id,title',
-        // 'region:id,name',
-        // 'leader:id,name,nickname',
-        // 'members:id,name,nickname'
-        // ]) -> where('id',$id) -> first()?-> toArray();
-
-       
-        // return view('mypage.index', [ 'study' => $study, 'category' => $category, 'region' => $region ]);
         return view('mypage.index');
     }
 
@@ -59,41 +50,37 @@ class MypageCrudController extends Controller
     }
 
 
-    public function update(Request $request, Studies $study): JsonResponse
+    public function update(Request $request, Members $mypage): JsonResponse
     {
+
+        dd($request->all());
+
         try{
             $validateData = $request -> validate([
-                'description' => 'required|string|max:1000',
-                'titlename' => 'required|string|max:255',
-                'category'=>'required|integer|min:0',
-                'region'=>'nullable|integer|min:0',
-                'recruited-num' => 'required|integer|min:0',
-                'is-offline' => 'nullable|integer|min:0',
-                'start-date' => 'required|date_format:Y-m-d',
-                'end-date' => 'nullable|date_format:Y-m-d',
-                'deadline-date' => 'required|date_format:Y-m-d',
-                'location' =>'nullable|string|max:255'
+                'self-introduce' => 'nullable|string',
+                'category'=>'nullable|integer|min:0',
+                'region'=>'required|integer|min:0',
+                'preferred_time_slot' =>'nullable|string|max:255',
+                'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ], [], $request->all());
             $sendData = [
-            'description' => $validateData['description'],
-            'title' => $validateData['titlename'],
-            'category_id' => $validateData['category'],
-            'region_id' => $validateData['region'] ?? null,
-            'max_members' => $validateData['recruited-num'],
-            'is_offline' => $validateData['is-offline'] ?? 0,
-            'start_date' => $validateData['start-date'],
-            'end_date' => $validateData['end-date'] ?? null,
-            'deadline' => $validateData['deadline-date'],
-            'location' => $validateData['location'] ?? null,
+            'self_introduce' => $validateData['self-introduce'],
+            'preferred_time_slot' => $validateData['preferred_time_slot'] ?? 'any',
+            'category_id' => $validateData['category'] ?? null,
+            'region_id' => $validateData['region'],
             ];
 
-            logger()->info('update 호출, $study 값:', ['study' => $study -> id]);
-            $this_study = Studies::find($study -> id);
-            $this_study -> update( $sendData );
 
+            $this_mem = Members::find($mypage -> id);
+            $this_mem -> update($sendData);
+
+
+            // if($request->hasFile('profile_image')){
+                $this -> updateProfile($request);
+            // }
             return response()->json([
-                'msg' => '스터디가 성공적으로 수정되었습니다.',
-                'id' => $this_study->id
+                'msg' => '프로필이 성공적으로 수정되었습니다.',
+                'id' => $this_mem->id
             ], 201); 
         
         }
@@ -157,7 +144,7 @@ class MypageCrudController extends Controller
         
 
             $user = Auth::user();
-            $user->profile_image_path = 'profiles/' . $fileName; // DB 컬럼에 경로 저장
+            $user->profile_url = 'profiles/' . $fileName; // DB 컬럼에 경로 저장
             $user->save();
         }
     
