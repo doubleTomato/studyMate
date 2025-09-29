@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //페이지
-// Route::get('/', [StudiesCrudController::class, 'index']); //home
-Route::get('/', function () { return view('home'); }) -> name('login') ; //로그인
+Route::get('/', [StudiesCrudController::class, 'index']); //home
 Route::get('/login', function () { return view('login'); }) -> name('login') ; //로그인
 Route::get('/write', function () { return view('write'); }); // 작성
 Route::get('/settings', function () { return view('settings'); }); // 설정
@@ -53,7 +52,8 @@ Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 Route::resource('/study',StudiesCrudController::class);
 
 //mypage ru
-Route::post('/mypage/{mypage}', [MypageCrudController::class, 'update'])->name('mypage.update.post');
+Route::post('/mypage/{mypage}', [MypageCrudController::class, 'update'])
+->name('mypage.update.post')->middleware('auth');
 Route::resource('/mypage',MypageCrudController::class);
 
 Route::get('/mystudy', [MypageController::class, 'myStudy'])-> name("mypage.mystudy"); // 생성 스터디 전체

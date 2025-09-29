@@ -22,6 +22,7 @@
                     $d_day_val .= $d_day -> format('%R%a');
                     $d_day_class = "";
                 }
+                
             @endphp
             <li class="list {{ $d_day_val === '마감' ? 'deadline':'' }}">
                 <a href="{{ route('study.show', $val->id) }}">
@@ -66,14 +67,16 @@
                             <ul class="participants-profile">
                                 <li><i class="xi-user"></i></li>
                                 @foreach($val -> members as $in_key => $in_val)
+                                
                                 <li>
+                                    <img src="{{ asset('storage/'. $in_val['profile_url']) }}" title="{{$in_val['name']}}님 프로필"/>
                                     @if($in_key > 1)
                                         <span class="xi-plus-circle-o"></span>
                                         @break
                                     @else
-                                        <span class="{{ $in_val['members_name'] }}"><i class="{{$in_val['study_member_rank'] === 0 ?? "xi-crown"}}"></i></span>
+                                        <span class="{{ $in_val['members_name'] }}"><i class="{{$in_val['study_member_rank'] === 0 ?? 'xi-crown'}}"></i></span>
                                     @endif
-                                    </li>
+                                </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -89,7 +92,7 @@
                             <span><i class="xi-eye-o"></i></span>
                             <span>{{$val['views']}}</span>
                         </p>
-                        <p class="flex-wrap left                        ">
+                        <p class="flex-wrap left">
                             <span><i class="xi-calendar"></i></span>
                             <span class="helper-text">{{$val['created_at']}}</span>
                         </p>

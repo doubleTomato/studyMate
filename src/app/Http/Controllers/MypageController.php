@@ -39,7 +39,7 @@ class MypageController extends Controller
         'category:id,title',
         'region:id,name',
         'leader:id,name',
-        'members:id,name'
+        'members:id,name,profile_url'
         ])
         ->where('owner_id',auth()->id())
         ->paginate(16);

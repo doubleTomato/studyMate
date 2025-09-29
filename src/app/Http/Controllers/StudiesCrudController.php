@@ -32,13 +32,14 @@ class StudiesCrudController extends Controller
     {
         $category =  $this -> lookupService -> getCategories();
         $region = $this -> lookupService -> getRegions();
-
+        $study = Studies::find(2);
+        $sql = $study->members()->toSql();
 
         $study = Studies::with([
         'category:id,title',
         'region:id,name',
         'leader:id,name',
-        'members:id,name'
+        'members:id,name,profile_url'
         ])
         ->paginate(16);
 
@@ -89,7 +90,7 @@ class StudiesCrudController extends Controller
 
             $rank_val = $study_mem_count > 0 ? 0 : 1; // 멤버가 있을 시 일반 회원으로 저장
 
-            Study_members::create(['study_id' => $study -> id,  'member_id' => 1, 'rank' => $rank_val, 'join_datetime' => now()]);
+            Study_members::create(['study_id' => $study -> id,  'member_id' => $member_id, 'rank' => $rank_val, 'join_datetime' => now()]);
 
             DB::commit();
 
@@ -110,28 +111,11 @@ class StudiesCrudController extends Controller
     }
 
     public function show($id){
-        // $data = array();
-        // $study =  Studies::where('id', $id)->first()?->toArray();
-        // $category =  $this -> lookupService -> getCategories();
-        // $region = $this -> lookupService -> getRegions();
-        // $leader = Members::where('id', $study['owner_id'])->first()->toArray();
-        // //$participantsNum = Study_members::where('study_id', $id) -> get();
-        // $participants = Study_members::leftjoin('members', 'study_members.member_id', '=', 'members.id') 
-        // -> where('study_id', $study['id']) -> get();
-        // $data = [
-        //     'study' => $study,
-        //     'category' => $category,
-        //     'region' => $region,
-        //     'leader' => $leader,
-        //     'participants' => $participants -> toArray() // 참여자 수
-        // ];
-        // return view('study.show', compact('data'));
-
         $study = Studies::with([
         'category:id,title',
         'region:id,name',
         'leader:id,name,nickname',
-        'members:id,name,nickname'
+        'members:id,name,nickname,profile_url'
         ]) -> where('id',$id) -> first()?-> toArray();
 
         return view('study.show', [ 'study' => $study ]);

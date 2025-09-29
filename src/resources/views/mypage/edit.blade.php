@@ -1,17 +1,25 @@
 @php
     ['category' => $category, 'region' => $region, 'member' => $member] = $data;
     $preferred_time_slot_arr = array("any" =>"무관","morning"=>"오전","afternoon"=>"오후","weekend"=>"주말");
-@endphp
+    @endphp
 @extends('layouts.app')
 @section('content')
     <section class="mypage-sec">
+       
         <form method="POST" action="#"  enctype="multipart/form-data">
             @csrf
             <div class="content-tit">
                 <div>
                     <h1>나의 프로필</h1>
                     <div class="image-con">
-                        <img id="image_preview" src="/images/default-profile.png" alt="프로필 이미지 미리보기" style="width: 200px; height: 200px; object-fit: cover;">
+                        @if ($member['profile_url'])
+                            {{-- 1. DB에 프로필 이미지 경로가 있는 경우 --}}
+                            <img id="image_preview" src="{{ asset('storage/'. $member['profile_url']) }}" alt="프로필 이미지 미리보기" style="width: 200px; height: 200px; object-fit: cover;">
+                        @else
+                            {{-- 2. DB에 프로필 이미지 경로가 없는 경우 (기본 이미지 표시) --}}
+                            <img id="image_preview" src="{{ asset('images/default-profile.png') }}" alt="기본 프로필 사진">
+                        @endif
+                        
                         <label class="cm-btn" for="profile_image_input" title="프로필 사진 선택">
                             <i class="xi-pen"></i>
                         </label>
@@ -111,20 +119,6 @@
     });
 
     async function profileUpdate(f, methodType){
-        // if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
-        // if(methodType === 'DELETE' && !(await APP_FUNC.commonFunc.confirmOpen())){
-        //     return;
-        // }
-        // if (!f.checkValidity()) {
-        //     alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
-        //     return;
-        // }
-        // if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
-        //     alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
-        //     return;
-        // }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
-        //     alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
-        //     return;
         // }
         const formData = new FormData(f);
         
@@ -139,7 +133,7 @@
             formData.set('category', categoryId);
         }
         if (regionId) {
-            formData.set('region', 3);
+            formData.set('region', regionId);
         }
         if (preferredTimeSlot) {
             formData.set('preferred_time_slot', preferredTimeSlot);
@@ -147,14 +141,11 @@
 
 
 
-        // $(".loading-sec").addClass('active');
-        APP_FUNC.commonFunc.modalOpen('alert','프로필이 수정되는 중입니다.');
-        // formData.append('_method', 'PUT');/
-        // const sendData = Object.fromEntries(formData.entries());
+        APP_FUNC.commonFunc.modalOpen('alert','프로필이 수정되는');
+        
         fetch('/mypage/'+{{auth() -> id()}},{
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
             },
@@ -165,12 +156,11 @@
             return res.json();
         })
         .then(data => { 
-            // alert("성공:" + data.msg);
             APP_FUNC.commonFunc.modalHide('alert');
-            APP_FUNC.commonFunc.modalResponseHidden('프로필 수정이', 'response', 'success');
+            APP_FUNC.commonFunc.modalResponseHidden('프로필 수정이','success', 'response');
             // console.log(data);
             let idVal = data.id === ''? '':"/"+data.id;
-            // window.location.href = `/mypage${idVal}/edit`;
+            window.location.href = `/mypage${idVal}/edit`;
         })
         .catch(err => {
             console.log("실패:", err);

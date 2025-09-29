@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Log;
 
+// 이미지 관련 외부라이브러리 intervention/image
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 
 // use App\Services\LookupDbServices;
 use Illuminate\Http\JsonResponse;
@@ -18,6 +23,7 @@ use App\Models\Studies;
 use App\Models\Members;
 use App\Models\Study_members;
 use App\Services\LookupDbServices;
+use Illuminate\Support\Facades\Auth;
 
 class MypageCrudController extends Controller
 {
@@ -53,7 +59,9 @@ class MypageCrudController extends Controller
     public function update(Request $request, Members $mypage): JsonResponse
     {
 
-        dd($request->all());
+        // dd($request->all());
+        // dd('update 메소드 실행됨', $request->all(), $request->hasFile('profile_image'));
+
 
         try{
             $validateData = $request -> validate([
@@ -75,9 +83,9 @@ class MypageCrudController extends Controller
             $this_mem -> update($sendData);
 
 
-            // if($request->hasFile('profile_image')){
+            if($request->hasFile('profile_image')){
                 $this -> updateProfile($request);
-            // }
+             }
             return response()->json([
                 'msg' => '프로필이 성공적으로 수정되었습니다.',
                 'id' => $this_mem->id
@@ -125,29 +133,37 @@ class MypageCrudController extends Controller
 
      protected function updateProfile(Request $request)
     {
-        
+        // user 정보
+        $user = Auth::user();
+
         $request->validate([
-            'profile_image' => 'nullable|image|max:10240', 
+            'profile_image' => 'nullable|image|max:10240',
         ]);
-    
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            
-            //덮어쓰기 방지
-            $fileName = time() . '.' . $image->getClientOriginalExtension();
+        // origin 파일 경로
+        $oldImagePath = $user->profile_url; 
         
-            $resizedImage = Image::make($image)->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        
-            Storage::put('public/profiles/' . $fileName, (string) $resizedImage->encode());
-        
+        //현재 파일
+        $uploadedFile = $request->file('profile_image');
 
-            $user = Auth::user();
-            $user->profile_url = 'profiles/' . $fileName; // DB 컬럼에 경로 저장
-            $user->save();
+        $fileName = $uploadedFile->hashName();
+
+        $image_manager = new ImageManager(new Driver());
+        $image = $image_manager->read($uploadedFile);
+        $image->resize(300, 300);
+
+        // 새 이미지 저장
+        Storage::put('public/profiles/' . $fileName, (string) $image->encode());
+        // test용
+        // Storage::put('public/test_folder/' . $fileName, (string) $image->encode());
+        
+        // DB에 새 이미지 경로 업데이트
+        $user->profile_url = 'profiles/' . $fileName;
+        $user->save();
+
+        // 새 이미지 성공적으로 저장 -> 기존 이미지 삭제
+        if ($oldImagePath && Storage::exists('public/' . $oldImagePath)) {
+            Storage::delete('public/' . $oldImagePath);
         }
-    
     }
-
+    
 }

@@ -204,9 +204,12 @@ ul.helper-list{
             }
             .name,.nickname{ width: 25%;}
             .profile{
-                width: 60px; height: 60px; border-radius: 100%;
-                background-color: $gray_100; object-fit: contain;
-                img{width: 100%; object-fit: contain;}
+                & >div{
+                    width: 60px; height: 60px; border-radius: 100%;
+                    background-color: $gray_100; object-fit: contain;
+                    overflow: hidden;
+                    img{width: 100%; object-fit: contain;}
+                }
                 &.crown{
                     position: relative;
                     &::after{
@@ -793,11 +796,13 @@ footer{
             height: 30px;
             border: 1px solid $gray_300;
             border-radius: 30px;
+            overflow: hidden;
             &:first-child{
                 border-width: 0px;
                 height: max-content;
                 width: max-content;
             }
+            img{width: 100%; object-fit: cover;}
         }
     }
     .participants-count{

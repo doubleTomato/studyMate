@@ -155,7 +155,9 @@
                     <li>
                         <span class="no">{{$key+1}}</span>
                         <div class="profile {{ $val['pivot']['rank'] === '0' ? 'crown':'' }}">
-                            <img src="{{ !empty($val['profile_url']) ? asset($members['profile_url']):asset("images/default-profile.png") }}" alt="프로필 이미지"/>
+                            <div>
+                                <img src="{{ !empty($val['profile_url']) ? asset('storage/'.$val['profile_url']):asset('images/default-profile.png') }}" alt="프로필 이미지"/>
+                            </div>
                         </div>
                         <span class="name">{{$val['name']}}</span>
                         <span class="nickname">{{$val['nickname']}}</span>
