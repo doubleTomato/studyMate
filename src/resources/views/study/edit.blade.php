@@ -1,7 +1,7 @@
 @php
     use Carbon\Carbon;
     $today = new DateTime();
-    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline']);
+    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $data['study']['deadline_date']);
     $isClosed = $today > $deadlineDate || count($data['participants']) === $data['study']['max_members'];
 @endphp
 {{-- 스터디 모집 글 수정 --}}
@@ -43,7 +43,7 @@
                     <li>
                         <div class="label">모집 마감일<i class="xi-calendar"></i></div>
                         <div class="value">
-                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline'] }}" placeholder="yyyy-mm-dd">
+                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="{{ $data['study']['deadline_date'] }}" placeholder="yyyy-mm-dd">
                         </div>
                     </li>
                     <li>

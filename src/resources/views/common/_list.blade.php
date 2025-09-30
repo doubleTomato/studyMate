@@ -6,7 +6,7 @@
         @else
         @foreach($study as $key => $val)
             @php
-                $deadlineDate = DateTime::createFromFormat('Y-m-d',  $val['deadline']) ->setTime(0, 0);;
+                $deadlineDate = DateTime::createFromFormat('Y-m-d',  $val['deadline_date']) ->setTime(0, 0);;
                 $d_day = $deadlineDate -> diff($today);
                 $d_day_val = 'D';
                 $d_day_class = "cm-label ";
@@ -24,7 +24,7 @@
                 }
                 
             @endphp
-            <li class="list {{ $d_day_val === '마감' ? 'deadline':'' }}">
+            <li class="list {{ $d_day_val === '마감' ? 'deadline_date':'' }}">
                 <a href="{{ route('study.show', $val->id) }}">
                     <div class="flex-wrap">
                         <p class="list-tit" title="{{$val['title']}}">
@@ -32,7 +32,7 @@
                         </p>
                         <div class="list-deadline">
                             <span class="{{$d_day_class}}">{{$d_day_val}}</span>
-                            <span class="helper-text">({{ $val['deadline'] }})</span>
+                            <span class="helper-text">({{ $val['deadline_date'] }})</span>
                         </div>
                     </div>
 

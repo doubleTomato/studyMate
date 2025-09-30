@@ -160,7 +160,7 @@
             APP_FUNC.commonFunc.modalResponseHidden('프로필 수정이','success', 'response');
             // console.log(data);
             let idVal = data.id === ''? '':"/"+data.id;
-            window.location.href = `/mypage${idVal}/edit`;
+           // window.location.href = `/mypage${idVal}/edit`;
         })
         .catch(err => {
             console.log("실패:", err);

@@ -30,7 +30,7 @@ class StudyService
 
         // 진행 상태 (진행중)
         if (!empty($filters['active']) && $filters['active'] === 'true') {
-            $query->whereDate('deadline', '>=', now());
+            $query->whereDate('deadline_date', '>=', now());
             Log::info('필터값 확인:', ['log' => 'active']);
         }
 
@@ -49,8 +49,8 @@ class StudyService
             case 'popular': // 인기순
                 $query->orderBy('views', 'desc');
                 break;
-            case 'deadline': // 마감 임박 순
-                $query->orderBy('deadline', 'desc');
+            case 'deadline_date': // 마감 임박 순
+                $query->orderBy('deadline_date', 'desc');
                 break;
             case 'oldest': // 오래된 순
                 $query->orderBy('created_at', 'asc');

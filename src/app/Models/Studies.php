@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Category;
+use App\Models\Categories;
 use App\Models\Regions;
 use App\Models\Members;
 use App\Models\Study_members;
@@ -15,7 +15,7 @@ class Studies extends Model
     // 1:1
     // category
     public function category(){
-        return $this -> belongsTo(Category::class);
+        return $this -> belongsTo(Categories::class);
     }
     //지역
     public function region(){
@@ -54,7 +54,7 @@ class Studies extends Model
         'end_date',
         'views',
         'max_members',
-        'deadline'
+        'deadline_date'
     ];
 
     protected $casts = [

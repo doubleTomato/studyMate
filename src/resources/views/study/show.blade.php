@@ -2,7 +2,7 @@
     use Carbon\Carbon;
     //dd($study);
     $today = new DateTime();
-    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $study['deadline']);
+    $deadlineDate = DateTime::createFromFormat('Y-m-d',  $study['deadline_date']);
     $isClosed = $today > $deadlineDate || count($study['members']) === $study['max_members'];
 
     $is_participation_arr = array_column($study['members'], 'id');
@@ -98,7 +98,7 @@
                 <li>
                     <div class="label">모집 마감일<i class="xi-calendar"></i></div>
                     <div class="value">
-                        {{ $study['deadline'] }}
+                        {{ $study['deadline_date'] }}
                     </div>
                 </li>
                 <li>

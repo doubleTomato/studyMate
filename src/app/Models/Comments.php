@@ -17,14 +17,15 @@ class Comments extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'post_id',
+        'study_post_id',
         'user_id',
+        'parent_id',
         'content',
-        'type',
+        'status',
     ];
 
     protected $casts = [
-        'post_id' => 'integer',
+        'study_post_id' => 'integer',
         'user_id' => 'integer',
     ];
 

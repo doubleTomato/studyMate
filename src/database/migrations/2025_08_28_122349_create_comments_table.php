@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('study_post_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('parent_id')->nullable()->default(NULL);//부모 댓글 기본 null, 값이 있음 대댓글
             $table->text('content');
-            $table->enum('type', ['post', 'notice']);
+            $table->enum('status', ['active', 'd_by_user', 'd_by_leader', 'd_by_admin']);
             $table->timestamps();
 
         });

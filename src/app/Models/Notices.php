@@ -1,14 +1,14 @@
 <?php
-
+// 공지
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Posts extends Model
+class Notices extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    protected $table = 'notices';
 
     // pk
     protected $primaryKey = 'id';
@@ -21,10 +21,10 @@ class Posts extends Model
         'member_id',
         'title',
         'content',
+        'is_crucial'
     ];
 
     protected $casts = [
-        'checked_datetime' => 'datetime'
     ];
 
     public $timestamaps = false;

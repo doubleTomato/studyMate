@@ -32,8 +32,8 @@ class StudiesCrudController extends Controller
     {
         $category =  $this -> lookupService -> getCategories();
         $region = $this -> lookupService -> getRegions();
-        $study = Studies::find(2);
-        $sql = $study->members()->toSql();
+        // $study = Studies::find(2);
+        // $sql = $study->members()->toSql();
 
         $study = Studies::with([
         'category:id,title',
@@ -81,7 +81,7 @@ class StudiesCrudController extends Controller
                 'is_offline' => $validateData['is-offline'] ?? '0',
                 'start_date' => $validateData['start-date'],
                 'end_date' => $validateData['end-date'] ?? null,
-                'deadline' => $validateData['deadline-date'],
+                'deadline_date' => $validateData['deadline-date'],
                 'views' => 0,
                 'location' => $validateData['location'] ?? null,
             ];
@@ -96,12 +96,14 @@ class StudiesCrudController extends Controller
 
             return response()->json([
                 'msg' => '스터디가 성공적으로 저장되었습니다.',
+                'state' => 'success',
                 'id' => $study->id
             ], 201); 
     
         }catch(Exception $err){
             return response()->json([
             'msg' => '저장에 실패했습니다. 다시 시도해주세요.',
+            'state' => 'fail',
             'err_msg' => $err->getMessage()
         ], 500);
 
@@ -164,7 +166,7 @@ class StudiesCrudController extends Controller
             'is_offline' => $validateData['is-offline'] ?? 0,
             'start_date' => $validateData['start-date'],
             'end_date' => $validateData['end-date'] ?? null,
-            'deadline' => $validateData['deadline-date'],
+            'deadline_date' => $validateData['deadline-date'],
             'location' => $validateData['location'] ?? null,
             ];
 

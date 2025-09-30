@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('notices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('study_id');
             $table->unsignedBigInteger('member_id');
             $table->string('title',255);
-            $table->text('content');
+            $table->boolean('is_crucial')->default(false)->comment("고정여부");
             $table->timestamps();
 
         });

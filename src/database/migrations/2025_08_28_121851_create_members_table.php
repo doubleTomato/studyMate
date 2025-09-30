@@ -14,15 +14,20 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->string('password', 255);
-            $table->string('nickname', 50)->default('');
+            $table->string('nickname', 50);
             $table->string('email', 255);
-            $table->string('location', 100)->default('');
+            $table->string('password', 255);
+            $table->integer('region_id');
+            $table->integer('category_id')->nullable();
+            $table->enum('preferred_time_slot', ['any', 'morning', 'afternoon', 'weekend'])
+            ->default('any')
+            ->comment('선호 시간대');
+            $table->text('self_introduce')->nullable();
             $table->string('profile_url', 2048)->nullable();
-            $table->string('remember_token', 100);
+            $table->string('remember_token', 100)->nullable();
             $table->string('provider', 100)->nullable()->default('');
             $table->string('provider_id', 255)->nullable()->default('');
-            $table->dateTime('email_verified_datetime')->nullable();
+            $table->dateTime('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

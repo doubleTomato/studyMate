@@ -31,14 +31,13 @@ class Members extends Authenticatable implements MustVerifyEmail
         'self_introduce',
         'profile_url',
         'remember_token',
-        'email_verified_datetime',
+        'email_verified_at',
         'provider',
         'provider_id'
     ];
 
     protected $attributes = [
         'nickname' => '',
-        'location' => '',
         'provider' => '',
         'provider_id' => ''
     ];
