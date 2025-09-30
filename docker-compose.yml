@@ -11,6 +11,7 @@ services:
     volumes:
       - ./src:/var/www/html:cached
       - ./storage:/var/www/html/storage
+      - ./src/public:/var/www/html/public
     networks:
       - study-mate-network
     depends_on:
@@ -33,6 +34,7 @@ services:
       - "8080:80"
     volumes:
       - ./src:/var/www/html:cached
+      - ./storage:/var/www/html/storage
       - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - study-mate-network

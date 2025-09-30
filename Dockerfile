@@ -24,7 +24,10 @@ RUN docker-php-ext-install pdo_mysql
 
 RUN docker-php-ext-install bcmath opcache
 RUN docker-php-ext-install exif
-RUN docker-php-ext-install gd
+RUN docker-php-ext-configure gd \
+    --with-jpeg \
+    --with-freetype \
+ && docker-php-ext-install gd
 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
