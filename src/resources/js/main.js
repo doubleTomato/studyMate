@@ -204,11 +204,15 @@ export const commonFunc = {
         })
         .then(data => { 
             // alert("성공:" + data.msg);
-            this.modalHide('alert');
-            this.modalResponseHidden(msgCon, 'response', 'success');
-            // console.log(data);
-            let idVal = data.id === ''? '':"/"+data.id;
-            window.location.href = `/study${idVal}`;
+            if(data.state === 'success'){
+                this.modalHide('alert');
+                this.modalResponseHidden(data.msg, 'response', 'success');
+                console.log(data);
+                let idVal = data.id === ''? '':"/"+data.id;
+                window.location.href = `/study${idVal}`;
+            }else{
+                this.modalOpen('alert-btn',data.msg, 'btn-include');
+            }
         })
         .catch(err => {
             console.log("실패:", err);
