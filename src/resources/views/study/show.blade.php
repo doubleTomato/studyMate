@@ -7,7 +7,7 @@
 
     $is_participation_arr = array_column($study['members'], 'id');
 
-    $is_participation = in_array(Auth::user()->id, $is_participation_arr);
+    $is_participation = auth()->check() ? in_array(Auth::user()->id, $is_participation_arr):false;
     
 
     $d_day = $deadlineDate -> diff($today);
@@ -25,7 +25,7 @@
         $d_day_class .= "progress";
     }
 
-
+    //dd(Auth::user());
 
 @endphp
 {{-- 스터디 모집 글 상세 --}}
@@ -176,6 +176,80 @@
                 @endforeach
             </table>
             </div>
+        </div>
+        <div class="write-content detail comments">
+            <div class="my-comments-wrap">
+                <div class="flex-wrap">
+                    <h2>댓글</h2>
+                    <p><i class="xi-eye-o"></i> <span>10</span></p>
+                </div>
+                <div class="flex-wrap my-comments">
+                    <div>
+                        <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                    </div>
+                    <div>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <div class="flex-wrap right my-comments-buttons">
+                    <button type="button">댓글 등록</button>
+                </div>
+            </div>
+            <ul class="comments-list">
+                <li>
+                    <div class="comments-title flex-wrap">
+                        <div class="comments-info flex-wrap">
+                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                            <span class="name">{{Auth::user()-> nickname}}</span>
+                            <span class="create-date">{{Auth::user()-> created_at}}</span>
+                        </div>
+                        <div class="comments-buttons">
+                            <span>수정</span>
+                            <span>삭제</span>
+                            <span>답글</span>
+                        </div>
+                    </div>
+                    <div class="comments-con">
+                        <pre>훙냥냐?하지마라냐</pre>
+                    </div>
+                    <ul class="comments-in-list">
+                        <li>
+                            <div class="my-comments-wrap">
+                                <div class="flex-wrap">
+                                    <h2>댓글</h2>
+                                </div>
+                                <div class="flex-wrap my-comments">
+                                    <div>
+                                        <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                    </div>
+                                    <div>
+                                        <textarea></textarea>
+                                    </div>
+                                </div>
+                                <div class="flex-wrap right my-comments-buttons">
+                                    <button type="button">답글 등록</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="comments-title flex-wrap">
+                                <div class="comments-info flex-wrap">
+                                    <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                    <span class="name">{{Auth::user()-> nickname}}</span>
+                                    <span class="create-date">{{Auth::user()-> created_at}}</span>
+                                </div>
+                                <div class="comments-buttons">
+                                    <span>수정</span>
+                                    <span>삭제</span>
+                                </div>
+                            </div>
+                            <div class="comments-con">
+                                <pre>답글 이야</pre>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </section>

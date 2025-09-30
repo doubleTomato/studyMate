@@ -1,3 +1,9 @@
+@if(!auth()->check())
+    <script>
+        alert("로그인이 필요한 페이지 입니다.");
+        window.location.href = `/login`;
+    </script>
+@endif
 {{-- 스터디 모집 글 생성 --}}
 @extends('layouts.app')
 @section('content')

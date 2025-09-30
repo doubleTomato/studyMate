@@ -1,6 +1,17 @@
+
 {{-- 스터디 모집 글 생성 --}}
 @extends('layouts.app')
 @section('content')
+@if(!auth()->check())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            APP_FUNC.commonFunc.modalOpen('alert-btn','로그인이 필요한 페이지 입니다.','btn-include');
+            setTimeout(() => {
+                window.location.href = `/login`;
+            }, 2000);
+        });
+    </script>
+@endif
 <section class="write-sec">
     <form method="POST" action="/study/write">
         @csrf
