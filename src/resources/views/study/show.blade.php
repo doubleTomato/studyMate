@@ -5,6 +5,11 @@
     $deadlineDate = DateTime::createFromFormat('Y-m-d',  $study['deadline']);
     $isClosed = $today > $deadlineDate || count($study['members']) === $study['max_members'];
 
+    $is_participation_arr = array_column($study['members'], 'id');
+
+    $is_participation = in_array(Auth::user()->id, $is_participation_arr);
+    
+
     $d_day = $deadlineDate -> diff($today);
     $d_day_val = '';
     $d_day_class = "cm-label ";
@@ -30,8 +35,8 @@
 <section class="detail-sec">
     <div class="flex-wrap title-wrap">
         <h1><span class="{{ $d_day_class }}"> {{ $d_day_val }}</span> {{ $study['title'] }}</h1>
-        @if(auth()->check() && !$isClosed && Auth::user()->id !== $study['owner_id'])
-        <button type="button" class="icon-btn plus-user cta-btn">
+        @if(auth()->check() && !$isClosed && Auth::user()->id !== $study['owner_id']&&!$is_participation)
+        <button onclick="participationStudy({{$study['id']}})" type="button" class="icon-btn plus-user cta-btn">
             <i class="xi-user-plus"></i>
             <span>참여하기</span>
         </button>
@@ -136,12 +141,11 @@
         </div>
         <div id="member-lists" class="write-content detail">
             <h2>3. 참여 멤버</h2>
-            
-            <ul class="tabs member-tab-menu flex-wrap left">
+            {{--<ul class="tabs member-tab-menu flex-wrap left">
                 <li class="tab active">기본 멤버</li>
                 <li class="tab">대기 멤버</li>
-            </ul>
-            <div class="member-list-wrap">
+            </ul>--}}
+            <div class="member-list-wrap scroll-box" style="max-height: 300px">
                 <ul class="member-list">
                     <li class="title">
                         <span class="no">No</span>
@@ -189,6 +193,34 @@
         }
     });
 
+
+    function participationStudy(studyId){
+        fetch(`/study/participation/${studyId}`,{
+            method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                },
+                //: JSON.stringify(dataToSend)
+        })
+        .then(res => {
+            if(!res.ok){
+                throw new Error("서버 에러 상태코드: "+res.status);
+            }
+            return res.json();
+        })
+        .then(data => {
+            APP_FUNC.commonFunc.modalOpen('alert-btn',data.msg,'btn-include');
+            setTimeout(() => {
+                window.location.reload();
+                console.log('3초가 지나서 꺼졌습니다!');
+            }, 1000);
+        })
+        .catch(err => {
+            APP_FUNC.commonFunc.modalResponseHidden(err.message, 'fail');
+        });
+    }
 </script>
 
 @endsection

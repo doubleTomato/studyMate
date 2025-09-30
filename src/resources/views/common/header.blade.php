@@ -45,7 +45,7 @@
             <li class="username {{ $route_name === 'mypage.profile' ? 'active':'' }}"> 
                 @auth
                 <div class="flex-wrap" style="gap:10px;">
-                    <p class="username-user"><span>{{ Auth::user()->name }}</span><span>님</span> <i class="xi-caret-down-min"></i></p>
+                    <p class="username-user"><span>{{ Auth::user()->nickname }}</span><span>님</span> <i class="xi-caret-down-min"></i></p>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button title="logout" class="logout" type="submit"><i class="xi-log-out"></i></button>

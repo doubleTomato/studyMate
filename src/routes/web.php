@@ -60,4 +60,6 @@ Route::get('/mystudy', [MypageController::class, 'myStudy'])-> name("mypage.myst
 Route::get('/participation', [MypageController::class, 'participation'])-> name("mypage.participation"); // 생성 스터디 전체
 
 // api
-Route::post('/studies/list', [StudyController::class, 'getOrderList']);
+Route::post('/studies/list', [StudyController::class, 'getOrderList']); // 정렬관련
+Route::post('/study/participation/{study_id}', [StudyController::class, 'participationStudy'])
+->name("study.participation"); //참여하기

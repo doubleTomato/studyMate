@@ -90,6 +90,25 @@ input{
     transform: translateY(-50%);
     right: 9px;
 }
+
+.scroll-box{
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+        width: 10px;
+    }
+    &::-webkit-scrollbar-track{
+        background: $gray_200;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $gray_400; /* 핸들의 색상 */
+      border-radius: 5px; /* 핸들의 모서리 둥글게 */
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: $gray_500; /* 호버 시 핸들 색상 변경 */
+    }
+}
+
 .top-btn{
     position: fixed;
     bottom: 100px;
@@ -174,7 +193,7 @@ ul.helper-list{
     border: 1px solid $gray_300;
     border-radius: 12px;
     background: #fff;
-
+    position: relative;
     .member-list {
         list-style: none;
         margin: 0;
@@ -196,6 +215,11 @@ ul.helper-list{
                 font-weight: 600;
                 color: #555;
                 background: $gray_100;
+                position: sticky;
+                top:0;
+                z-index: 10;
+                min-height: auto;
+                padding: 20px 10px;
             }
             span,div {
                 display: flex;
