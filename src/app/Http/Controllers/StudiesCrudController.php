@@ -11,20 +11,25 @@ use Illuminate\Support\Facades\Log;
 
 
 use App\Models\Studies;
+use App\Models\Comments;
 use App\Models\Members;
 use App\Models\Study_members;
 use App\Services\LookupDbServices;
+use App\Services\StudyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StudiesCrudController extends Controller
 {
     protected LookupDbServices $lookupService;
+    protected StudyService $studyService;
 
 
-    public function __construct(LookupDbServices $lookupService)
+
+    public function __construct(LookupDbServices $lookupService, StudyService $studyService)
     {
         $this->lookupService = $lookupService;
+        $this->studyService = $studyService;
     }
 
 
@@ -120,7 +125,10 @@ class StudiesCrudController extends Controller
         'members:id,name,nickname,profile_url'
         ]) -> where('id',$id) -> first()?-> toArray();
 
-        return view('study.show', [ 'study' => $study ]);
+        $comments = Comments::where("study_post_id",$id)->orderBy('created_at', 'asc') -> get();
+
+        $comments_tree = $this->studyService->buildTree($comments);
+        return view('study.show', [ 'study' => $study, 'comments' => $comments_tree ]);
     }
 
     public function edit($id){

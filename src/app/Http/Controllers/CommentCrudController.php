@@ -19,7 +19,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-use App\Models\Studies;
+use App\Models\Comments;
 use App\Models\Members;
 use App\Models\Study_members;
 use App\Services\LookupDbServices;
@@ -29,14 +29,44 @@ class CommentCrudController extends Controller
 {
     protected LookupDbServices $lookupService;
 
-
     public function __construct(LookupDbServices $lookupService)
     {
         $this->lookupService = $lookupService;
     }
 
     public function store(Request $request, Members $mypage): JsonResponse {
-        
+         try{
+            $member_id = auth()->id();
+            $validateData = $request -> validate([
+                'study_id' => 'required|integer|min:0',
+                'comments' => 'required|string|max:1000',
+                'parent_id' => 'nullable|integer|min:0',
+            ]);
+            $sendData = [
+                'study_post_id' => $validateData['study_id'],
+                'user_id' => $member_id,
+                'parent_id'=>$validateData['parent_id'] ?? null,
+                'content' => $validateData['comments'],
+                'status' => 'active'
+            ];
+
+            Comments::create($sendData);
+
+            return response()->json([
+                'msg' => '댓글이 성공적으로 저장되었습니다.',
+                'state' => 'success',
+            ], 201); 
+    
+        }catch(Exception $err){
+            return response()->json([
+            'msg' => '저장에 실패했습니다. 다시 시도해주세요.',
+            'state' => 'fail',
+            'err_msg' => $err->getMessage()
+        ], 500);
+
+        }
+
+
     }
 
 

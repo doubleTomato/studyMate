@@ -179,24 +179,67 @@
         </div>
         <div class="write-content detail comments">
             <div class="my-comments-wrap">
-                <div class="flex-wrap">
-                    <h2>댓글</h2>
-                    <p><i class="xi-eye-o"></i> <span>10</span></p>
-                </div>
-                <div class="flex-wrap my-comments">
-                    <div>
-                        <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                <form action="#" method="POST">
+                    <div class="flex-wrap">
+                        <h2>댓글</h2>
+                        <p><i class="xi-eye-o"></i> <span>10</span></p>
                     </div>
-                    <div>
-                        <textarea></textarea>
+                    <div class="flex-wrap my-comments">
+                        <div>
+                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                        </div>
+                        <div>
+                            <textarea name="comments"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="flex-wrap right my-comments-buttons">
-                    <button type="button">댓글 등록</button>
-                </div>
+                    <div class="flex-wrap right my-comments-buttons">
+                        <button onclick="formSend(this.form, 'POST')" type="button">댓글 등록</button>
+                    </div>
+                </form>
             </div>
             <ul class="comments-list">
-                <li>
+                @foreach($comments as $key => $val)
+                    <li>
+                        <div class="comments-title flex-wrap">
+                            <div class="comments-info flex-wrap">
+                                <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                <span class="name">{{Auth::user()-> nickname}}</span>
+                                <span class="create-date">{{Auth::user()-> created_at}}</span>
+                            </div>
+                            <div class="comments-buttons">
+                                <span>수정</span>
+                                <span>삭제</span>
+                                <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
+                            </div>
+                        </div>
+                        <div class="comments-con">
+                            <textarea readonly name="reply-{{$val['id'].$key}}" class="reply">{{$val['content']}}</textarea>
+                        </div>
+                        @if(!empty($val->children))
+                            <ul class="comments-in-list">
+                            @foreach($val->children as $in_key => $in_val)
+                                <li>
+                                    <div class="comments-title flex-wrap">
+                                        <div class="comments-info flex-wrap">
+                                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                            <span class="name">{{Auth::user()-> nickname}}</span>
+                                            <span class="create-date">{{Auth::user()-> created_at}}</span>
+                                        </div>
+                                        <div class="comments-buttons">
+                                            <span>수정</span>
+                                            <span>삭제</span>
+                                        </div>
+                                    </div>
+                                    <div class="comments-con">
+                                        <textarea readonly>{{$in_val->content}}</textarea>
+                                    </div>
+                                </li>
+                            @endforeach
+                            </ul>
+                        @endif
+                    </li>
+                @endforeach
+               {{-- <li>
                     <div class="comments-title flex-wrap">
                         <div class="comments-info flex-wrap">
                             <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
@@ -223,7 +266,7 @@
                                         <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
                                     </div>
                                     <div>
-                                        <textarea></textarea>
+                                        <textarea name="in-comments"></textarea>
                                     </div>
                                 </div>
                                 <div class="flex-wrap right my-comments-buttons">
@@ -248,8 +291,8 @@
                             </div>
                         </li>
                     </ul>
-                </li>
-            </ul>
+                </li> --}}
+            </ul> 
         </div>
     </div>
 </section>
@@ -288,11 +331,96 @@
             APP_FUNC.commonFunc.modalOpen('alert-btn',data.msg,'btn-include');
             setTimeout(() => {
                 window.location.reload();
-                console.log('3초가 지나서 꺼졌습니다!');
             }, 1000);
         })
         .catch(err => {
             APP_FUNC.commonFunc.modalResponseHidden(err.message, 'fail');
+        });
+    }
+
+    function replyAdd(thisO, commentsId){
+        const parentEl = $(thisO).parent().parent().parent(); 
+        const isFirstLi = $(parentEl).find("ul").length === 0 ? true:false;
+        const liLayout = `<li>
+                                <div class="my-comments-wrap">
+                                    <div class="flex-wrap">
+                                        <h2>댓글</h2>
+                                    </div>
+                                    <div class="flex-wrap my-comments">
+                                        <div>
+                                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                        </div>
+                                        <div>
+                                            <textarea name="in-comments"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="flex-wrap right my-comments-buttons">
+                                        <button type="button" onclick="formSend(this, 'POST', ${commentsId})">답글 등록</button>
+                                    </div>
+                                </div>
+                            </li>`;
+        const ulEl = $(`<ul class='comments-in-list'>
+                            ${liLayout}
+                        </ul>`);
+        if(isFirstLi){
+            $(parentEl).append(ulEl);
+        }else{
+            $(parentEl).find('ul').append(liLayout);
+        }
+    }
+
+   async function formSend(f = null, methodType, commentId="") {
+        const url = methodType === 'PUT' ? '/{{$study["id"]}}':'';
+        let sendData = null;
+        if(methodType === 'DELETE' && !(await this.confirmOpen())){
+            return;
+        }
+        if (!f.checkValidity()) {
+            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+            return;
+        }
+
+        const formData = commentId === '' ? new FormData(f):f;
+        // $(".loading-sec").addClass('active');
+        if(commentId === ''){
+            formData.append("study_id", {{$study['id']}});
+            if(commentId !== ''){
+                formData.append("parent_id", commentId);
+            }
+            sendData = Object.fromEntries(formData.entries());
+        }else{ // 대댓글일때
+            console.log($(f).parent().parent().find("textarea").val());
+            sendData = {
+                "study_id": {{$study['id']}},
+                "comments": $(f).parent().parent().find("textarea").val(),
+                "parent_id": commentId,
+            }
+        }
+        
+        
+        fetch('/comments'+ url,{
+            method: methodType,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            body: JSON.stringify(sendData)
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => { 
+            // alert("성공:" + data.msg);
+            if(data.state === 'success'){
+                window.location.reload();
+            }else{
+                APP_FUNC.commonFunc.modalOpen('alert-btn',data.msg, 'btn-include');
+            }
+        })
+        .catch(err => {
+            console.log("실패:", err);
+            APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
         });
     }
 </script>

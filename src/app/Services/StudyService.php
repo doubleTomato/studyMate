@@ -65,4 +65,21 @@ class StudyService
 
         return $returnVal;
     }
+
+    public function buildTree($elements, $parentId= null){
+
+        $returnVal = array();
+
+        foreach($elements as $el){
+            if($el -> parent_id == $parentId){
+                $child_el = $this->buildTree($elements, $el->id);
+                if($child_el){
+                    $el->children = $child_el;
+                }
+
+                $returnVal[] = $el;
+            }
+        }
+        return $returnVal;
+    }
 }

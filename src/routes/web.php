@@ -6,6 +6,7 @@ use App\Http\Controllers\StudiesCrudController;
 use App\Http\Controllers\MypageCrudController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\StudyController;
+use App\Http\Controllers\CommentCrudController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ImageUploadController;
 
@@ -48,8 +49,11 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/category/default', [LookupGetInfo::class, 'getDefaultCategory']);
 Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 
-// study crud
+// study 
+// -crud
 Route::resource('/study',StudiesCrudController::class);
+// -comments
+Route::resource('/comments',CommentCrudController::class);
 
 //mypage ru
 Route::post('/mypage/{mypage}', [MypageCrudController::class, 'update'])
