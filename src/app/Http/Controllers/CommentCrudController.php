@@ -71,38 +71,23 @@ class CommentCrudController extends Controller
 
 
 
-    public function update(Request $request, Members $mypage): JsonResponse
+    public function update(Request $request, Comments $comments): JsonResponse
     {
-
-        // dd($request->all());
-        // dd('update 메소드 실행됨', $request->all(), $request->hasFile('profile_image'));
-
 
         try{
             $validateData = $request -> validate([
-                'self-introduce' => 'nullable|string',
-                'category'=>'nullable|integer|min:0',
-                'region'=>'required|integer|min:0',
-                'preferred_time_slot' =>'nullable|string|max:255',
-                'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'comments' => 'required|string|max:1000',
             ], [], $request->all());
             $sendData = [
-            'self_introduce' => $validateData['self-introduce'],
-            'preferred_time_slot' => $validateData['preferred_time_slot'] ?? 'any',
-            'category_id' => $validateData['category'] ?? null,
-            'region_id' => $validateData['region'],
+                'content' => $validateData['comments'],
             ];
 
 
-            $this_mem = Members::find($mypage -> id);
+            $this_mem = Comments::find($comments -> id);
             $this_mem -> update($sendData);
 
-
-            if($request->hasFile('profile_image')){
-                $this -> updateProfile($request);
-             }
             return response()->json([
-                'msg' => '프로필이 성공적으로 수정되었습니다.',
+                'msg' => '댓글이 성공적으로 수정되었습니다.',
                 'id' => $this_mem->id
             ], 201); 
         

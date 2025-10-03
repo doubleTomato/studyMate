@@ -28,7 +28,7 @@ class Studies extends Model
     // == 1:1 end
     // 스터디 멤버 N:M
     public function members(){
-        return $this -> belongsToMany(Members::class, 'study_members', 'study_id','member_id') -> withPivot('rank');
+        return $this -> belongsToMany(Members::class, 'study_members', 'study_id','member_id') -> withPivot('rank','join_datetime');
     }
     
 

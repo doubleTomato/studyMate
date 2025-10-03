@@ -207,11 +207,10 @@ ul.helper-list{
         li {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 10px 16px;
             border-bottom: 1px solid $gray_100;
             min-height: 56px;
-            gap: 10px;
+            gap: 30px;
             &:hover {
                 background: $gray_200;
             }
@@ -353,6 +352,13 @@ button, .cm-btn{
     &.in-progress{ background-color: $main_color; }
     &.today{background-color: $main_color_dark; color: $gray_100;}
     &.progress{background-color: $gray_300; color: $gray_500}
+    &.iswriter{
+        background-color: $main_color;
+        color: #fff;
+        font-weight: 400;
+        padding: 1px 5px; height: 20px; line-height: 18px;
+    }
+    i{color: inherit}
 }
 .helper-text{
     font-size: 12px; color: $gray_500;
@@ -483,7 +489,7 @@ button, .cm-btn{
 .comments.detail{
     .my-comments-wrap{
         margin-bottom: 30px;
-        height: 180px;
+        height: max-content;
         .flex-wrap{align-items: flex-start;}
         img{ height: 40px; border-radius: 40px; object-fit: contain;}
            
@@ -502,6 +508,10 @@ button, .cm-btn{
             margin-bottom: 20px;
         }
         button{  font-size: 16px; height: 35px; padding: 0 15px;}
+        // 게스트 일 시
+        .guest-info{
+            a{margin-top: 15px;}
+        }
     }
     .comments-list{
         clear: both;

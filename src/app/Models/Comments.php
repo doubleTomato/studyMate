@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Members;
 
 class Comments extends Model
 {
-    use HasFactory;
+
+    public function members(){
+        return $this -> belongsTo(Members::class, 'user_id');
+    }
 
     protected $table = 'comments';
 

@@ -150,9 +150,9 @@
                     <li class="title">
                         <span class="no">No</span>
                         <span class="profile"></span>
-                        <span class="name">이름</span>
                         <span class="nickname">닉네임</span>
-                        <span class="date">참가일</span>
+                        <span class="name">이름</span>
+                        <span class="date">참가 일시</span>
                         <span class="actions"></span>
                     </li>
                 @foreach($study['members'] as $key => $val)
@@ -163,9 +163,9 @@
                                 <img src="{{ !empty($val['profile_url']) ? asset('storage/'.$val['profile_url']):asset('images/default-profile.png') }}" alt="프로필 이미지"/>
                             </div>
                         </div>
-                        <span class="name">{{$val['name']}}</span>
                         <span class="nickname">{{$val['nickname']}}</span>
-                        <span class="date">2025-09-18</span>
+                        <span class="name">{{$val['name']}}</span>
+                        <span class="date">{{$val['pivot']['join_datetime']}}</span>
                         <div class="actions-btn">
                             @if( $val['pivot']['rank'] !== '0' && auth()->check() && Auth::user()->id === $study['owner_id'])
                             <button type="button" class="cm-btn exit-btn">퇴장</button>
@@ -179,11 +179,12 @@
         </div>
         <div class="write-content detail comments">
             <div class="my-comments-wrap">
+                <div class="flex-wrap">
+                    <h2>댓글 <span>{{$comments_count}}</span></h2>
+                    <p><i class="xi-eye-o"></i> <span>10</span></p>
+                </div>
+                @if(auth()->check())
                 <form action="#" method="POST">
-                    <div class="flex-wrap">
-                        <h2>댓글</h2>
-                        <p><i class="xi-eye-o"></i> <span>10</span></p>
-                    </div>
                     <div class="flex-wrap my-comments">
                         <div>
                             <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
@@ -196,20 +197,33 @@
                         <button onclick="formSend(this.form, 'POST')" type="button">댓글 등록</button>
                     </div>
                 </form>
+                 @else
+                 <div class="guest-info">
+                    <p>댓글을 작성하려면 로그인이 필요해요.</p>
+                    <a href="{{route('login')}}" class="cm-btn">로그인하러가기</a>
+                </div>
+                @endif
             </div>
             <ul class="comments-list">
                 @foreach($comments as $key => $val)
                     <li>
                         <div class="comments-title flex-wrap">
                             <div class="comments-info flex-wrap">
-                                <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
-                                <span class="name">{{Auth::user()-> nickname}}</span>
-                                <span class="create-date">{{Auth::user()-> created_at}}</span>
+                                <img src="{{asset('storage/'.$val -> members-> profile_url)}}" alt="">
+                                <span class="name">{{$val -> members -> nickname}}</span>
+                                @if($study['owner_id'] === $val -> members ->id)
+                                    <span class="cm-label iswriter">작성자 <i class="xi-crown"></i></span>
+                                @endif
+                                <span class="create-date">{{$val-> created_at}}</span>
                             </div>
                             <div class="comments-buttons">
-                                <span>수정</span>
-                                <span>삭제</span>
-                                <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
+                                @if(auth()->check()&&(Auth::user()->id === $val->members->id || Auth::user()->id === 1))
+                                    @if(Auth::user()->id === $val->members->id)
+                                        <span>수정</span>
+                                    @endif
+                                    <span>삭제</span>
+                                    <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
+                                @endif
                             </div>
                         </div>
                         <div class="comments-con">
@@ -221,14 +235,21 @@
                                 <li>
                                     <div class="comments-title flex-wrap">
                                         <div class="comments-info flex-wrap">
-                                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
-                                            <span class="name">{{Auth::user()-> nickname}}</span>
-                                            <span class="create-date">{{Auth::user()-> created_at}}</span>
+                                            <img src="{{asset('storage/'.$in_val -> members-> profile_url)}}" alt="">
+                                            <span class="name">{{$in_val-> members -> nickname}}</span>
+                                            @if($study['owner_id'] === $in_val -> members ->id)
+                                                <span class="cm-label iswriter">작성자 <i class="xi-crown"></i></span>
+                                            @endif
+                                            <span class="create-date">{{$val-> updated_at}}</span>
                                         </div>
+                                        @if(auth()->check()&&(Auth::user()->id === $in_val->members->id || Auth::user()->id === 1))
                                         <div class="comments-buttons">
-                                            <span>수정</span>
+                                            @if(Auth::user()->id === $val->members->id)
+                                                <span>수정</span>
+                                            @endif
                                             <span>삭제</span>
                                         </div>
+                                        @endif
                                     </div>
                                     <div class="comments-con">
                                         <textarea readonly>{{$in_val->content}}</textarea>
@@ -260,6 +281,7 @@
                             <div class="my-comments-wrap">
                                 <div class="flex-wrap">
                                     <h2>댓글</h2>
+                                    <span>{{}}</span>
                                 </div>
                                 <div class="flex-wrap my-comments">
                                     <div>
@@ -344,11 +366,11 @@
         const liLayout = `<li>
                                 <div class="my-comments-wrap">
                                     <div class="flex-wrap">
-                                        <h2>댓글</h2>
+                                        <h2>답글</h2>
                                     </div>
                                     <div class="flex-wrap my-comments">
                                         <div>
-                                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                                            <img src="{{auth()->check()? asset('storage/'.Auth::user()-> profile_url):''}}" alt="">
                                         </div>
                                         <div>
                                             <textarea name="in-comments"></textarea>

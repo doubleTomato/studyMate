@@ -125,10 +125,11 @@ class StudiesCrudController extends Controller
         'members:id,name,nickname,profile_url'
         ]) -> where('id',$id) -> first()?-> toArray();
 
-        $comments = Comments::where("study_post_id",$id)->orderBy('created_at', 'asc') -> get();
+        $comments = Comments::with(['members:id,nickname,profile_url'])->where("study_post_id",$id)->orderBy('created_at', 'asc') -> get();
 
+        $comments_count = $comments->count();
         $comments_tree = $this->studyService->buildTree($comments);
-        return view('study.show', [ 'study' => $study, 'comments' => $comments_tree ]);
+        return view('study.show', [ 'study' => $study, 'comments' => $comments_tree, 'comments_count' => $comments_count ]);
     }
 
     public function edit($id){
