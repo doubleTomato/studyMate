@@ -40,8 +40,23 @@
             <i class="xi-user-plus"></i>
             <span>참여하기</span>
         </button>
+        @elseif(auth()->check() && Auth::user()->id !== $study['owner_id'] && $is_participation)
+            <button onclick="participationStudy({{Auth::user()->id}},'exit')" type="button" class="icon-btn delete-btn">
+                <span>퇴장하기</span>
+            </button>
         @endif
     </div>
+    {{-- 공지 --}}
+    <div class="notice-wrap-box">
+        <div class="flex-wrap">
+            <p><i class="xi-flag"></i> 등록된 공지가 없습니다.</p>
+            <div class="btn-wrap">
+                <button type="button"><i class="xi-plus-circle"></i> 추가</button>
+                <a>전체보기<i class="xi-angle-right-min"></i></a> 
+            </div>
+        </div>
+    </div>
+    {{--// 공지 end --}}
     <div class="flex-wrap header-wrap">
         <div class="header-con">
             <p><i class="xi-crown"></i><span class="leader">{{ $study['leader']['nickname'] }}</span><span class="helper-text">{{  Carbon::parse($study['updated_at']) ->format('Y.m.d H:i')  }}</span></p>
@@ -340,9 +355,16 @@
         }
     });
 
+        // 참가/퇴장
+    async function participationStudy(studyId, url=''){
 
-    function participationStudy(studyId){
-        fetch(`/study/participation/${studyId}`,{
+        if(url === 'exit' && !(await APP_FUNC.commonFunc.confirmOpen(`정말로 스터디에서 퇴장하시겠습니까? 다시 참여하려면 스터디장의 승인이 필요합니다.`))){
+            return;
+        }
+
+
+        let urlPath = url === ''? '':url+"/";
+        fetch(`/study/participation/${urlPath}${studyId}`,{
             method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -367,6 +389,9 @@
             APP_FUNC.commonFunc.modalResponseHidden(err.message, 'fail');
         });
     }
+
+
+
 
     function editComments(thisO, commentId, parentId=null){
         const textareaEl = $(thisO).parent().parent().parent().find("textarea");

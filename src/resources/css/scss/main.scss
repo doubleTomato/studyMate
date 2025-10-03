@@ -295,7 +295,7 @@ button, .cm-btn{
     &:hover{
         cursor: pointer;
         color: $gray_100;
-        background-color: darken($gray_300, 30%);
+        background-color: darken($main_color_dark, 15%);
         transition: background-color 0.3s ease;
         box-shadow: -1px 2px 4px 0px darken($gray_200, 30%);
         span,i{ color: inherit; font-weight: inherit;}
@@ -573,7 +573,7 @@ button, .cm-btn{
                 display: flex;
                 gap: 5px;
                 align-items: center;
-                margin-left: 60px;
+                margin-left: 45px;
                 span{ font-weight: 600;}
             }
         }
@@ -699,7 +699,7 @@ footer{
     h1{
         font-size: 20px;
         font-weight: 600;
-        margin-bottom: 30px;
+        // margin-bottom: 30px;
     }
     .button-con{
         display: flex;
@@ -998,6 +998,21 @@ footer{
         
     }
     
+    // 공지
+    .notice-wrap-box{
+        background-color: $gray_100; padding: 20px;
+        margin-bottom: 30px;
+        .btn-wrap{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            a{
+                font-size: 14px;
+                &:hover{ cursor: pointer; text-decoration: underline;}
+            }
+        }
+    }
+    // == 공지 end
     .participants-list{
         &>div{ 
             // margin-bottom: 15px;

@@ -53,4 +53,24 @@ class StudyController extends Controller
             ], 500);
         }
     }
+
+
+    // 퇴장
+     public function exitStudy(Request $request, $study_id){
+         try{
+          
+            $study_member = Study_members::where('member_id',$study_id)->delete();
+        
+            return response()->json([
+                'msg' => '스터디에서 성공적으로 <br/> 퇴장 되었습니다.',
+            ], 201);
+        }
+        catch(Exception $err){
+            return response()->json([
+            'msg' => '퇴장이 실패했습니다. 다시 시도해주세요.',
+            'err_msg' => $err->getMessage(),
+            logger()->error('퇴장 신청이 실패', ['exception' => $err->getMessage()])
+            ], 500);
+        }
+    }
 }

@@ -212,8 +212,20 @@ class StudiesCrudController extends Controller
 
     public function destroy($id) {
         try{
+
+            DB::beginTransaction();
+
             $study = Studies::find($id);
             $study->delete();
+
+            $study_members = Study_members::where('study_id',$id);
+            $study_members->delete();
+
+            $comments = Comments::where('study_post_id',$id);
+            $comments->delete();
+
+            DB::commit();
+
         
             return response()->json([
                 'msg' => '스터디가 성공적으로 삭제 되었습니다.',

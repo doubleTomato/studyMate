@@ -67,3 +67,5 @@ Route::get('/participation', [MypageController::class, 'participation'])-> name(
 Route::post('/studies/list', [StudyController::class, 'getOrderList']); // 정렬관련
 Route::post('/study/participation/{study_id}', [StudyController::class, 'participationStudy'])
 ->name("study.participation"); //참여하기
+Route::post('/study/participation/exit/{study_id}', [StudyController::class, 'exitStudy'])
+->name("study.participation.exit"); //퇴장하기

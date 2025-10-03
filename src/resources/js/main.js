@@ -22,14 +22,14 @@ const getDataFunc = {
         }
         return returnMsg
     },
-    getConfirmData(msg){
+    getConfirmData(msg, specifiedTxt=''){
         let returnData = '';
         returnData += `
             <h1>${msg}</h1>
             <p class="state-icon">
                 <i class="${msg === '삭제'? 'xi-warning' : ''} xi-3x"></i>
             </p>
-            <p>${msg === '삭제'? '정말로 이 댓글을 삭제하시겠습니까?':''}</p>
+            <p>${msg === '삭제'? '정말로 삭제하시겠습니까?':specifiedTxt}</p>
         `;
         return returnData
     }
@@ -117,11 +117,11 @@ export const commonFunc = {
         $(".loading-sec .msg." + typeV).hide();
         $(".loading-sec").removeClass("active");
     },
-    confirmOpen(){
+    confirmOpen(msgTxt = ''){
         return new Promise((resolve) => {
             const okBtn = document.getElementById('modal-ok-btn');
             const closeBtn = document.getElementById('modal-close-btn');
-            this.modalOpen('confirm', '삭제');
+            this.modalOpen('confirm', '삭제',null, '', msgTxt);
 
             const closeConfirm = (result) => {
                 this.modalHide('confirm');
@@ -137,14 +137,14 @@ export const commonFunc = {
             closeBtn.addEventListener('click',onClose);
         });
     },
-    modalOpen(typeV ='', msg ='', state = null, type=""){
+    modalOpen(typeV ='', msg ='', state = null, type="", specifiedTxt=''){
         let returnData = '';
         if(typeV === 'response'){
             returnData = getDataFunc.getResponseData(msg, state, type);
         }else if(typeV === 'alert'){
             returnData = getDataFunc.getAlertData(msg);
         }else if(typeV === 'confirm'){
-            returnData = getDataFunc.getConfirmData(msg);
+            returnData = getDataFunc.getConfirmData(msg, specifiedTxt);
         }else{
             returnData = getDataFunc.getAlertData(msg, state);
         }
