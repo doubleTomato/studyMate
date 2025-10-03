@@ -180,25 +180,27 @@ class StudiesCrudController extends Controller
             ];
 
             logger()->info('update 호출, $study 값:', ['study' => $study -> id]);
-            $this_study = Studies::find($study -> id);
-            $this_study -> update( $sendData );
+            $study->update( $sendData );
 
             return response()->json([
                 'msg' => '스터디가 성공적으로 수정되었습니다.',
-                'id' => $this_study->id
+                'id' => $study->id,
+                'state'=>'success'
             ], 201); 
         
         }
         catch (ValidationException $e) {
             return response()->json([
                 'msg' => '수정에 실패했습니다.',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
+                'state'=>'fail'
             ], 422);
         }
         catch(Exception $err){
             return response()->json([
             'msg' => '수정에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
+            'state'=>'fail',
             logger()->error('업데이트 실패', ['exception' => $err->getMessage()])
         ], 500);
 
@@ -215,13 +217,15 @@ class StudiesCrudController extends Controller
         
             return response()->json([
                 'msg' => '스터디가 성공적으로 삭제 되었습니다.',
-                'id' => ''
+                'id' => '',
+                'state'=>'success'
             ], 201);
         }
         catch(Exception $err){
             return response()->json([
             'msg' => '삭제에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
+            'state'=>'fail',
             logger()->error('삭제 실패', ['exception' => $err->getMessage()])
             ], 500);
         }

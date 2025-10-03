@@ -217,17 +217,21 @@
                                 <span class="create-date">{{$val-> created_at}}</span>
                             </div>
                             <div class="comments-buttons">
-                                @if(auth()->check()&&(Auth::user()->id === $val->members->id || Auth::user()->id === 1))
+                                @if(auth()->check() && $val -> status ==='active' && (Auth::user()->id === $val->members->id || Auth::user()->id === $study['owner_id'] || Auth::user()->id === 1 ))
                                     @if(Auth::user()->id === $val->members->id)
-                                        <span>수정</span>
+                                        <span onclick="editComments(this,{{$val -> id}} )">수정</span>
                                     @endif
-                                    <span>삭제</span>
+                                    <span onclick="formSend(null, 'DELETE', {{$val['id']}})">삭제</span>
                                     <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
                                 @endif
                             </div>
                         </div>
                         <div class="comments-con">
-                            <textarea readonly name="reply-{{$val['id'].$key}}" class="reply">{{$val['content']}}</textarea>
+                            @if($val -> status ==='active')
+                                <textarea readonly>{{$val->content}}</textarea>
+                            @else
+                                <p class="deleted-comments"><i class="xi-trash"></i><span>{{$val -> status === 'd_by_user'?'작성자':($val -> status === 'd_by_admin'?'관리자':'스터디장')}}</span>님이 삭제한 댓글입니다.</p>
+                            @endif
                         </div>
                         @if(!empty($val->children))
                             <ul class="comments-in-list">
@@ -242,17 +246,21 @@
                                             @endif
                                             <span class="create-date">{{$val-> updated_at}}</span>
                                         </div>
-                                        @if(auth()->check()&&(Auth::user()->id === $in_val->members->id || Auth::user()->id === 1))
+                                        @if(auth()->check()&& $in_val -> status ==='active' && (Auth::user()->id === $in_val->members->id || Auth::user()->id === $study['owner_id'] || Auth::user()->id === 1 ))
                                         <div class="comments-buttons">
-                                            @if(Auth::user()->id === $val->members->id)
-                                                <span>수정</span>
+                                            @if(Auth::user()->id === $in_val->members->id)
+                                                <span onclick="editComments(this, {{$in_val -> id}}, {{$val -> id}})">수정</span>
                                             @endif
-                                            <span>삭제</span>
+                                            <span onclick="formSend(null, 'DELETE', {{$in_val['id']}})">삭제</span>
                                         </div>
                                         @endif
                                     </div>
                                     <div class="comments-con">
+                                    @if($in_val -> status ==='active')
                                         <textarea readonly>{{$in_val->content}}</textarea>
+                                    @else
+                                        <p class="deleted-comments"><i class="xi-trash"></i><span>{{$in_val -> status === 'd_by_user'?'작성자가':($in_val -> status === 'd_by_admin'?'관리자가':'스터디장이')}}</span> 님이 삭제한 댓글입니다.</p>
+                                    @endif
                                     </div>
                                 </li>
                             @endforeach
@@ -360,6 +368,16 @@
         });
     }
 
+    function editComments(thisO, commentId, parentId=null){
+        const textareaEl = $(thisO).parent().parent().parent().find("textarea");
+        if($(textareaEl).prop("readonly")){
+            $(textareaEl).prop("readonly", false);
+        }else{
+            $(textareaEl).prop("readonly", true);
+            formSend($(textareaEl).val(), 'PUT', commentId, parentId);
+        }
+    }
+
     function replyAdd(thisO, commentsId){
         const parentEl = $(thisO).parent().parent().parent(); 
         const isFirstLi = $(parentEl).find("ul").length === 0 ? true:false;
@@ -391,36 +409,60 @@
         }
     }
 
-   async function formSend(f = null, methodType, commentId="") {
-        const url = methodType === 'PUT' ? '/{{$study["id"]}}':'';
-        let sendData = null;
-        if(methodType === 'DELETE' && !(await this.confirmOpen())){
+   async function formSend(f = null, methodType, commentId="", parentId="") {
+        const url = methodType === 'PUT'||'DELETE' ? '/'+commentId:'';
+        let sendData = [];
+        if(methodType === 'DELETE' && !(await APP_FUNC.commonFunc.confirmOpen())){
             return;
         }
-        if (!f.checkValidity()) {
-            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
-            return;
-        }
+        // if (!f.checkValidity()) {
+        //     alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+        //     return;
+        // }
 
-        const formData = commentId === '' ? new FormData(f):f;
+        console.log("fefeef");
+        let formData = null;
         // $(".loading-sec").addClass('active');
-        if(commentId === ''){
+        if(methodType === 'PUT'){
+            sendData = {
+                "comments":f,
+                "parent_id": parentId,
+            }
+        }else if(methodType === 'DELETE'){
+           let status = '';
+
+           @if(auth()->check())
+                @if(auth()->id() === $study['owner_id'])
+                    status="d_by_leader";
+                @elseif(auth()->id() === 1)
+                    status="d_by_admin";
+                @else
+                    status="d_by_user";
+                @endif
+           @endif
+            sendData = {
+                "status": status,
+            }
+        }
+        else if(parentId === ''){ // 일반 댓글
+            formData =  new FormData(f);
             formData.append("study_id", {{$study['id']}});
-            if(commentId !== ''){
-                formData.append("parent_id", commentId);
+            if(parentId !== ''){
+                formData.append("parent_id", parentId);
             }
             sendData = Object.fromEntries(formData.entries());
-        }else{ // 대댓글일때
+        }
+        else{ // 대댓글일때
             console.log($(f).parent().parent().find("textarea").val());
             sendData = {
                 "study_id": {{$study['id']}},
                 "comments": $(f).parent().parent().find("textarea").val(),
-                "parent_id": commentId,
+                "parent_id": parentId,
             }
         }
         
         
-        fetch('/comments'+ url,{
+        fetch('/comment'+ url,{
             method: methodType,
             headers: {
                 'Content-Type': 'application/json',

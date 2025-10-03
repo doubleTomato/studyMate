@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\DB;
 
@@ -71,37 +72,40 @@ class CommentCrudController extends Controller
 
 
 
-    public function update(Request $request, Comments $comments): JsonResponse
+    public function update(Request $request, Comments $comment): JsonResponse
     {
 
         try{
             $validateData = $request -> validate([
                 'comments' => 'required|string|max:1000',
+                'parent_id' => 'nullable|integer|min:0'
             ], [], $request->all());
             $sendData = [
                 'content' => $validateData['comments'],
+                'parent_id'=>$validateData['parent_id'] ?? null,
             ];
 
-
-            $this_mem = Comments::find($comments -> id);
-            $this_mem -> update($sendData);
+            $comment -> update($sendData);
 
             return response()->json([
                 'msg' => '댓글이 성공적으로 수정되었습니다.',
-                'id' => $this_mem->id
+                'comment'=>$comment->id,
+                'state'=>'success'
             ], 201); 
         
         }
         catch (ValidationException $e) {
             return response()->json([
                 'msg' => '수정에 실패했습니다.',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
+                'state'=>'fail'
             ], 422);
         }
         catch(Exception $err){
             return response()->json([
             'msg' => '수정에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
+            'state'=>'fail',
             logger()->error('업데이트 실패', ['exception' => $err->getMessage()])
         ], 500);
 
@@ -111,20 +115,29 @@ class CommentCrudController extends Controller
     }
 
     //탈퇴하기
-     public function destroy($id) {
+     public function destroy(Request $request, Comments $comment) {
         try{
-            $study = Studies::find($id);
-            $study->delete();
-        
+
+            $validateData = $request -> validate([
+                'status' =>  ['required', Rule::in(['active', 'd_by_leader', 'd_by_admin','d_by_user'])]
+            ]);
+            $sendData = [
+                'status' => $validateData['status']??'active',
+            ];
+
+            $comment -> update($sendData);
+            
             return response()->json([
-                'msg' => '스터디가 성공적으로 삭제 되었습니다.',
-                'id' => ''
+                'msg' => '성공적으로 삭제 되었습니다.',
+                'id' => '',
+                'state'=>'success'
             ], 201);
         }
         catch(Exception $err){
             return response()->json([
             'msg' => '삭제에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
+            'state'=>'fail',
             logger()->error('삭제 실패', ['exception' => $err->getMessage()])
             ], 500);
         }

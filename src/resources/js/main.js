@@ -27,9 +27,9 @@ const getDataFunc = {
         returnData += `
             <h1>${msg}</h1>
             <p class="state-icon">
-                <i class="xi-'${msg === '삭제'? 'xi-warning' : ''}' xi-3x"></i>
+                <i class="${msg === '삭제'? 'xi-warning' : ''} xi-3x"></i>
             </p>
-            <p>${msg === '삭제'? '삭제 시 다시 복구 되지 않습니다.':''} 계속 진행 하시겠습니까?</p>
+            <p>${msg === '삭제'? '정말로 이 댓글을 삭제하시겠습니까?':''}</p>
         `;
         return returnData
     }
@@ -206,10 +206,13 @@ export const commonFunc = {
             // alert("성공:" + data.msg);
             if(data.state === 'success'){
                 this.modalHide('alert');
-                this.modalResponseHidden(data.msg, 'response', 'success');
+                this.modalResponseHidden(data.msg+"<br>",'success', 'response');
                 console.log(data);
                 let idVal = data.id === ''? '':"/"+data.id;
-                window.location.href = `/study${idVal}`;
+                setTimeout(() => {
+                    window.location.href = `/study${idVal}`;
+                }, 1000);
+
             }else{
                 this.modalOpen('alert-btn',data.msg, 'btn-include');
             }

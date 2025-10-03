@@ -79,8 +79,8 @@ class MypageCrudController extends Controller
             ];
 
 
-            $this_mem = Members::find($mypage -> id);
-            $this_mem -> update($sendData);
+            //$this_mem = Members::find($mypage -> id);
+            $mypage->update($sendData);
 
 
             if($request->hasFile('profile_image')){
@@ -118,13 +118,15 @@ class MypageCrudController extends Controller
         
             return response()->json([
                 'msg' => '스터디가 성공적으로 삭제 되었습니다.',
-                'id' => ''
+                'id' => '',
+                'state'=>'success'
             ], 201);
         }
         catch(Exception $err){
             return response()->json([
             'msg' => '삭제에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
+            'state'=>'fail',
             logger()->error('삭제 실패', ['exception' => $err->getMessage()])
             ], 500);
         }

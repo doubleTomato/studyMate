@@ -53,7 +53,7 @@ Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 // -crud
 Route::resource('/study',StudiesCrudController::class);
 // -comments
-Route::resource('/comments',CommentCrudController::class);
+Route::resource('/comment',CommentCrudController::class);
 
 //mypage ru
 Route::post('/mypage/{mypage}', [MypageCrudController::class, 'update'])
