@@ -54,7 +54,7 @@
                             </div>
                         </li>
                         <li>
-                            <div class="label">관심 분야</div>
+                            <div class="label">관심 분야<span class="helper-text">(선택)</span></div>
                             <div class="value">
                                 <select class="select2-basic" id="category-sel" name="category" required>
                                     <option value="">선택해주세요</option>
@@ -93,58 +93,97 @@
                 </div>
             <div class="button-con">
                 <a class="cm-btn" href="{{ route('study.index') }}">취소</a>
-                <button class="cta-btn" type="button" onclick="profileUpdate(this.form, 'PUT')">수정하기</button>
+                <button class="cta-btn" type="button" onclick="profileUpdate(this.form, 'POST')">수정하기</button>
                 {{-- <button type="submit">등록하기</button> --}}
             </div>
         </form>
+        <div class="withdrawal-wrap">
+            <p onclick="withdrawalUser()">탈퇴하기</p>
+        </div>
     </section>
+@endsection
+
     <script>
-    const imageInput = document.getElementById('profile_image_input');
-    const imagePreview = document.getElementById('image_preview');
 
-    imageInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.getElementById('profile_image_input');
+            const imagePreview = document.getElementById('image_preview');
+                
+            console.log(imageInput);
+            imageInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+            
+                if (file) {
+                    const reader = new FileReader();
+                
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                    };
+                
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = "/images/default-profile.png";
+                }
+            });
+        });
 
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-                imagePreview.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        } else {
-            imagePreview.src = "/images/default-profile.png";
-        }
-    });
-
-    async function profileUpdate(f, methodType){
-        // }
-        const formData = new FormData(f);
+    async function withdrawalUser(){
         
+        fetch('/modal/withdrawaluser/'+{{auth() -> id()}},{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            // body: JSON.stringify(sendData)
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.text()
+        }).then(html=>{
+            $(".modal-sec").css('display','block');
+            $('.modal-sec').html(html);
+        })
+        .catch(err => {
+            console.log("실패:", err);
+            APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
+        });
+    }
 
-        const categoryId = $('#category-sel').val(); 
-        const regionId = $('#region-sel').val();  
-        const preferredTimeSlot = $('#preferred_time_slot').val();  
+
+
+
+    async function profileUpdate(f = null, methodType){
+
+       
+        const formData = methodType === 'POST' ? new FormData(f):null;
         
-        console.log(categoryId, regionId);
+        if(methodType === 'POST'){
+            const categoryId = $('#category-sel').val(); 
+            const regionId = $('#region-sel').val();  
+            const preferredTimeSlot = $('#preferred_time_slot').val();  
+            
+            if (categoryId) {
+                formData.set('category', categoryId);
+            }
+            if (regionId) {
+                formData.set('region', regionId);
+            }
+            if (preferredTimeSlot) {
+                formData.set('preferred_time_slot', preferredTimeSlot);
+            }
 
-        if (categoryId) {
-            formData.set('category', categoryId);
+
         }
-        if (regionId) {
-            formData.set('region', regionId);
-        }
-        if (preferredTimeSlot) {
-            formData.set('preferred_time_slot', preferredTimeSlot);
-        }
+        let msg = methodType === 'DELETE' ? '탈퇴가' : '프로필 수정이';
 
 
-
-        APP_FUNC.commonFunc.modalOpen('alert','프로필이 수정되는');
+        APP_FUNC.commonFunc.modalOpen('alert', msg + ' 되는');
         
         fetch('/mypage/'+{{auth() -> id()}},{
-            method: 'POST',
+            method: methodType,
             headers: {
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
@@ -157,10 +196,23 @@
         })
         .then(data => { 
             APP_FUNC.commonFunc.modalHide('alert');
-            APP_FUNC.commonFunc.modalResponseHidden('프로필 수정이','success', 'response');
-            // console.log(data);
-            let idVal = data.id === ''? '':"/"+data.id;
-            window.location.href = `/mypage${idVal}/edit`;
+            APP_FUNC.commonFunc.popupHide();
+            if(data.state === 'success'){
+                console.log("여기 안들어오는겨?");
+                console.log(data.msg);
+                let idVal = data.id === ''? '':"/"+data.id;
+                APP_FUNC.commonFunc.modalOpen('alert-btn',data.msg,'btn-include');
+                setTimeout(() => {
+                    if(idVal !== ''){
+                    window.location.href = `/mypage${idVal}/edit`;
+                    
+                    }else{
+                     window.location.href = '/study';
+                    }
+                }, 2000);
+            }else{
+                console.log(data.errors)
+            }
         })
         .catch(err => {
             console.log("실패:", err);
@@ -169,5 +221,6 @@
     }
 
 
+   
 </script>
-@endsection
+

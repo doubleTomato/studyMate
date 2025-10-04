@@ -88,7 +88,8 @@ class MypageCrudController extends Controller
              }
             return response()->json([
                 'msg' => '프로필이 성공적으로 수정되었습니다.',
-                'id' => $this_mem->id
+                'id' => $mypage -> id,
+                'state'=>'success'
             ], 201); 
         
         }
@@ -113,21 +114,21 @@ class MypageCrudController extends Controller
     //탈퇴하기
      public function destroy($id) {
         try{
-            $study = Studies::find($id);
+            $study = Members::find($id);
             $study->delete();
         
             return response()->json([
-                'msg' => '스터디가 성공적으로 삭제 되었습니다.',
+                'msg' => '성공적으로 탈퇴 되었습니다.',
                 'id' => '',
                 'state'=>'success'
             ], 201);
         }
         catch(Exception $err){
             return response()->json([
-            'msg' => '삭제에 실패했습니다. 다시 시도해주세요.',
+            'msg' => '탈퇴에 실패했습니다. 다시 시도해주세요.',
             'err_msg' => $err->getMessage(),
             'state'=>'fail',
-            logger()->error('삭제 실패', ['exception' => $err->getMessage()])
+            logger()->error('탈퇴 실패', ['exception' => $err->getMessage()])
             ], 500);
         }
     }

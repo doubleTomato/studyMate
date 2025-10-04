@@ -14,7 +14,9 @@
 @endif
 <div class="signup-sec">
     <div class="step step1-wrap active">
-        <h1>회원가입</h1>
+        <div class="title-wrap">
+            <h1>회원가입</h1>
+        </div>
         <form method="POST" action="#">
             @csrf
             <dl>
