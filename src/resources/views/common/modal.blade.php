@@ -42,18 +42,3 @@
     </div>
 </div>
 
-<div class="msg modal">
-    <div class="close-btn" onclick="APP_FUNC.commonFunc.modalHide('modal')">
-        <i class="xi-close"></i>
-    </div>
-    <div class="modal-head">
-        <h1>타이틀</h1>
-    </div>
-    <div class="modal-con">
-        <p>아마도 내용이 들어갈 공간</p>
-    </div>
-    <div class="modal-buttons">
-        <button type="button" onclick="APP_FUNC.commonFunc.modalHide('modal')">닫기</button>
-        <button class="cta-btn" type="button">action</button>
-    </div>
-</div>

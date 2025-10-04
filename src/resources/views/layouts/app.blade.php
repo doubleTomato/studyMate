@@ -8,6 +8,7 @@
     <div class="loading-sec">
         @include('common.modal')
     </div>
+    <div class="modal-sec"></div>
     @include('common.footer')
     <script>
         $(document).ready(function() {

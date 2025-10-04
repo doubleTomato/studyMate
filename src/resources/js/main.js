@@ -113,15 +113,19 @@ export const commonFunc = {
             });
         }
     },
+    popupHide(){
+        $(".modal-sec").hide();
+    },
     modalHide(typeV){
         $(".loading-sec .msg." + typeV).hide();
         $(".loading-sec").removeClass("active");
     },
-    confirmOpen(msgTxt = ''){
+    confirmOpen(msg='', msgTxt = ''){
         return new Promise((resolve) => {
+            const msgCon = msg === ''? '삭제': msg;
             const okBtn = document.getElementById('modal-ok-btn');
             const closeBtn = document.getElementById('modal-close-btn');
-            this.modalOpen('confirm', '삭제',null, '', msgTxt);
+            this.modalOpen('confirm', msgCon, null, '', msgTxt);
 
             const closeConfirm = (result) => {
                 this.modalHide('confirm');

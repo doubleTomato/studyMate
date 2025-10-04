@@ -9,6 +9,7 @@ use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CommentCrudController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\ModalController;
 
 use App\Http\Controllers\Auth\AuthController;
 
@@ -69,3 +70,6 @@ Route::post('/study/participation/{study_id}', [StudyController::class, 'partici
 ->name("study.participation"); //참여하기
 Route::post('/study/participation/exit/{study_id}', [StudyController::class, 'exitStudy'])
 ->name("study.participation.exit"); //퇴장하기
+
+// modal
+Route::get('/modal/withdrawaluser/{id}', [ModalController::class, 'withdrawalUser']);

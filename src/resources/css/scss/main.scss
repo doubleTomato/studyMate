@@ -81,8 +81,8 @@ input{
                         font-family: xeicon !important;
                         color: $gray_100;
                         position: absolute;
-                        left: 2.5px;
-                        top: 2px;
+                        left: 0.5px;
+                        top: 1px;
                     }
                 }
             }
@@ -368,6 +368,61 @@ button, .cm-btn{
     vertical-align: middle;
     line-height: inherit;
 }
+
+// modal
+.modal-wrap-box{
+    padding: 20px;
+    background-color: #fff;
+    max-width: 1200px;
+    width: max-content;
+    position: relative;
+    top: 150px;
+    margin: 0 auto;
+    border-radius: 15px;
+    .modal-head{
+        height: 50px;
+        text-align: left;
+    }
+    .modal-con{ margin-bottom: 30px;}
+    .modal-buttons{ width: 100%; text-align: right;}
+    .close-btn{
+         position: absolute; right: 15px; top: 15px;
+         padding: 10px; border-radius: 10px;
+         &:hover{cursor: pointer; background-color: $gray_200;}
+    }
+}
+
+
+// 탈퇴 모달
+.withdrwawal-wrap{
+    width: 600px;
+    ul{
+        margin-bottom: 20px;
+        li{ 
+            word-break: keep-all;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            position: relative;
+            text-align: left;
+            line-height: 1.6;
+            &::before{
+                content:"";
+                width: 5px;
+                height: 5px;
+                background-color: $gray_500;
+                position: absolute;
+                left: 0;
+                top: 10px;
+
+            }
+        }
+        
+    }
+}
+// == 탈퇴 모달 end
+
+//== modal end
+
 
 .participants-count{ 
         height: 30px; margin-bottom: 15px;
@@ -741,7 +796,7 @@ footer{
 
 
 // 로딩 시
-.loading-sec{
+.loading-sec, .modal-sec{
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0 ,0, 0.7);
@@ -1053,8 +1108,18 @@ footer{
             border-radius: 35px;
             padding: 0; text-align: center;
             box-shadow: -1px 2px 4px 0px darken($gray_200, 30%);
-            i{ vertical-align: middle; font-size: 18px;}
+            i{ vertical-align: middle; font-size: 18px; line-height: 33px;}
          }
+    }
+    .withdrawal-wrap{
+        width: 100%;
+        margin-top: 30px;
+        padding: 20px 0;
+        border-top: 1px solid $gray_100;
+        p{ color: $error_color; font-weight: 600; 
+            text-align: center;
+            &:hover{ cursor: pointer;}
+        }
     }
 }
 
