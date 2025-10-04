@@ -66,6 +66,13 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - '1025:1025' # smtp 
+      - '8025:8025' # mailhog web
+    networks:
+      - study-mate-network
 
 networks:
   study-mate-network:
