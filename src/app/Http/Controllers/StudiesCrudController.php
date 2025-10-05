@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Studies;
 use App\Models\Comments;
+use App\Models\Notices;
 use App\Models\Members;
 use App\Models\Study_members;
 use App\Services\LookupDbServices;
@@ -131,9 +132,10 @@ class StudiesCrudController extends Controller
         $comments_count = $comments->count();
         $comments_tree = $this->studyService->buildTree($comments);
         
+        $notices = Notices::where('study_id', $id)->first()?->toArray();
         $this -> studyService -> viewCount($id);
         
-        return view('study.show', [ 'study' => $study, 'comments' => $comments_tree, 'comments_count' => $comments_count ]);
+        return view('study.show', [ 'study' => $study, 'comments' => $comments_tree, 'comments_count' => $comments_count, 'notices' => $notices ]);
     }
 
     public function edit($id){

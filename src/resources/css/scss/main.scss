@@ -58,6 +58,7 @@ input{
             width: max-content;
             padding-left: 25px;
             line-height: 15px;
+            width: 15px; height: 15px;
             color: $gray_600;
             &::before{
                 content: "";
@@ -390,6 +391,17 @@ button, .cm-btn{
          padding: 10px; border-radius: 10px;
          &:hover{cursor: pointer; background-color: $gray_200;}
     }
+     input[type='checkbox']{
+        &:checked{
+            &+label{
+                &::after{
+                    left: 0.5px;
+                    top: 1.5px;
+                }
+            }
+        }
+
+    }
 }
 
 
@@ -420,7 +432,19 @@ button, .cm-btn{
     }
 }
 // == 탈퇴 모달 end
-
+.notices-wrap{ 
+    width: 800px;
+    .info-list{
+        box-shadow: none;
+        padding: 0;
+        border-width: 0px;
+        li{
+            .label{ width: 120px;}
+            .value{ width: 100%;}
+            textarea{height: 250px;}
+        }
+    }
+ }
 //== modal end
 
 
@@ -984,6 +1008,7 @@ footer{
                     box-shadow: none;
                 }
             }
+            .views-wrap{ font-size: 13px;}
         }
     }
     .list-deadline{
@@ -1070,6 +1095,21 @@ footer{
             a{
                 font-size: 14px;
                 &:hover{ cursor: pointer; text-decoration: underline;}
+            }
+        }
+        .notice-wrap{
+            width: 80%;
+            .notice-title{ 
+                font-weight: 600;
+                &:hover{ cursor: pointer;}
+            }
+            .notice-con{
+                overflow: hidden;
+                height: 0px;
+                &.active{ 
+                    height: max-content;
+                    margin-top: 20px;
+                 }
             }
         }
     }

@@ -49,9 +49,17 @@
     {{-- 공지 --}}
     <div class="notice-wrap-box">
         <div class="flex-wrap">
+            @if(!$notices)
             <p><i class="xi-flag"></i> 등록된 공지가 없습니다.</p>
+            @else
+            <div class="notice-wrap">
+                <div class="notice-title">
+                    <p><i class="xi-pin"></i>{{$notices['title']}}</p>
+                </div>
+            </div>
+            @endif
             <div class="btn-wrap">
-                <button type="button"><i class="xi-plus-circle"></i> 추가</button>
+                <button type="button" onclick="APP_FUNC.commonFunc.popupOpen('/notice/create')"><i class="xi-plus-circle"></i> 추가</button>
                 <a>전체보기<i class="xi-angle-right-min"></i></a> 
             </div>
         </div>
@@ -202,7 +210,11 @@
                 <form action="#" method="POST">
                     <div class="flex-wrap my-comments">
                         <div>
-                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="">
+                            @if(Auth::user()-> profile_url)
+                            <img src="{{asset('storage/'.Auth::user()-> profile_url)}}" alt="프로필 이미지">
+                            @else
+                             <img src="{{asset('images/default-profile.png')}}" alt="프로필 이미지">
+                            @endif
                         </div>
                         <div>
                             <textarea name="comments"></textarea>
@@ -445,7 +457,6 @@
         //     return;
         // }
 
-        console.log("fefeef");
         let formData = null;
         // $(".loading-sec").addClass('active');
         if(methodType === 'PUT'){
@@ -511,6 +522,25 @@
             console.log("실패:", err);
             APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
         });
+    }
+
+
+    function noticeSend(f=null){
+        console.log('f',f);
+        if(!!f){
+            const formEl = $(`form[name=${f}]`);
+            const formData = new FormData(formEl.get(0));
+            formData.append('study_id',{{$study['id']}});
+            APP_FUNC.commonFunc.commonSendForm(formData, 'POST', '/notice', '공지가 저장');
+        }
+
+
+        else if($("#notice-title").val() !== '' && $("#notice-content").val() !== ''){
+            $("#notice-create-btn").prop("disabled", false);
+        }else{
+            $("#notice-create-btn").prop("disabled", true);
+        }
+        
     }
 </script>
 

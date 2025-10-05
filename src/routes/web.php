@@ -7,6 +7,7 @@ use App\Http\Controllers\MypageCrudController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CommentCrudController;
+use App\Http\Controllers\NoticeCrudController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ModalController;
@@ -51,11 +52,12 @@ Route::get('/category/default', [LookupGetInfo::class, 'getDefaultCategory']);
 Route::get('/regions/default', [LookupGetInfo::class, 'getDefaultRegions']);
 
 // study 
-// -crud
+// - crud
 Route::resource('/study',StudiesCrudController::class);
-// -comments
+// - comments
 Route::resource('/comment',CommentCrudController::class);
-
+// - notices
+Route::resource('/notice',NoticeCrudController::class);
 //mypage ru
 Route::post('/mypage/{mypage}', [MypageCrudController::class, 'update'])
 ->name('mypage.update.post')->middleware('auth');
