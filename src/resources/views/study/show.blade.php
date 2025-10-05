@@ -420,7 +420,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-wrap right my-comments-buttons">
-                                        <button type="button" onclick="formSend(this, 'POST', ${commentsId})">답글 등록</button>
+                                        <button type="button" onclick="formSend(this, 'POST','', ${commentsId})">답글 등록</button>
                                     </div>
                                 </div>
                             </li>`;
