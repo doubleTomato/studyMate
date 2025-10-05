@@ -46,6 +46,7 @@ class StudiesCrudController extends Controller
         'leader:id,name',
         'members:id,name,profile_url'
         ])
+        ->orderBy('views', 'desc')
         ->paginate(16);
 
         if ($request->ajax()) {
@@ -129,6 +130,9 @@ class StudiesCrudController extends Controller
 
         $comments_count = $comments->count();
         $comments_tree = $this->studyService->buildTree($comments);
+        
+        $this -> studyService -> viewCount($id);
+        
         return view('study.show', [ 'study' => $study, 'comments' => $comments_tree, 'comments_count' => $comments_count ]);
     }
 

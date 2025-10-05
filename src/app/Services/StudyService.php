@@ -82,4 +82,11 @@ class StudyService
         }
         return $returnVal;
     }
+
+
+    public function viewCount($id){
+        $study = Studies::find($id);
+        $study_views = $study->views + 1;
+        $study->update(['views'=>$study_views]);
+    }
 }
