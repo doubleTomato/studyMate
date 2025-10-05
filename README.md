@@ -32,8 +32,8 @@
 ---
 
 ## 기술 스택
-- **Frontend**: React.js, TailwindCSS *(추후 확장 예정)* 1차는 php로 구현
+- **Frontend**: React.js, scss *(추후 확장 예정)* 1차는 php로 구현
 - **Backend**: Laravel (PHP Framework)
 - **Database**: MySQL
 - **DevOps**: Docker, GitHub Actions(CI/CD)
-- **기타**: JWT 인증, REST API
+- **기타**: 
