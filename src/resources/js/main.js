@@ -167,6 +167,27 @@ export const commonFunc = {
                 this.modalHide('response');
             }, 1000);
         }, 1000);
+    },async popupOpen(url){
+        fetch( url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.text()
+        }).then(html=>{
+            $(".modal-sec").css('display','block');
+            $('.modal-sec').html(html);
+        })
+        .catch(err => {
+            console.log("실패:", err);
+            this.modalOpen('alert-btn','실패', 'btn-include');
+        });
     },
     //  form send
     async sendData(f, methodType, url="") {
@@ -226,7 +247,45 @@ export const commonFunc = {
             this.modalOpen('alert-btn','실패', 'btn-include');
         });
     },
+    // f: form, methodType: ex) POST, DLETE..., url: 보낼 url, 
+    // validateF: 유효성 검사 함수
+    commonSendForm(f, methodType, url, msg, validateF=null){
+        const formData = f;
+        if(validateF ==! null && validateF()){
+            return false;
+        }
 
+        this.modalOpen('alert', msg + ' 되는');
+        
+        fetch(url,{
+            method: methodType,
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            // body: JSON.stringify(sendData)
+            body: formData
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => { 
+            this.modalHide('alert');
+            this.popupHide();
+            if(data.state === 'success'){
+               this.modalOpen('alert-btn',data.msg,'btn-include');
+               setTimeout(() => {
+                    window.location.href = data.url;
+                }, 2000);
+            }else{
+                console.log(data.errors)
+            }
+        })
+        .catch(err => {
+            console.log("실패:", err);
+            this.modalOpen('alert-btn','실패', 'btn-include');
+        });
+    },
     // validate function
 
     // 종료날짜 > 시작날짜 비활성화
