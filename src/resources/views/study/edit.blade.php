@@ -15,7 +15,9 @@
         <input type="hidden" name="study-id" value="{{ $data['study']['id'] }}"/>
         <div class="content-tit">
             <div class="write-content information">
-                <h1>1. 기본 정보</h1>
+                <div class="title-wrap">
+                    <h1>1. 기본 정보</h1>
+                </div>
                 <ul class="info-list">
                     <li>
                         <div class="label">카테고리</div>
@@ -83,7 +85,9 @@
                 </ul>
             </div>
             <div class="write-content detail">
-                <h1>2. 세부 내용</h1>
+                <div class="title-wrap">
+                    <h1>2. 세부 내용</h1>
+                </div>
                 <table>
                     <tr>
                         <th>제목</th>

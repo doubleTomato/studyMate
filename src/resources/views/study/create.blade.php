@@ -17,7 +17,9 @@
         @csrf
         <div class="content-tit">
             <div class="write-content information">
-                <h1>1. 기본 정보</h1>
+                <div class="title-wrap">
+                    <h1>1. 기본 정보</h1>
+                </div>
                 <ul class="info-list">
                     <li>
                         <div class="label">카테고리</div>
@@ -79,7 +81,9 @@
                 </ul>
             </div>
             <div class="write-content detail">
-                <h1>2. 세부 내용</h1>
+                <div class="title-wrap">
+                    <h1>2. 세부 내용</h1>
+                </div>
                 <table>
                     <tr>
                         <th>제목</th>
@@ -88,9 +92,7 @@
                         </td>
                     </tr>
                 </table>
-                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100">
-                    스터디의 상세 설명을 입력해주세요.
-                </textarea>
+                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100"></textarea>
             </div>
         </div>
         <div class="button-con">
