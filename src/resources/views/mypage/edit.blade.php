@@ -98,7 +98,7 @@
             </div>
         </form>
         <div class="withdrawal-wrap">
-            <p onclick="withdrawalUser()">탈퇴하기</p>
+            <p onclick="APP_FUNC.commonFunc.popupOpen('/modal/withdrawaluser/'+{{auth() -> id()}})">탈퇴하기</p>
         </div>
     </section>
 @endsection
@@ -126,33 +126,6 @@
                 }
             });
         });
-
-    async function withdrawalUser(){
-        
-        fetch('/modal/withdrawaluser/'+{{auth() -> id()}},{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-            },
-            // body: JSON.stringify(sendData)
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return res.text()
-        }).then(html=>{
-            $(".modal-sec").css('display','block');
-            $('.modal-sec').html(html);
-        })
-        .catch(err => {
-            console.log("실패:", err);
-            APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
-        });
-    }
-
-
 
 
     async function profileUpdate(f = null, methodType){
