@@ -94,7 +94,7 @@
                         </p>
                     </div>
                     <div class="flex-wrap">
-                        <p>
+                        <p class="views-wrap">
                             <span><i class="xi-eye-o"></i></span>
                             <span>{{$val['views']}}</span>
                         </p>
