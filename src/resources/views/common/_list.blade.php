@@ -69,7 +69,13 @@
                                 @foreach($val -> members as $in_key => $in_val)
                                 
                                 <li>
-                                    <img src="{{ asset('storage/'. $in_val['profile_url']) }}" title="{{$in_val['name']}}님 프로필"/>
+                                    @if ($in_val['profile_url'])
+                                         {{--  DB에 프로필 이미지 경로가 있는 경우 --}}
+                                         <img src="{{ asset('storage/'. $in_val['profile_url']) }}" alt="프로필 이미지 미리보기">
+                                     @else
+                                         {{-- DB에 프로필 이미지 경로가 없는 경우 (기본 이미지 표시) --}}
+                                         <img src="{{ asset('images/default-profile.png') }}" alt="기본 프로필 사진">
+                                     @endif
                                     @if($in_key > 1)
                                         <span class="xi-plus-circle-o"></span>
                                         @break

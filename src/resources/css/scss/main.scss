@@ -487,6 +487,11 @@ button, .cm-btn{
                 &:hover{box-shadow: none; color: $main_color_dark}
             }
         }
+        .profile-img{ 
+            width: 35px; height: 35px;
+            border-radius: 35px; overflow: hidden;
+            img{ width: 100%; height: 100%; object-fit: contain;}
+        }
         .username{
             position: relative;
             height: 100%;
@@ -497,6 +502,7 @@ button, .cm-btn{
                     font-weight: 500;
                 }
             }
+            
             &>div{height: 100%}
             .mypage-dropdown{
                 height: 0px;
