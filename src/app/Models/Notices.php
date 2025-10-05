@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notices extends Model
 {
-    use HasFactory;
-
     protected $table = 'notices';
 
     // pk
@@ -24,11 +22,7 @@ class Notices extends Model
         'is_crucial'
     ];
 
-    protected $casts = [
-    ];
+    protected $casts = [];
 
     public $timestamaps = false;
-
-
-    public function study(): BelogsTo
 }
