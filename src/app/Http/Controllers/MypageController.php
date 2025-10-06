@@ -63,6 +63,7 @@ class MypageController extends Controller
         'members:id,name'
         ])
         ->leftJoin('study_members', 'studies.id','=', 'study_members.study_id')
+        ->where('member_id', auth()->id())
         ->whereColumn('studies.owner_id','!=' ,'study_members.member_id')
         ->paginate(16);
 

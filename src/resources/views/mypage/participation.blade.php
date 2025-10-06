@@ -3,7 +3,9 @@
 @section('content')
 <section class="list-sec">
     <input type="hidden" name="pagination" value="">
-    <h1>참여 스터디</h1>
+    <div class="title-wrap">
+        <h1>참여 스터디</h1>
+    </div>
     <div class="content-head flex-wrap">
         <ul class="filter-list">
             <li class="flex-wrap left search-wrap">
