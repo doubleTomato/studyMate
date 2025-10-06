@@ -177,7 +177,7 @@ export const commonFunc = {
         })
         .then(res => {
             if (!res.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network err');
             }
             return res.text()
         }).then(html=>{
@@ -192,27 +192,38 @@ export const commonFunc = {
     //  form send
     async sendData(f, methodType, url="") {
         let msgCon = url === "" ? "등록" : "수정";
+        console.log(f);
         // if(methodType === 'DELETE' && !confirm("정말 삭제하시겠습니까? 복구할 수 없습니다.")){
         msgCon = methodType === 'DELETE' ? '삭제': msgCon;
+        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
         if(methodType === 'DELETE' && !(await this.confirmOpen())){
             return;
         }
         if (!f.checkValidity()) {
-            alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+            // alert("필수 값을 넣지 않았습니다. 입력값을 다시 확인해주세요!");
+            this.modalOpen('alert-btn',"필수 값을 넣지 않았습니다.<br/>입력값을 다시 확인해주세요!", 'btn-include');
             return;
         }
         if($("#end-date").val() == '' && !$("#durationdisable").is(':checked')){
-            alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
+            // alert("종료 일자를 선택해주시거나 기간 제한 없음을 선택해주세요!");
+            this.modalOpen('alert-btn',"종료 일자를 선택해주시거나<br/>기간 제한 없음을 선택해주세요!", 'btn-include');
             return;
         }if($("#region-sel").val() == '' && !$("#is-offline").is(":checked")){
-            alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
+            // alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
+            this.modalOpen('alert-btn',"지역을 선택해주시거나<br/> 온라인 제한을 선택해주세요!", 'btn-include');
+            return;
+        }
+        if(document.getElementById("ir1").value ===''){
+            // alert("지역을 선택해주시거나 온라인 제한을 선택해주세요!");
+             this.modalOpen('alert-btn',"세부 내용을 입력해주세요!", 'btn-include');
             return;
         }
         const formData = new FormData(f);
+
+        formData.append("description", document.getElementById("ir1").value);
         // $(".loading-sec").addClass('active');
         this.modalOpen('alert',msgCon);
-        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", [""]);
-        formData.append("description", document.getElementById("ir1").value);
+        
         
         const sendData = Object.fromEntries(formData.entries());
         fetch('/study'+ url,{
@@ -246,11 +257,16 @@ export const commonFunc = {
             console.log("실패:", err);
             this.modalOpen('alert-btn','실패', 'btn-include');
         });
-    },
+    }, 
     // f: form, methodType: ex) POST, DLETE..., url: 보낼 url, 
     // validateF: 유효성 검사 함수
-    commonSendForm(f, methodType, url, msg, validateF=null){
-        const formData = f;
+   async commonSendForm(f, methodType, url, msg, validateF=null){
+
+        if(methodType === 'DELETE' && !(await this.confirmOpen())){
+            return;
+        }
+
+        const sendData = f===null? null :Object.fromEntries(f.entries())
         if(validateF ==! null && validateF()){
             return false;
         }
@@ -260,11 +276,12 @@ export const commonFunc = {
         fetch(url,{
             method: methodType,
             headers: {
+                'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
             },
             // body: JSON.stringify(sendData)
-            body: formData
+            body: sendData===null? null:JSON.stringify(sendData)
         })
         .then(res => {
             return res.json();
@@ -278,7 +295,8 @@ export const commonFunc = {
                     window.location.href = data.url;
                 }, 2000);
             }else{
-                console.log(data.errors)
+                console.log(data.errors);
+                 this.modalOpen('alert-btn',data.msg, 'btn-include');
             }
         })
         .catch(err => {

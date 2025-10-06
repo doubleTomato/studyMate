@@ -78,10 +78,10 @@ document.addEventListener('click', async function(e){
 async function filterChange(isReset = '', isActive = false){
     let activeVal = '';
     if(isReset === 'r'){
-        $("select[name='category']").val('')
-        $("select[name='region']").val('');
+        $("select[name='category']").prop('selectedIndex', 0).trigger('change');
+        $("select[name='region']").prop('selectedIndex', 0).trigger('change');
+        $("select[name='sort']").prop('selectedIndex', 0).trigger('change');
         $("input[name='search']").val('');
-        $("select[name='sort']").val('');
         $("input[name='pagination']").val(1);
         $("input[name='active']").val('false');
         $("#active-btn").removeClass("active");

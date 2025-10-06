@@ -27,10 +27,12 @@ hr{ opacity: 0.6;}
 main{ min-height: calc(100vh - 180px);}
 textarea{ 
     padding: 10px 15px; box-sizing: border-box;
-        &:focus-visible{outline: 1px solid $main_color_dark;}
+    &:focus-visible{outline: 1px solid $main_color_dark;}
 
     &:read-only{
-        &:focus{ outline: 0px solid #ccc; border-color: $main_color;}
+        &:hover{cursor: no-drop;}
+        background-color: $gray_200;
+        &:focus{ outline: 0px solid #ccc; border-color: $gray_300;}
     }
 }
 input{
@@ -41,9 +43,14 @@ input{
     box-sizing: border-box;
     font-size: 14px;
     transition: border-color 0.3s;
+    // &:invalid {
+    //     border-color: $error_color;
+    //     border-width: 2px;
+    // }
     &:disabled, &:read-only{
         background-color: $gray_200;
         &:hover{cursor: no-drop;}
+        &:focus{background-color: $gray_200; border: 1px solid $gray_300}
     }
     // border-radius: 5px;
     // border: 0px solid #defefe;
@@ -58,7 +65,7 @@ input{
             width: max-content;
             padding-left: 25px;
             line-height: 15px;
-            width: 15px; height: 15px;
+            height: 15px;
             color: $gray_600;
             &::before{
                 content: "";
@@ -87,7 +94,13 @@ input{
                     }
                 }
             }
-
+        &:disabled{
+            &+label{
+                &::before{
+                    background-color: $gray_200;
+                }
+            }
+        }
     }
 }
 
@@ -98,6 +111,8 @@ input{
     transform: translateY(-50%);
     right: 9px;
 }
+
+.important-txt{color: $error_color; font-weight: 600;}
 
 .scroll-box{
     overflow: hidden;
@@ -351,6 +366,7 @@ button, .cm-btn{
     background-color: $gray_300;
     color: $gray_100;
     box-sizing: border-box;
+    &.important{ background-color: $error_color; color: #fff;}
     &.deadline{ background-color: $gray_400; color: $gray_100}
     &.in-progress{ background-color: $main_color; }
     &.today{background-color: $main_color_dark; color: $gray_100;}
@@ -646,7 +662,7 @@ button, .cm-btn{
             textarea{  
                 min-height: 60px; padding: 10px; margin-left: 60px; 
                 width: calc(100% - 60px);
-                &:read-only{border-width: 0px;}
+                &:read-only{border-width: 0px; background-color: transparent;}
             }
             .deleted-comments{
                 background-color: $gray_100;
@@ -826,6 +842,7 @@ footer{
 
 
 // 로딩 시
+
 .loading-sec, .modal-sec{
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -834,7 +851,6 @@ footer{
     height: 100%;
     text-align: center;
     display: none;
-    z-index: 999;
     justify-content: center;
     &.active{
         display: flex;
@@ -932,6 +948,15 @@ footer{
 
 
 }
+
+.loading-sec{
+    z-index: 999;
+}
+.modal-sec{
+    z-index: 990;
+}
+// 모달/로딩 백그라운드
+
 
 
 .list-sec{
@@ -1092,17 +1117,20 @@ footer{
             display: flex;
             gap: 10px;
             align-items: center;
-            a{
+            p{
                 font-size: 14px;
                 &:hover{ cursor: pointer; text-decoration: underline;}
             }
         }
         .notice-wrap{
             width: 80%;
+            &:hover{ 
+                cursor: pointer;
+            }
             .notice-title{ 
                 font-weight: 600;
-                &:hover{ cursor: pointer;}
             }
+
             .notice-con{
                 overflow: hidden;
                 height: 0px;
@@ -1128,6 +1156,43 @@ footer{
 
 }
 
+.notice-all-list{
+    width: 800px;
+    .notice-list{
+        li{
+            border-bottom: 1px solid $gray_200;
+            padding: 20px 10px;
+            dt{
+                display: flex; justify-content: left;
+                align-items: center;
+                padding: 15px 0; gap: 5px;
+                .cm-label{padding: 3.5px 5px; height: max-content; 
+                    font-size: 12px;line-height: 1; font-weight: 500;}
+                .title{
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+                i{ cursor: pointer;}
+            }
+            dd{
+                font-size: 14px;
+                text-align: left;
+                
+                pre{
+                    overflow-y: auto;
+                    min-height: 50px;
+                    max-height: 120px;
+                    box-sizing: border-box;
+                    white-space: pre-wrap; 
+                    word-break: break-all;
+                }
+            }
+            &:first-child{
+                padding-top: 0px;
+            }
+        }
+    }
+}
 // crud layout
 //mypage
 .mypage-sec{

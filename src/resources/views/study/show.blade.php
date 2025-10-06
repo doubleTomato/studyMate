@@ -52,15 +52,21 @@
             @if(!$notices)
             <p><i class="xi-flag"></i> 등록된 공지가 없습니다.</p>
             @else
-            <div class="notice-wrap">
+            <div class="notice-wrap" onclick="APP_FUNC.commonFunc.popupOpen('/notice/{{$notices['id']}}/edit')">
                 <div class="notice-title">
-                    <p><i class="xi-pin"></i>{{$notices['title']}}</p>
+                    <p>
+                        @if($notices['is_crucial'] === 1)
+                        <span class="important-txt cm-label important">필독 !</span>
+                        @endif
+                        {{$notices['title']}} <i title="자세히보기" class="xi-zoom-in xi-1x"></i></p>
                 </div>
             </div>
             @endif
             <div class="btn-wrap">
+                @if(auth()->check() && Auth::user()->id === $study['owner_id'])
                 <button type="button" onclick="APP_FUNC.commonFunc.popupOpen('/notice/create')"><i class="xi-plus-circle"></i> 추가</button>
-                <a>전체보기<i class="xi-angle-right-min"></i></a> 
+                @endif
+                <p onclick="APP_FUNC.commonFunc.popupOpen('/notice?id={{$study['id']}}')">전체보기<i class="xi-angle-right-min"></i></p> 
             </div>
         </div>
     </div>
@@ -534,13 +540,11 @@
             APP_FUNC.commonFunc.commonSendForm(formData, 'POST', '/notice', '공지가 저장');
         }
 
-
         else if($("#notice-title").val() !== '' && $("#notice-content").val() !== ''){
             $("#notice-create-btn").prop("disabled", false);
         }else{
             $("#notice-create-btn").prop("disabled", true);
         }
-        
     }
 </script>
 

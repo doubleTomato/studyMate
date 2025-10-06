@@ -132,7 +132,7 @@ class StudiesCrudController extends Controller
         $comments_count = $comments->count();
         $comments_tree = $this->studyService->buildTree($comments);
         
-        $notices = Notices::where('study_id', $id)->first()?->toArray();
+        $notices = Notices::where('study_id', $id)->orderby('is_crucial','desc')->orderby('created_at','desc')->first()?->toArray();
         $this -> studyService -> viewCount($id);
         
         return view('study.show', [ 'study' => $study, 'comments' => $comments_tree, 'comments_count' => $comments_count, 'notices' => $notices ]);

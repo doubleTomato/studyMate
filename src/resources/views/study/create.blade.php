@@ -44,7 +44,7 @@
                     <li>
                         <div class="label">모집 마감일<i class="xi-calendar"></i></div>
                         <div class="value">
-                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="" placeholder="yyyy-mm-dd">
+                            <input type="text" class="datepicker" id="deadLine" name="deadline-date" required value="" placeholder="yyyy-mm-dd" autocomplete="off">
                         </div>
                     </li>
                     <li>
@@ -53,7 +53,7 @@
                             <div class="datetime-wrap">
                                 <input type="text" class="datepicker" placeholder="yyyy-mm-dd" id="start-date" name="start-date" required autocomplete="off" placeholder="yyyy-mm-dd">
                                 <span>~</span>
-                                <input type="text" class="datepicker"  id="end-date" name="end-date" value=""  placeholder="yyyy-mm-dd">
+                                <input type="text" class="datepicker"  id="end-date" name="end-date" value=""  placeholder="yyyy-mm-dd" autocomplete="off">
                             </div>
                             <div class="datetime-duration-disable">
                                 <input onclick="APP_FUNC.commonFunc.checkDisabled(this, ['end-date'])" id="durationdisable" type="checkbox" name="durationdisable"/>
@@ -76,7 +76,7 @@
                     </li>
                     <li>
                         <div class="label">상세 주소<span class="helper-text">(선택)</span></div>
-                        <div class="value"><input type="text" name="location" id="location" value="" placeholder="예: 서울시 강남구 …"></div>
+                        <div class="value"><input  type="text" name="location" id="location" value="" placeholder="예: 서울시 강남구 …" autocomplete="off"></div>
                     </li>
                 </ul>
             </div>
@@ -88,11 +88,11 @@
                     <tr>
                         <th>제목</th>
                         <td>
-                            <input type="text" name="titlename" required value="" placeholder="제목을 입력해주세요.">
+                            <input type="text" name="titlename" required value="" placeholder="제목을 입력해주세요." autocomplete="off">
                         </td>
                     </tr>
                 </table>
-                <textarea required style="width: 100%" name="ir1" id="ir1" rows="10" cols="100"></textarea>
+                <textarea style="width: 100%" name="ir1" id="ir1" rows="10" cols="100"></textarea>
             </div>
         </div>
         <div class="button-con">

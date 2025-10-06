@@ -35,6 +35,19 @@ class NoticeCrudController extends Controller
         $this->lookupService = $lookupService;
     }
 
+      public function index(Request $request) // list page
+    {
+
+        $notices = null;
+        $study_id = $request -> query('id');
+        if(!$study_id){
+            return view('modal.notices.index');
+        }else{
+            $notices = Notices::where('study_id', $study_id)->orderBy('created_at','desc')->get();
+        }
+        return view('modal.notices.index', compact('notices'));
+    }
+
     public function create(){
         return view('modal.notices.create');
     }
@@ -77,25 +90,30 @@ class NoticeCrudController extends Controller
     }
 
 
+    public function edit($id){
+        $notices = Notices::find($id)->toArray();
+        return view('modal.notices.edit', compact('notices'));
+    }
 
-    public function update(Request $request, Comments $comment): JsonResponse
+    public function update(Request $request, Notices $notice): JsonResponse
     {
-
         try{
             $validateData = $request -> validate([
-                'comments' => 'required|string|max:1000',
-                'parent_id' => 'nullable|integer|min:0'
+                'title' => 'required|string|max:255',
+                'content' => 'required|string|max:1000',
+                'is_crucial' => 'nullable|integer|min:0'
             ], [], $request->all());
             $sendData = [
-                'content' => $validateData['comments'],
-                'parent_id'=>$validateData['parent_id'] ?? null,
+                'title'=>$validateData['title'],
+                'content' => $validateData['content'],
+                'is_crucial'=>$validateData['is_crucial']??0,
             ];
 
-            $comment -> update($sendData);
+            $notice -> update($sendData);
 
             return response()->json([
-                'msg' => '댓글이 성공적으로 수정되었습니다.',
-                'comment'=>$comment->id,
+                'msg' => '공지가 성공적으로 수정되었습니다.',
+                'url'=>'/study/'.$notice->study_id,
                 'state'=>'success'
             ], 201); 
         
@@ -121,21 +139,16 @@ class NoticeCrudController extends Controller
     }
 
     //삭제하기
-     public function destroy(Request $request, Comments $comment) {
+     public function destroy($id) {
         try{
-
-            $validateData = $request -> validate([
-                'status' =>  ['required', Rule::in(['active', 'd_by_leader', 'd_by_admin','d_by_user'])]
-            ]);
-            $sendData = [
-                'status' => $validateData['status']??'active',
-            ];
-
-            $comment -> update($sendData);
-            
+            $notice = Notices::find($id);
+            $study_id = $notice -> study_id;
+            $notice->delete();
+        
             return response()->json([
-                'msg' => '성공적으로 삭제 되었습니다.',
+                'msg' => '성공적으로 공지가 삭제 되었습니다.',
                 'id' => '',
+                'url'=>'/study/'.$study_id,
                 'state'=>'success'
             ], 201);
         }

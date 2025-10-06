@@ -48,10 +48,10 @@
                     <div class="profile-img">
                         @if (Auth::user()->profile_url)
                             {{-- 1. DB에 프로필 이미지 경로가 있는 경우 --}}
-                            <img id="image_preview" src="{{ asset('storage/'. Auth::user()->profile_url) }}" alt="프로필 이미지 미리보기">
+                            <img src="{{ asset('storage/'. Auth::user()->profile_url) }}" alt="프로필 이미지 미리보기">
                         @else
                             {{-- 2. DB에 프로필 이미지 경로가 없는 경우 (기본 이미지 표시) --}}
-                            <img id="image_preview" src="{{ asset('images/default-profile.png') }}" alt="기본 프로필 사진">
+                            <img src="{{ asset('images/default-profile.png') }}" alt="기본 프로필 사진">
                         @endif
                     </div>
                     <p class="username-user"><span>{{ Auth::user()->nickname }}</span><span>님</span> <i class="xi-caret-down-min"></i></p>
