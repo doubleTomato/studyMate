@@ -255,8 +255,8 @@
                                         <span onclick="editComments(this,{{$val -> id}} )">수정</span>
                                     @endif
                                     <span onclick="formSend(null, 'DELETE', {{$val['id']}})">삭제</span>
-                                    <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
                                 @endif
+                                <span onclick="replyAdd(this, {{$val['id']}})">답글</span>
                             </div>
                         </div>
                         <div class="comments-con">
