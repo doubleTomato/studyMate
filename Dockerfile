@@ -40,3 +40,11 @@ RUN mkdir -p bootstrap/cache
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# 복사
+COPY entrypoint.sh /usr/local/bin/
+
+# 권한부여
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+CMD ["entrypoint.sh"]
