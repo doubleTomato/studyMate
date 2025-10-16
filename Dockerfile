@@ -37,10 +37,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN mkdir -p bootstrap/cache
+RUN mkdir -p src/bootstrap/cache
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data src/storage src/bootstrap/cache
+RUN chmod -R 775 src/storage src/bootstrap/cache
 
 # 복사
 COPY entrypoint.sh /usr/local/bin/
