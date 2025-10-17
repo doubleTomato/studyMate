@@ -48,6 +48,6 @@ COPY entrypoint.sh /usr/local/bin/
 # 권한부여
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-CMD ["entrypoint.sh"]
+#CMD ["entrypoint.sh"]
 #에러확인용
-#CMD ["sleep", "infinity"]
+CMD ["sleep", "infinity"]
