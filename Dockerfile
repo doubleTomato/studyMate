@@ -51,3 +51,4 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh"]
 #에러확인용
 #CMD ["sleep", "infinity"]
+EXPOSE 8080
