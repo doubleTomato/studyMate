@@ -43,6 +43,7 @@ RUN chown -R www-data:www-data src/storage src/bootstrap/cache
 RUN chmod -R 775 src/storage src/bootstrap/cache
 
 # 복사
+COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY entrypoint.sh /usr/local/bin/
 
 # 권한부여
