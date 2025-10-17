@@ -1,15 +1,14 @@
 #!/bin/sh
-
 set -e
 
-echo "php-fpm"
-
-set +e
+echo "start php-fpm"
 php-fpm &
 
-sleep 2; # php-fpm 소켓 파일 생성 시간동안 잠깐 멈춤
+mkdir -p /var/log/nginx
 
-set -e
+echo "sleep 2"
+sleep 2
 
-echo "php-fpm 끝 ngix시작"
+echo "start nginx..."
+# Nginx 실행
 nginx -g 'daemon off;'
