@@ -2,8 +2,6 @@
     $cur_route = Route::current();
     $route_name = $cur_route->getName();
 
-    // 디버깅 용
-    config(['app.env' => 'production']);
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -21,7 +19,9 @@
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    @vite(['resources/css/scss/main.scss', 'resources/js/app.js'])
+    {{--@vite(['resources/css/scss/main.scss', 'resources/js/app.js'])--}}
+    {{-- 디버깅용 --}}
+    @vite(['resources/css/scss/main.scss', 'resources/js/app.js'], 'production')
     <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 </head>
 
