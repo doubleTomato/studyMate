@@ -6,8 +6,8 @@ COPY package*.json vite.config.js ./
 RUN npm ci
 
 # 복사후 build
-COPY resources ./resources
-COPY public ./public
+COPY src/resources ./resources
+COPY src/public ./public
 RUN npm run build
 
 
@@ -51,7 +51,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # build파일 복사
-COPY --from=build /app/public/build ./public/build
+COPY --from=build /app/public/build ./src/public/build
 
 RUN mkdir -p src/bootstrap/cache
 
