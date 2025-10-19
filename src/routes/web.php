@@ -75,3 +75,14 @@ Route::post('/study/participation/exit/{study_id}', [StudyController::class, 'ex
 
 // modal
 Route::get('/modal/withdrawaluser/{id}', [ModalController::class, 'withdrawalUser']);
+
+
+
+// 디버깅용
+Route::get('/test-env', function () {
+    return [
+        'config_env' => config('app.env'), 
+        'env_helper' => env('APP_ENV'), 
+        'is_production' => app()->isProduction() ? 'true' : 'false' 
+    ];
+});
