@@ -12,3 +12,12 @@ sleep 5
 echo "start nginx..."
 # Nginx 실행
 nginx -g 'daemon off;'
+# 캐시 초기화 및 재생성
+cd /var/www/html/src
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+php artisan config:cache
+
+exec php-fpm
