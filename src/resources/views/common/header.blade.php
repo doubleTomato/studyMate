@@ -1,6 +1,9 @@
 @php
     $cur_route = Route::current();
     $route_name = $cur_route->getName();
+
+    // 디버깅 용
+    config(['app.env' => 'production']);
 @endphp
 <head>
     <meta charset="UTF-8">
