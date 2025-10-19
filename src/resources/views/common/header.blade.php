@@ -21,7 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{--@vite(['resources/css/scss/main.scss', 'resources/js/app.js'])--}}
     {{-- 디버깅용 --}}
-    @vite(['resources/css/scss/main.scss', 'resources/js/app.js'], 'production')
+    {{-- @vite(['resources/css/scss/main.scss', 'resources/js/app.js'], 'production') --}}
+    @if (app()->isProduction())
+    <link rel="stylesheet" href="{{ Vite::asset('resources/css/scss/main.scss') }}">
+    <script type="module" src="{{ Vite::asset('resources/js/app.js') }}"></script>
+    @else
+        @vite(['resources/css/scss/main.scss', 'resources/js/app.js'])
+    @endif
     <script type="text/javascript" src="{{ asset('plugin/se2/js/service/HuskyEZCreator.js') }}" charset="utf-8"></script>
 </head>
 
