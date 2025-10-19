@@ -51,7 +51,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # .env는 fly secrets로 대체됨 -> 제거
-RUN rm -f .env
+RUN rm -f  src/.env
 
 # build파일 복사
 COPY --from=build /app/public/build ./src/public/build
