@@ -1,3 +1,16 @@
+# node build관련 추가
+FROM node:18 AS build
+WORKDIR /app
+
+COPY package*.json vite.config.js ./
+RUN npm ci
+
+# 복사후 build
+COPY resources ./resources
+COPY public ./public
+RUN npm run build
+
+
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -36,6 +49,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www/html
 
 COPY . .
+
+# build파일 복사
+COPY --from=build /app/public/build ./public/build
 
 RUN mkdir -p src/bootstrap/cache
 
