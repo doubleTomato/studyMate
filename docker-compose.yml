@@ -1,83 +1,71 @@
+# js/css build 과정
+FROM node:22 as node_builder
 
-services:
-  app:
-    environment:
-      - TZ=Asia/Seoul
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: study-mate-app
-    working_dir: /var/www/html
-    volumes:
-      - ./src:/var/www/html:cached
-      - ./storage:/var/www/html/storage
-      - ./src/public:/var/www/html/public
-    networks:
-      - study-mate-network
-    depends_on:
-      db:
-        condition: service_healthy # db 서비스가 healthy 상태 체크
-  node:
-    image: node:22
-    working_dir: /var/www/html
-    volumes:
-      - ./src:/var/www/html:cached
-      - node_modules:/var/www/html/node_modules
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "5173:5173"
+WORKDIR /var/www/html
 
-  web:
-    image: nginx:alpine
-    container_name: study-mate-web
-    ports:
-      - "8080:80"
-    volumes:
-      - ./src:/var/www/html:cached
-      - ./storage:/var/www/html/storage
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    networks:
-      - study-mate-network
-    depends_on:
-      - app
+# package.json 복사
+COPY package.json package-lock.json ./
+RUN npm install
 
-  db:
-    image: mysql:8.0
-    container_name: study-mate-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: studymate
-      MYSQL_USER: studymate
-      MYSQL_PASSWORD: studymatepass
-      TZ: Asia/Seoul
-    ports:
-      - "3307:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - study-mate-network
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-  mailhog:
-    image: 'mailhog/mailhog:latest'
-    ports:
-      - '1025:1025' # smtp 
-      - '8025:8025' # mailhog web
-    networks:
-      - study-mate-network
+# 전체 복사
+COPY . .
 
-networks:
-  study-mate-network:
-    driver: bridge
 
-volumes:
-  db_data:
-  node_modules:
+RUN npm run build
+
+
+#php + nginx
+FROM php:8.2-fpm
+
+# Nginx 설치 및 PHP 확장 프로그램 설치
+RUN apt-get update && apt-get install -y \
+    nginx \
+    libzip-dev \
+    libonig-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    jpegoptim \
+    optipng \
+    pngquant \
+    gifsicle \
+    unzip \
+    git \
+    curl \
+    vim \
+    iputils-ping \
+    telnet \
+    netcat-traditional \
+&& rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install bcmath opcache
+RUN docker-php-ext-install exif
+RUN docker-php-ext-configure gd \
+    --with-jpeg \
+    --with-freetype \
+&& docker-php-ext-install gd
+
+# nginx 설정 파일 복사
+COPY nginx/conf.d/default.conf /etc/nginx/sites-available/default
+
+WORKDIR /var/www/html
+
+#전체 코드 복사
+COPY . .
+
+# node build 폴더 복사
+COPY --from=node_builder /var/www/html/src/public/build ./src/public/build
+
+#라라벨 폴더 권한 설정 (src/ 경로 기준)
+RUN mkdir -p src/bootstrap/cache
+RUN chown -R www-data:www-data src/storage src/bootstrap/cache
+RUN chmod -R 775 src/storage src/bootstrap/cache
+
+# entrypoint 스크립트 복사 및 권한 부여
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# 스크립트 실행
+CMD ["entrypoint.sh"]
