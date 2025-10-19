@@ -2,7 +2,7 @@
 FROM node:18 AS build
 WORKDIR /app
 
-COPY package*.json vite.config.js ./
+COPY src/package*.json src/vite.config.js ./
 RUN npm ci
 
 # 복사후 build
