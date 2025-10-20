@@ -5,14 +5,14 @@ ARG VITE_APP_ENV="production"
 ENV VITE_APP_ENV=${VITE_APP_ENV}
 
 # node build관련 추가
-WORKDIR /app
+WORKDIR /app/src
 
-#COPY src/package*.json src/vite.config.js ./
+COPY src/package*.json src/vite.config.js ./
 
-COPY src/ .
 
 RUN npm ci
 
+COPY src/ ./
 # 복사후 build
 # COPY src/resources ./resources
 # COPY src/public ./public
@@ -62,7 +62,7 @@ COPY . .
 #RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # build파일 복사
-COPY --from=build /app/public/build /var/www/html/src/public/build
+COPY --from=build /app/src/public/build ./public/build
 
 RUN rm -f /var/www/html/src/public/hot
 
