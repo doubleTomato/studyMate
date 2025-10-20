@@ -10,7 +10,7 @@ RUN npm ci
 COPY src/resources ./resources
 COPY src/public ./public
 
-COPY src/.env.production .env
+COPY .env.production .env
 
 
 RUN npm run build
