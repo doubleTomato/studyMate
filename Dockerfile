@@ -5,9 +5,14 @@ WORKDIR /app
 COPY src/package*.json src/vite.config.js ./
 RUN npm ci
 
+
 # 복사후 build
 COPY src/resources ./resources
 COPY src/public ./public
+
+ENV NODE_ENV=production
+ENV APP_ENV=production
+
 RUN npm run build
 
 
