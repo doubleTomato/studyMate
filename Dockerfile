@@ -1,19 +1,21 @@
 FROM node:18 AS build
 
 # 기본 값 설정
-ARG VITE_APP_ENV="development"
-
+ARG VITE_APP_ENV="production"
 ENV VITE_APP_ENV=${VITE_APP_ENV}
 
 # node build관련 추가
 WORKDIR /app
 
-COPY src/package*.json src/vite.config.js ./
+#COPY src/package*.json src/vite.config.js ./
+
+COPY src/ .
+
 RUN npm ci
 
 # 복사후 build
-COPY src/resources ./resources
-COPY src/public ./public
+# COPY src/resources ./resources
+# COPY src/public ./public
 RUN npm run build
 
 
