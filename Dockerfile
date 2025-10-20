@@ -64,7 +64,7 @@ COPY --from=build /app/public/build /var/www/html/src/public/build
 
 RUN mkdir -p src/bootstrap/cache
 
-RUN chown -R www-data:www-data src/storage src/bootstrap/cache
+RUN chown -R www-data:www-data src/storage src/bootstrap/cache src/public/build
 RUN chmod -R 775 src/storage src/bootstrap/cache
 
 # 복사
