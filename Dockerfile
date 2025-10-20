@@ -50,7 +50,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www/html/src
 
-COPY . .
+COPY src .
 
 
 # build파일 복사

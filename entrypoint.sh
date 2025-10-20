@@ -13,7 +13,7 @@ echo "start nginx..."
 # Nginx 실행
 nginx -g 'daemon off;'
 # 캐시 초기화 및 재생성
-cd /var/www/html/src
+cd /var/www/html
 #php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
