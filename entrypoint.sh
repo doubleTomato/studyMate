@@ -14,10 +14,10 @@ php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
 php artisan route:clear
-# php artisan config:cache
+php artisan config:cache
 
-
-php artisan config:cache --env=production
+chown -R www-data:www-data /var/www/html/src/bootstrap/cache /var/www/html/src/storage
+#php artisan config:cache --env=production
 
 echo "start php-fpm"
 php-fpm -D
