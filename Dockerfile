@@ -48,7 +48,7 @@ RUN docker-php-ext-configure gd \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /var/www/html/src
+WORKDIR /var/www/html
 
 COPY src .
 
