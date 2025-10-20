@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 set -x # 디버깅 용
 
