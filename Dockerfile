@@ -56,8 +56,6 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# .env는 fly secrets로 대체됨 -> 제거
-RUN rm -f  src/.env
 
 # build파일 복사
 COPY --from=build /app/public/build /var/www/html/src/public/build
@@ -79,8 +77,6 @@ CMD ["entrypoint.sh"]
 #에러확인용
 #CMD ["sleep", "infinity"]
 
-# build 이미지엔 .env 미포
-RUN rm -f .env
 
 
 EXPOSE 8080
