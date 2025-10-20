@@ -1,9 +1,9 @@
 FROM node:18 AS build
 
 # 기본 값 설정
-ARG APP_ENV="development"
+ARG VITE_APP_ENV="development"
 
-ENV APP_ENV=${APP_ENV}
+ENV VITE_APP_ENV=${VITE_APP_ENV}
 
 # node build관련 추가
 WORKDIR /app

@@ -8,7 +8,7 @@ primary_region = 'sin'
 
 [build]
   [build.args]
-    APP_ENV = "production"
+    VITE_APP_ENV = "production"
 
 [http_service]
   internal_port = 8080
