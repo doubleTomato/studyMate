@@ -57,8 +57,12 @@ WORKDIR /var/www/html
 COPY . .
 
 
+RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
 # build파일 복사
 COPY --from=build /app/public/build /var/www/html/src/public/build
+
+RUN rm -f /var/www/html/src/public/hot
 
 RUN mkdir -p src/bootstrap/cache
 

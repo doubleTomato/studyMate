@@ -30,6 +30,3 @@ sleep 5
 echo "start nginx..."
 # Nginx 실행
 nginx -g 'daemon off;'
-
-
-exec php-fpm
