@@ -21,17 +21,18 @@ export default defineConfig({
   //   ],
   //   }
   // },
-  //  build: {
-  //   manifest: true,
-  //   outDir: 'public/build',
-  //   rollupOptions: {
-  //     input: 'resources/js/app.js',
-  //   },
-  // },
   plugins: [
     laravel({
       input: ['resources/css/scss/main.scss', 'resources/js/app.js'],
       refresh: true,
+      buildDirectory: 'public/build'
     }),
   ],
+  build: {
+    manifest: true,
+    outDir: 'public/build',
+    rollupOptions: {
+      input: 'resources/js/app.js',
+    },
+  },
 });

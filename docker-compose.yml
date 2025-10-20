@@ -21,7 +21,7 @@ services:
     image: node:22
     working_dir: /var/www/html
     volumes:
-      - ./src:/var/www/html:cached
+     # - ./src:/var/www/html:cached
       - node_modules:/var/www/html/node_modules
     command: sh -c "npm install && npm run dev"
     ports:
