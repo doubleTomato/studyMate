@@ -59,11 +59,13 @@ WORKDIR /var/www/html
 
 COPY . .
 
+#캐시 파일 강제로 삭제
+RUN rm -f src/bootstrap/cache/config.php
 
-# [수정 1] Composer 설치 주석 제거
+# composer 설치 주석 제거
 RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# [수정 2] build 파일 복사 경로를 ./src/public/build 로 변경
+# build 파일 복사 경로를 ./src/public/build 로 변경
 COPY --from=build /app/src/public/build ./src/public/build
 
 RUN rm -f /var/www/html/src/public/hot
