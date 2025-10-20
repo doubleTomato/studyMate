@@ -46,17 +46,17 @@ RUN docker-php-ext-configure gd \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /var/www/html/src
+WORKDIR /var/www/html
 
-COPY . .
+COPY src .
 
 # build파일 복사
-COPY --from=build /app/public/build ./src/public/build
+COPY --from=build /app/public/build ./public/build
 
 RUN mkdir -p src/bootstrap/cache
 
-RUN chown -R www-data:www-data src/storage src/bootstrap/cache
-RUN chmod -R 775 src/storage src/bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
 
 # 복사
 COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
