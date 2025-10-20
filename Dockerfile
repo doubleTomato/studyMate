@@ -10,8 +10,8 @@ RUN npm ci
 COPY src/resources ./resources
 COPY src/public ./public
 
-ENV NODE_ENV=production
-ENV APP_ENV=production
+COPY src/.env.production .env
+
 
 RUN npm run build
 
