@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
+set -x # 디버깅 용
+
 
 echo "start php-fpm"
 php-fpm -D
