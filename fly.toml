@@ -7,7 +7,7 @@ app = 'studymate'
 primary_region = 'sin'
 
 [processes]
-  app = "/usr/local/bin/entrypoint.sh"
+  app = "sh /usr/local/bin/entrypoint.sh"
   #app = "sleep infinity" # 대기 명령어
 
 [build]
