@@ -60,7 +60,7 @@ COPY . .
 RUN rm -f  src/.env
 
 # build파일 복사
-COPY --from=build /app/public/build ./src/public/build
+COPY --from=build /app/public/build /var/www/html/src/public/build
 
 RUN mkdir -p src/bootstrap/cache
 
