@@ -6,6 +6,9 @@
 app = 'studymate'
 primary_region = 'sin'
 
+[processes]
+  app = "/usr/local/bin/entrypoint.sh"
+
 [build]
   [build.args]
     VITE_APP_ENV = "production"

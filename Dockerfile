@@ -72,6 +72,8 @@ COPY entrypoint.sh /usr/local/bin/
 # 권한부여
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# window줄바꿈 제거 스크립트 오류 방지
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 
 CMD ["entrypoint.sh"]
 #에러확인용
