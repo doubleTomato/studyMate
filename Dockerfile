@@ -60,7 +60,7 @@ WORKDIR /var/www/html
 COPY . .
 
 #캐시 파일 강제로 삭제
-RUN rm -f src/bootstrap/cache/config.php
+RUN rm -f src/bootstrap/cache/*.php
 
 # composer 설치 주석 제거
 RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
