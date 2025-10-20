@@ -1,1 +1,10 @@
 src/public/hot
+.git
+.DS_Store
+src/node_modules
+src/public/build
+src/vendor
+src/storage/logs
+src/storage/framework/cache
+src/storage/framework/sessions
+src/storage/framework/views

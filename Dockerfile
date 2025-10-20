@@ -59,10 +59,11 @@ WORKDIR /var/www/html
 COPY . .
 
 
-#RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# [수정 1] Composer 설치 주석 제거
+RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# build파일 복사
-COPY --from=build /app/src/public/build ./public/build
+# [수정 2] build 파일 복사 경로를 ./src/public/build 로 변경
+COPY --from=build /app/src/public/build ./src/public/build
 
 RUN rm -f /var/www/html/src/public/hot
 
@@ -84,7 +85,5 @@ RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh"]
 #에러확인용
 #CMD ["sleep", "infinity"]
-
-
 
 EXPOSE 8080
