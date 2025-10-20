@@ -6,6 +6,10 @@
 app = 'studymate'
 primary_region = 'sin'
 
+[build]
+  [build.args]
+    APP_ENV = "production"
+
 [http_service]
   internal_port = 8080
   force_https = true

@@ -1,5 +1,11 @@
-# node build관련 추가
 FROM node:18 AS build
+
+# 기본 값 설정
+ARG APP_ENV="development"
+
+ENV APP_ENV=${APP_ENV}
+
+# node build관련 추가
 WORKDIR /app
 
 COPY src/package*.json src/vite.config.js ./
