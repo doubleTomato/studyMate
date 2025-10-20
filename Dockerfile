@@ -3,6 +3,7 @@ FROM node:18 AS build
 WORKDIR /app
 
 COPY src/package*.json src/vite.config.js ./
+
 RUN npm ci
 
 # 복사후 build
@@ -11,6 +12,7 @@ COPY src/public ./public
 RUN npm run build
 
 
+# php + nginx
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -46,15 +48,13 @@ RUN docker-php-ext-configure gd \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/src
 
 COPY . .
 
-# .env는 fly secrets로 대체됨 -> 제거
-RUN rm -f  src/.env
 
 # build파일 복사
-COPY --from=build /app/public/build ./src/public/build
+COPY --from=build /app/public/build ./public/build
 
 RUN mkdir -p src/bootstrap/cache
 
@@ -63,6 +63,8 @@ RUN chmod -R 775 src/storage src/bootstrap/cache
 
 # 복사
 COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
+
 COPY entrypoint.sh /usr/local/bin/
 
 # 권한부여
@@ -72,9 +74,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh"]
 #에러확인용
 #CMD ["sleep", "infinity"]
-
-# build 이미지엔 .env 미포
-RUN rm -f .env
 
 
 EXPOSE 8080
