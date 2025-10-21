@@ -69,7 +69,7 @@ RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimiz
 COPY --from=build /app/src/public/build ./src/public/build
 
 # 제대로 복사되었느지 확인
-RUN ls -l /var/www/html/public/build
+RUN ls -l /var/www/html/src/public/build
 
 RUN rm -f /var/www/html/src/public/hot
 
