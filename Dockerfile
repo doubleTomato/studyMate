@@ -68,6 +68,9 @@ RUN cd src && composer install --no-dev --no-interaction --prefer-dist --optimiz
 # build 파일 복사 경로를 ./src/public/build 로 변경
 COPY --from=build /app/src/public/build ./src/public/build
 
+# 제대로 복사되었느지 확인
+RUN ls -l /var/www/html/css/public/build
+
 RUN rm -f /var/www/html/src/public/hot
 
 RUN mkdir -p src/bootstrap/cache
