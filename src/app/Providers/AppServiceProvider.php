@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         // fly.io서버에서만 실행
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
-            Vite::useBuildDirectory('build/.vite');
+            Vite::useManifestFilename('.vite/manifest.json');
         }
     }
 }
