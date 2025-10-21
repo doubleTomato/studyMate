@@ -1,10 +1,30 @@
-src/public/hot
+# git
 .git
+.gitignore
+
+# ide/os
+.vscode
+.idea
 .DS_Store
+
+# node.js 
+node_modules
 src/node_modules
-src/public/build
+
+# php composer
+vendor
 src/vendor
-src/storage/logs
-src/storage/framework/cache
-src/storage/framework/sessions
-src/storage/framework/views
+
+# laravel storage
+storage
+src/storage
+
+!src/storage/.gitignore
+
+# vite 빌드 결과물 
+public/build
+src/public/build
+
+# 환경변수 파일
+.env
+src/.env
