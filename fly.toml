@@ -51,3 +51,6 @@ primary_region = 'sin'
 [mounts]
   source="studymate_storage"
   destination="/var/www/html/src/storage/app/public"
+
+[env]
+  DOCUMENT_ROOT = "/var/www/html/src/public"
