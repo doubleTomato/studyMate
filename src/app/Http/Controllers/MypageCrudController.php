@@ -152,7 +152,7 @@ class MypageCrudController extends Controller
 
         $image_manager = new ImageManager(new Driver());
         $image = $image_manager->read($uploadedFile);
-        $image->resize(300, 300);
+        $image->cover(300, 300);
 
         // 새 이미지 저장
         Storage::put('public/profiles/' . $fileName, (string) $image->encode());
