@@ -105,7 +105,10 @@ input{
 }
 
 // select custom
-.select2-container--default .select2-selection--single{ padding: 6px 0; height: max-content; border-color: $gray_100}
+.select2-container--default .select2-selection--single{
+    padding: 6px 0; height: max-content; border-color: $gray_200;
+    font-size: 13px;
+}
 .select2-container--default .select2-selection--single .select2-selection__arrow{    
     top: 50%;
     transform: translateY(-50%);
@@ -286,10 +289,6 @@ select{
         background-color: $gray_200;
         &:hover{cursor: no-drop}
     }
-}
-.select2-container--default .select2-selection--single{
-    border-color: $gray_300;
-    font-size: 13px;
 }
 
 textarea{
@@ -760,12 +759,6 @@ button, .cm-btn{
 
 
 
-footer{
-    width: 100%; height: 80px; padding: 15px 40px; box-sizing: border-box;
-    display: flex; justify-content: space-between; margin-top: 40px;
-    background-color: #444;
-    color: $gray_100;
-}
 
 [class*='-sec']{
     padding-top: 100px;
@@ -1422,5 +1415,28 @@ footer{
        
     }
     
+}
+
+// footer
+.portfolio-footer {
+//   width: 100%;
+//   height: 60px;
+//   background-color: #333;
+//   color: $gray_100;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+    width: 100%; height: 80px; padding: 0px 40px; box-sizing: border-box;
+    display: flex; justify-content: space-between; margin-top: 40px;
+    background-color: #444;
+    color: $gray_100;
+  .copyright-text {
+    color: inherit;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    line-height: 78px;
+  }
 }
 

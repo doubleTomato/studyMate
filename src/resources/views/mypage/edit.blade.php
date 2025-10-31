@@ -1,7 +1,7 @@
 @php
     ['category' => $category, 'region' => $region, 'member' => $member] = $data;
     $preferred_time_slot_arr = array("any" =>"무관","morning"=>"오전","afternoon"=>"오후","weekend"=>"주말");
-    @endphp
+@endphp
 @extends('layouts.app')
 @section('content')
     <section class="mypage-sec">
@@ -112,7 +112,17 @@
             console.log(imageInput);
             imageInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
-            
+                const maxSize = 10 * 1024 * 1024; 
+	            const fileSize = event.target.files[0].size;
+
+                console.log(fileSize);
+                console.log(maxSize);
+                if(fileSize > maxSize){
+	            	let msg = "파일 크기가 10MB를 초과합니다. 더 작은 파일을 선택해주세요."
+                    APP_FUNC.commonFunc.modalOpen('alert-btn',msg,'btn-include');
+	            	event.target.value = '';
+	            	return; 
+	            }
                 if (file) {
                     const reader = new FileReader();
                 
@@ -171,8 +181,6 @@
             APP_FUNC.commonFunc.modalHide('alert');
             APP_FUNC.commonFunc.popupHide();
             if(data.state === 'success'){
-                console.log("여기 안들어오는겨?");
-                console.log(data.msg);
                 let idVal = data.id === ''? '':"/"+data.id;
                 APP_FUNC.commonFunc.modalOpen('alert-btn',data.msg,'btn-include');
                 setTimeout(() => {
@@ -189,6 +197,8 @@
         })
         .catch(err => {
             console.log("실패:", err);
+            APP_FUNC.commonFunc.modalHide('alert');
+            APP_FUNC.commonFunc.popupHide();
             APP_FUNC.commonFunc.modalOpen('alert-btn','실패', 'btn-include');
         });
     }

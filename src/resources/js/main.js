@@ -332,5 +332,81 @@ export const commonFunc = {
     addCount(num=0){
         let curVal = num === 0 ? 0 : parseInt($("input[name='recruited-num']").val());
         $("input[name='recruited-num']").val(curVal + num);
-    }
+    }, // 필터 변경 시
+    async filterChange(isReset = '', isActive = false){
+        let activeVal = '';
+        if(isReset === 'r'){
+            $("select[name='category']").prop('selectedIndex', 0).trigger('change');
+            $("select[name='region']").prop('selectedIndex', 0).trigger('change');
+            $("select[name='sort']").prop('selectedIndex', 0).trigger('change');
+            $("input[name='search']").val('');
+            $("input[name='pagination']").val(1);
+            $("input[name='active']").val('false');
+            $("#active-btn").removeClass("active");
+        }
+
+        let filter1 = isReset !== 'r' ? $("select[name='category']").val() : '';
+        let filter2 = isReset !== 'r' ? $("select[name='region']").val() : '';
+        let filter3 = isReset !== 'r' ? $("input[name='search']").val() : '';
+        let filter4 = isReset !== 'r' ? $("select[name='sort']").val() : '';
+        let filter5 = isReset !== 'r' ? $("input[name='pagination']").val() : 1;
+        let filter6 = isReset !== 'r' ? $("input[name='active']").val() : '';
+
+
+        this.modalOpen('alert','필터 적용');
+
+
+        if(isReset == '' && isActive){
+            if($("input[name='active']").val() === 'true'){
+                filter6 = 'false';
+                $("input[name='active']").val('false');
+                $("#active-btn").removeClass("active");
+            } else{
+                filter6 = 'true';
+                $("input[name='active']").val('true');
+                $("#active-btn").addClass("active");
+            }
+        }
+
+        const filters = {
+                category: filter1,
+                region: filter2,
+                search: filter3,
+                sort: filter4,
+                pagination: filter5,
+                active: filter6,
+            }
+
+         // Ajax 요청
+            const res = await fetch('/studies/list', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify(filters)
+            });
+
+            const html = await res.text();
+            document.getElementById('study-list').innerHTML = html;
+
+            // 페이지 번호 input 초기화
+            $("input[name='pagination']").val(filters.pagination);
+            this.modalHide('alert');
+    },// 페이지네이션
+    async paginationChange(aEl){
+        if(!aEl) return;
+        $(".loading-sec").addClass("active");
+        e.preventDefault();
+        const url = aEl.href;
+        const res = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        const html = await res.text();
+        document.getElementById('study-list').innerHTML = html;
+        const pageUrl = new URL(aEl.href);
+        const page = pageUrl.searchParams.get('page'); 
+        $("input[name='pagination']").val(page);
+        $(".loading-sec").removeClass('active');
+    },
+
 }
