@@ -197,7 +197,7 @@
                         <span class="date">{{$val['pivot']['join_datetime']}}</span>
                         <div class="actions-btn">
                             @if( $val['pivot']['rank'] !== '0' && auth()->check() && Auth::user()->id === $study['owner_id'])
-                            <button type="button" class="cm-btn exit-btn">퇴장</button>
+                            <button type="button" class="cm-btn exit-btn" onclick="participationStudy({{$val['id']}},'leave')">퇴장</button>
                             @endif
                                 {{-- <button class="btn btn-block">차단</button> --}}
                         </div>
@@ -374,21 +374,25 @@
     });
 
         // 참가/퇴장
-    async function participationStudy(studyId, url=''){
-
+    async function participationStudy(id, url=''){
+        
         if(url === 'exit' && !(await APP_FUNC.commonFunc.confirmOpen(`정말로 스터디에서 퇴장하시겠습니까? 다시 참여하려면 스터디장의 승인이 필요합니다.`))){
             return;
         }
 
+        if(url === 'leave' && !(await APP_FUNC.commonFunc.confirmOpen(`정말로 스터디에서 퇴장시키시겠습니까?`))){
+            return;
+        }
 
         let urlPath = url === ''? '':url+"/";
-        fetch(`/study/participation/${urlPath}${studyId}`,{
+        fetch(`/study/participation/${urlPath}${id}`,{
             method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            },
+            body: url === 'leave'?JSON.stringify({'member_id':id,'study_id':{{$study['id']}}}):{}
                 //: JSON.stringify(dataToSend)
         })
         .then(res => {

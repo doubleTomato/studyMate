@@ -72,7 +72,8 @@ Route::post('/study/participation/{study_id}', [StudyController::class, 'partici
 ->name("study.participation"); //참여하기
 Route::post('/study/participation/exit/{study_id}', [StudyController::class, 'exitStudy'])
 ->name("study.participation.exit"); //퇴장하기
-
+Route::post('/study/participation/leave/{member_id}', [StudyController::class, 'leaveCrew'])
+->name("study.participation.leave"); //방장이 퇴장시키기
 // modal
 Route::get('/modal/withdrawaluser/{id}', [ModalController::class, 'withdrawalUser']);
 
