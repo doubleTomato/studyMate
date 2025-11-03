@@ -996,7 +996,12 @@ button, .cm-btn{
                 align-items: center;
                 gap: 5px;
                 margin-bottom: 10px;
-                p.helper-text{ line-height: 1.5;}
+                p:nth-child(2){flex-shrink: 0}
+                p.helper-text{ 
+                    line-height: 1.5;    
+                    word-wrap: break-word;
+                    word-break: keep-all; 
+                }
                 &:last-child{
                     margin-bottom: 0;
                 }

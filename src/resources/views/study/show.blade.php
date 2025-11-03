@@ -41,7 +41,7 @@
             <span>참여하기</span>
         </button>
         @elseif(auth()->check() && Auth::user()->id !== $study['owner_id'] && $is_participation)
-            <button onclick="participationStudy({{Auth::user()->id}},'exit')" type="button" class="icon-btn delete-btn">
+            <button onclick="participationStudy({{$study['id']}},'exit')" type="button" class="icon-btn delete-btn">
                 <span>퇴장하기</span>
             </button>
         @endif
@@ -107,9 +107,9 @@
                     <div class="value">
                         <div class="members-count participants-count">
                             <div class="progress-bar">
-                                <div class="progress" style="width: {{ (100 / $study['max_members']) * count($study['members']) }}%"></div>
+                                <div class="progress" style="width: {{ (100 / $study['max_members']) * (count($study['members']) - 1) }}%"></div>
                                 <div>
-                                    <span>{{ count($study['members']) }}</span>
+                                    <span>{{ count($study['members']) - 1 }}</span>
                                     <span>/</span>
                                     <span>
                                         {{ $study['max_members'] }}

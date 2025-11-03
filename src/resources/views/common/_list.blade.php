@@ -53,9 +53,9 @@
                         <div class="participants-count">
                             <p><i class="xi-community"></i></p>
                             <div class="progress-bar">
-                                <div class="progress" style="width: {{ (100 / $val['max_members']) * $val -> members -> count() }}%"></div>
+                                <div class="progress" style="width: {{ (100 / $val['max_members']) * (($val -> members -> count()) - 1 ) }}%"></div>
                                 <div>
-                                    <span>{{ $val -> members -> count() }}</span>
+                                    <span>{{ ($val -> members -> count()) - 1 }}</span>
                                     <span>/</span>
                                     <span>
                                         {{ $val['max_members'] }}
