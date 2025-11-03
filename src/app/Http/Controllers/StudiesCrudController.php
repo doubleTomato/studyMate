@@ -161,7 +161,7 @@ class StudiesCrudController extends Controller
     {
         try{
             $validateData = $request -> validate([
-                'description' => 'required|string|max:1000',
+                'description' => 'required|string|max:10000',
                 'titlename' => 'required|string|max:255',
                 'category'=>'required|integer|min:0',
                 'region'=>'nullable|integer|min:0',
