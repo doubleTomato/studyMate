@@ -46,26 +46,26 @@
 ---
 
 ### 2. 스터디 목록 / 검색 / 정렬
-![스터디 목록 페이지](./screenshots/study_list.png)  
+![스터디 목록 페이지](./screenshots/study_list.PNG)  
 모든 스터디를 조회할 수 있으며, 검색, 정렬, 페이지네이션 기능을 지원합니다.
 
 ---
 
 ### 3. 스터디 상세 페이지
 ## 3-1. 기본 설명
-![스터디 상세 페이지](./screenshots/study_detail.png)  
+![스터디 상세 페이지](./screenshots/study_detail.PNG)  
 선택한 스터디의 상세 정보 확인 및 참여/취소가 가능합니다.
 
 ## 3-2. 공지
-![스터디 상세 페이지 - 공지](./screenshots/study_notice.png)
+![스터디 상세 페이지 - 공지](./screenshots/study_notice.PNG)
 - 스터디의 전체 공지로 방장만이 작성 가능하며 필수 표시와 전체 리스트를 한번에 확인 가능 합니다.
 
 ## 3-3. 댓글
-![스터디 상세 페이지 - 공지](./screenshots/study_comments.png)
+![스터디 상세 페이지 - 공지](./screenshots/study_comments.PNG)
 - 스터디의 문의사항을 직접 소통할 수 있는 댓글 기능과 답글 기능을 지원합니다.
 ---
 
 ### 4. 프로필 관리
-![프로필 관리 화면](./screenshots/profile.png)  
+![프로필 관리 화면](./screenshots/profile.PNG)  
 사용자 프로필 이미지 업로드 및 기타 정보를 수정할 수 있습니다.
 
