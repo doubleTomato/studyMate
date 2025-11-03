@@ -59,7 +59,7 @@ class StudyController extends Controller
      public function exitStudy(Request $request, $study_id){
          try{
           
-            $study_member = Study_members::where('member_id',$study_id)->delete();
+            $study_member = Study_members::where('study_id',$study_id)->where('member_id', auth()->id())->delete();
         
             return response()->json([
                 'msg' => '스터디에서 성공적으로 <br/> 퇴장 되었습니다.',
