@@ -73,4 +73,23 @@ class StudyController extends Controller
             ], 500);
         }
     }
+
+    // 방장 권한 퇴장
+     public function leaveCrew(Request $request, $member_id){
+         try{
+          
+            $study_member = Study_members::where('study_id',$request->study_id)->where('member_id', $member_id)->delete();
+        
+            return response()->json([
+                'msg' => '스터디에서 성공적으로 <br/> 퇴장 되었습니다.',
+            ], 201);
+        }
+        catch(Exception $err){
+            return response()->json([
+            'msg' => '퇴장이 실패했습니다. 다시 시도해주세요.',
+            'err_msg' => $err->getMessage(),
+            logger()->error('퇴장이 실패', ['exception' => $err->getMessage()])
+            ], 500);
+        }
+    }
 }
