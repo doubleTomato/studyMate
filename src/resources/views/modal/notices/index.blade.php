@@ -16,7 +16,7 @@
                         <p class="title">{{$val -> title}}</p>
                     </dt>
                     <dd>
-                        <pre class="scroll-box">{{$val -> content}}간때문이야~ 피로는간때문이야rkskekfkakqktkdkwkk카타파아하당럳자ㅓ랒머라ㅣㅁㅈ더라ㅣ점ㄷ라ㅣ멎다ㅣ럼ㅈ디ㅏ럼자ㅣ덜자미;ㅓㄹ자ㅣ;멀ㅈㅁ다ㅓ리자머리ㅏ저리ㅏ젇라ㅣㅈ머라ㅣㅁ저라ㅣ먿가ㅣㅓㄹ마저ㅏㅣㅈㄹ머ㅣㅏㅈㄹ머ㅣㅏㅈ렂ㄷ라ㅣㅓㅈㄹ다ㅓㄹㅈㄷ</pre></dd>
+                        <pre class="scroll-box">{{$val -> content}}</pre></dd>
                 </dl>
             </li>
             @endforeach
