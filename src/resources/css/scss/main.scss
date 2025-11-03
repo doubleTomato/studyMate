@@ -263,7 +263,8 @@ ul.helper-list{
                     position: relative;
                     &::after{
                         content: "";
-                        background-image: url("../../../public/images/crown.png");
+                        // background-image: url("../../../public/images/crown.png");
+                        background-image: url("../../images/crown.png");
                         display: block;
                         position: absolute;
                         height: 20px;
