@@ -25,9 +25,9 @@ primary_region = 'sin'
 
 [[http_service.checks]]
     interval = "10s"
-    timeout = "2s"
+    timeout = "5s"
     method = "GET"
-    path = "/" #
+    path = "/index.php" # 경로로 헬스체크 강제
     protocol = "http"
     
     
