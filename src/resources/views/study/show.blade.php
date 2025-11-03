@@ -242,7 +242,7 @@
                     <li>
                         <div class="comments-title flex-wrap">
                             <div class="comments-info flex-wrap">
-                                <img src="{{asset('storage/'.$val -> members-> profile_url)}}" alt="">
+                                <img src="{{ !empty($val-> members -> profile_url) ? asset('storage/'.$val-> members -> profile_url):asset('images/default-profile.png') }}" alt="프로필 이미지"/>
                                 <span class="name">{{$val -> members -> nickname}}</span>
                                 @if($study['owner_id'] === $val -> members ->id)
                                     <span class="cm-label iswriter">작성자 <i class="xi-crown"></i></span>
@@ -272,7 +272,7 @@
                                 <li>
                                     <div class="comments-title flex-wrap">
                                         <div class="comments-info flex-wrap">
-                                            <img src="{{asset('storage/'.$in_val -> members-> profile_url)}}" alt="">
+                                            <img src="{{ !empty($in_val-> members -> profile_url) ? asset('storage/'.$in_val-> members -> profile_url):asset('images/default-profile.png') }}" alt="프로필 이미지"/>
                                             <span class="name">{{$in_val-> members -> nickname}}</span>
                                             @if($study['owner_id'] === $in_val -> members ->id)
                                                 <span class="cm-label iswriter">작성자 <i class="xi-crown"></i></span>
@@ -315,7 +315,7 @@
                         </div>
                     </div>
                     <div class="comments-con">
-                        <pre>훙냥냐?하지마라냐</pre>
+                        <pre></pre>
                     </div>
                     <ul class="comments-in-list">
                         <li>
